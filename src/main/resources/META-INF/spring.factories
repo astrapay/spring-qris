@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=id.purnama.qris.QrisConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.astrapay.qris.QrisConfiguration

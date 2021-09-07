@@ -8,18 +8,18 @@
         <version>2.4.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>id.purnama</groupId>
+    <groupId>com.astrapay</groupId>
     <artifactId>spring-qris</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>spring-qris</name>
     <description>Spring QRIS</description>
     <properties>
         <java.version>11</java.version>
-        <sonar.projectKey>purnama_spring-qris</sonar.projectKey>
-        <sonar.organization>purnama</sonar.organization>
+        <sonar.projectKey>astrapay_spring-qris</sonar.projectKey>
+        <sonar.organization>astrapay</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
-    <url>https://github.com/purnama/spring-qris</url>
+    <url>https://github.com/astrapay/spring-qris</url>
 
     <developers>
         <developer>
@@ -38,9 +38,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git://github.com/purnama/spring-qris.git</connection>
-        <developerConnection>scm:git:git@github.com:purnama/spring-qris.git</developerConnection>
-        <url>https://github.com/purnama/spring-qris</url>
+        <connection>scm:git:git://github.com/astrapay/spring-qris.git</connection>
+        <developerConnection>scm:git:git@github.com:astrapay/spring-qris.git</developerConnection>
+        <url>https://github.com/astrapay/spring-qris</url>
     </scm>
 
     <distributionManagement>
