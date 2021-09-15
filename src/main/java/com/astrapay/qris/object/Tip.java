@@ -11,10 +11,11 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class Tip {
+
     @Builder.Default
     String indicator = "0";
     @Builder.Default
-    Double fixed = Double.valueOf(0.0);
+    Double fixed = 0.0;
     @Builder.Default
-    Double percentage = Double.valueOf(0.0);
+    Double percentage = 0.0;
 }
