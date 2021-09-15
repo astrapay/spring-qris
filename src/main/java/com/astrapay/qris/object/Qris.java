@@ -20,16 +20,16 @@ public class Qris {
     String payloadFormatIndicator;
     Integer pointOfInitiationMethod;
 
-    @Builder.Default
-    Map<Integer, MerchantAccountInformation> merchantAccountInformationDomestics = new HashMap<>();
+    Map<Integer, MerchantAccountInformation> merchantAccountInformationDomestics;
 
-    @Builder.Default
-    MerchantAccountInformation domesticCentralRepository = new MerchantAccountInformation();
+    MerchantAccountInformation domesticCentralRepository;
     Integer merchantCategoryCode;
     Currency transactionCurrency;
     @Builder.Default
     Double transactionAmount = 0.0;
-    Tip tip;
+
+    @Builder.Default
+    Tip tip = new Tip();
     Locale countryCode;
     String merchantName;
     String merchantCity;
@@ -38,7 +38,6 @@ public class Qris {
     @Builder.Default
     AdditionalData additionalData = new AdditionalData();
 
-    @Builder.Default
-    MerchantInformationLanguage merchantInformationLanguage = new MerchantInformationLanguage();
+    MerchantInformationLanguage merchantInformationLanguage;
     String crc;
 }
