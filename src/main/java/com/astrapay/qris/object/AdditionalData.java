@@ -21,5 +21,7 @@ public class AdditionalData {
 
     @Builder.Default
     private ProprietaryDomestic proprietaryDomestic = new ProprietaryDomestic();
-    private String value;
+
+    @Builder.Default
+    private String value = "0";
 }
