@@ -92,8 +92,8 @@ public class QrisMapper {
     }
 
     private void mapTip(Map<Integer, QrisDataObject> payload, Qris object) {
+        Tip tip = new Tip();
         if(payload.containsKey(55)) {
-            Tip tip = new Tip();
             tip.setIndicator(payload.get(55).getValue());
             if(payload.containsKey(56)){
                 tip.setFixed(Double.valueOf(payload.get(56).getValue()));
@@ -101,8 +101,8 @@ public class QrisMapper {
             if(payload.containsKey(57)){
                 tip.setPercentage(Double.valueOf(payload.get(57).getValue()));
             }
-            object.setTip(tip);
         }
+        object.setTip(tip);
     }
 
     private void mapDomesticCentralRepository(Map<Integer, QrisDataObject> payload, Qris object) {
