@@ -19,4 +19,5 @@ public class AdditionalData {
     private Map<Integer, String> dataObjects;
     private String consumerDataRequest;
     private ProprietaryDomestic proprietaryDomestic;
+    private String value;
 }
