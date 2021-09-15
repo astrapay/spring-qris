@@ -1,10 +1,8 @@
 package com.astrapay.qris.object;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,10 +12,16 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class AdditionalData {
 
-    private Map<Integer, String> dataObjects;
+    @Builder.Default
+    private Map<Integer, String> dataObjects= new HashMap<>();
     private String consumerDataRequest;
-    private ProprietaryDomestic proprietaryDomestic;
-    private String value;
+
+    @Builder.Default
+    private ProprietaryDomestic proprietaryDomestic = new ProprietaryDomestic();
+
+    @Builder.Default
+    private String value = "0";
 }
