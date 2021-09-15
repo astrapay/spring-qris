@@ -81,6 +81,7 @@ public class QrisMapper {
                 proprietaryDomestic.setProprietary(payload.get(62).getTemplateMap().get(99).getTemplateMap().get(1).getValue());
                 additionalData.setProprietaryDomestic(proprietaryDomestic);
             }
+            qris.setAdditionalData(additionalData);
         }
     }
 
