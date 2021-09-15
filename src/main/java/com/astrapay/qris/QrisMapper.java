@@ -61,7 +61,7 @@ public class QrisMapper {
         }
     }
 
-    private void mapAdditionalData(Map<Integer, QrisDataObject> payload, Qris qris) {
+    private void mapAdditionalData(Map<Integer, QrisDataObject> payload, Qris object) {
         if(payload.containsKey(62)){
             AdditionalData additionalData = new AdditionalData();
             Map<Integer, String> dataObjects = new LinkedHashMap<>();
@@ -81,7 +81,7 @@ public class QrisMapper {
                 proprietaryDomestic.setProprietary(payload.get(62).getTemplateMap().get(99).getTemplateMap().get(1).getValue());
                 additionalData.setProprietaryDomestic(proprietaryDomestic);
             }
-            qris.setAdditionalData(additionalData);
+            object.setAdditionalData(additionalData);
         }
     }
 

@@ -3,7 +3,6 @@ package com.astrapay.qris.object;
 import lombok.*;
 
 import java.util.Currency;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -19,7 +18,6 @@ public class Qris {
 
     String payloadFormatIndicator;
     Integer pointOfInitiationMethod;
-
     Map<Integer, MerchantAccountInformation> merchantAccountInformationDomestics;
 
     MerchantAccountInformation domesticCentralRepository;
@@ -35,8 +33,8 @@ public class Qris {
     String merchantCity;
     Integer postalCode;
 
-    @Builder.Default
-    AdditionalData additionalData = new AdditionalData();
+
+    AdditionalData additionalData;
 
     MerchantInformationLanguage merchantInformationLanguage;
     String crc;

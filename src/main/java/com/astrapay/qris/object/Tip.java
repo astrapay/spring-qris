@@ -12,7 +12,6 @@ import lombok.*;
 @Builder
 public class Tip {
 
-
     String indicator;
     @Builder.Default
     Double fixed = 0.0;

@@ -1,6 +1,10 @@
 package com.astrapay.qris.object;
 
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author Arthur Purnama
