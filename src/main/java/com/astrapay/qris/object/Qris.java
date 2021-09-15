@@ -1,9 +1,6 @@
 package com.astrapay.qris.object;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Currency;
 import java.util.Locale;
@@ -16,6 +13,7 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Qris {
 
     String payloadFormatIndicator;
@@ -24,8 +22,11 @@ public class Qris {
     MerchantAccountInformation domesticCentralRepository;
     Integer merchantCategoryCode;
     Currency transactionCurrency;
-    Double transactionAmount;
-    Tip tip;
+
+    @Builder.Default
+    Double transactionAmount = Double.valueOf(0.0);
+    @Builder.Default
+    Tip tip = new Tip();
     Locale countryCode;
     String merchantName;
     String merchantCity;

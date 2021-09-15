@@ -1,9 +1,6 @@
 package com.astrapay.qris.object;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * @author Arthur Purnama
@@ -14,6 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Tip {
     String indicator;
-    Double fixed;
-    Double percentage;
+    @Builder.Default
+    Double fixed = Double.valueOf(0.0);
+    @Builder.Default
+    Double percentage = Double.valueOf(0.0);
 }
