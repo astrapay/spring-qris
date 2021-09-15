@@ -18,6 +18,10 @@
         <sonar.projectKey>astrapay_spring-qris</sonar.projectKey>
         <sonar.organization>astrapay</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.coverage.exclusions>
+            **/*com/astrapay/qris/*,
+            **/*com/astrapay/qris/object/**,
+        </sonar.coverage.exclusions>
     </properties>
     <url>https://github.com/astrapay/spring-qris</url>
 
