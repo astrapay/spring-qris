@@ -40,7 +40,7 @@ public class QrisMapper {
         if(payload.containsKey(61)) {
             object.setPostalCode(Integer.valueOf(payload.get(61).getValue()));
         }
-        mapAdditionalData(payload);
+        mapAdditionalData(payload, object);
         mapMerchantInformationLanguage(payload, object);
         object.setCrc(payload.get(63).getValue());
         return object;
@@ -61,7 +61,7 @@ public class QrisMapper {
         }
     }
 
-    private void mapAdditionalData(Map<Integer, QrisDataObject> payload) {
+    private void mapAdditionalData(Map<Integer, QrisDataObject> payload, Qris qris) {
         if(payload.containsKey(62)){
             AdditionalData additionalData = new AdditionalData();
             Map<Integer, String> dataObjects = new LinkedHashMap<>();
@@ -71,6 +71,7 @@ public class QrisMapper {
                 }
             }
             additionalData.setDataObjects(dataObjects);
+            additionalData.setValue(payload.get(62).getValue());
             if(payload.get(62).getTemplateMap().containsKey(9)){
                 additionalData.setConsumerDataRequest(payload.get(62).getTemplateMap().get(9).getValue());
             }
