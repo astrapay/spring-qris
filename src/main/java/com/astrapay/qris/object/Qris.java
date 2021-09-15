@@ -25,6 +25,7 @@ public class Qris {
 
     @Builder.Default
     Double transactionAmount = Double.valueOf(0.0);
+
     @Builder.Default
     Tip tip = new Tip();
     Locale countryCode;

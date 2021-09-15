@@ -9,8 +9,10 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Tip {
     String indicator;
+
     @Builder.Default
     Double fixed = Double.valueOf(0.0);
     @Builder.Default
