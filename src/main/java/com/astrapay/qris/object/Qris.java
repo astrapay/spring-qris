@@ -22,12 +22,9 @@ public class Qris {
     MerchantAccountInformation domesticCentralRepository;
     Integer merchantCategoryCode;
     Currency transactionCurrency;
-
     @Builder.Default
-    Double transactionAmount = Double.valueOf(0.0);
-
-    @Builder.Default
-    Tip tip = new Tip();
+    Double transactionAmount = 0.0;
+    Tip tip;
     Locale countryCode;
     String merchantName;
     String merchantCity;

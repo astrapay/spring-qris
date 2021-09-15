@@ -12,9 +12,8 @@ import lombok.*;
 @Builder
 public class Tip {
     String indicator;
-
     @Builder.Default
-    Double fixed = Double.valueOf(0.0);
+    Double fixed = 0.0;
     @Builder.Default
-    Double percentage = Double.valueOf(0.0);
+    Double percentage = 0.0;
 }
