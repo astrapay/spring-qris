@@ -38,7 +38,7 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git://github.com/astrapay/spring-qris.git</connection>
+        <connection>scm:git:git@github.com:astrapay/spring-qris.git</connection>
         <developerConnection>scm:git:git@github.com:astrapay/spring-qris.git</developerConnection>
         <url>https://github.com/astrapay/spring-qris</url>
     </scm>
@@ -185,7 +185,18 @@
                     <scmCommentPrefix>[ci skip]</scmCommentPrefix>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <configuration>
+                    <!-- Prevent gpg from using pinentry programs -->
+                    <gpgArguments>
+                        <arg>--pinentry-mode</arg>
+                        <arg>loopback</arg>
+                    </gpgArguments>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
