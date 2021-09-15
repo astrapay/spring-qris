@@ -38,8 +38,8 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git@github.com:astrapay/spring-qris.git</connection>
-        <developerConnection>scm:git:git@github.com:astrapay/spring-qris.git</developerConnection>
+        <connection>scm:git:ssh://git@github.com/astrapay/spring-qris.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/astrapay/spring-qris.git</developerConnection>
         <url>https://github.com/astrapay/spring-qris</url>
     </scm>
 
