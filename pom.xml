@@ -191,6 +191,11 @@
     <profiles>
         <profile>
             <id>release</id>
+            <activation>
+                <property>
+                    <name>gpg.passphrase</name>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -204,6 +209,7 @@
                                 <arg>loopback</arg>
                             </gpgArguments>
                         </configuration>
+
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
