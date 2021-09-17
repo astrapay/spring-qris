@@ -19,14 +19,6 @@ jobs:
           server-id: ossrh
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
-      - name: Setup SSH Keys and known_hosts
-        env:
-            SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-            mkdir -p ~/.ssh
-            ssh-keyscan github.com >> ~/.ssh/known_hosts
-            ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-            ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
       - name: Cache Maven packages
         uses: actions/cache@v1
         with:
@@ -37,11 +29,10 @@ jobs:
         run: echo ${{secrets.GPG_OWNERTRUST}} | base64 --decode | gpg --import-ownertrust
       - name: Import GPG key
         run: echo ${{secrets.GPG_SECRET_KEYS}} | base64 --decode | gpg --import --no-tty --batch --yes
-      - name: Build and analyze
+      - name: Configure GPG Key
+        run: echo -n "$GPG_SECRET_KEYS" | base64 --decode | gpg --import
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+          GPG_SECRET_KEYS: ${{ secrets.GPG_SECRET_KEYS }}
       - name: Configure Git user
         run: |
           git config user.email "actions@github.com"
