@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -9,9 +10,9 @@
     </parent>
     <groupId>com.astrapay</groupId>
     <artifactId>spring-qris</artifactId>
-    <version>1.7-SNAPSHOT</version>
-    <name>spring-qris</name>
-    <description>Spring QRIS</description>
+    <version>1.8-SNAPSHOT</version>
+    <name>astrapay-qris</name>
+    <description>QRIS Parser for Spring by AstraPay</description>
     <properties>
         <java.version>11</java.version>
         <sonar.projectKey>astrapay_spring-qris</sonar.projectKey>
@@ -25,6 +26,11 @@
             <name>Arthur Purnama</name>
             <email>arthur@purnama.de</email>
             <url>https://github.com/purnama</url>
+        </developer>
+        <developer>
+            <name>Raymond Sugiarto</name>
+            <email>raymondsugiarto@gmail.com</email>
+            <url>https://github.com/raymondsugiarto</url>
         </developer>
     </developers>
 
@@ -40,8 +46,8 @@
         <connection>scm:git:https://github.com/astrapay/spring-qris.git</connection>
         <developerConnection>scm:git:https://github.com/astrapay/spring-qris.git</developerConnection>
         <url>https://github.com/astrapay/spring-qris</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <distributionManagement>
         <snapshotRepository>
