@@ -129,7 +129,6 @@ public class Qris {
             }
         }).orElse("");
     }
-
     public String getTipAsString(){
         return Optional.ofNullable(this.tip).map(data-> {
             String currencyCode = "";
