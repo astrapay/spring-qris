@@ -2,10 +2,8 @@ package com.astrapay.qris;
 
 import com.astrapay.qris.object.*;
 
-import java.util.Currency;
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.util.*;
 
 /**
  * @author Arthur Purnama
@@ -44,6 +42,52 @@ public class QrisMapper {
         mapMerchantInformationLanguage(payload, object);
         object.setCrc(payload.get(63).getValue());
         return object;
+    }
+
+    public Map<Integer,Object> convertObjectToMap(Object o) throws IllegalAccessException {
+        Map<Integer,Object> qrisDataObjectMap = new HashMap<>();
+        Field[] allFields = o.getClass().getDeclaredFields();
+        for (int i = 0; i < allFields.length; i++) {
+            Field field = allFields[i];
+            field.setAccessible(true);
+            Object value = field.get(o);
+            qrisDataObjectMap.put(i, value);
+        }
+        return qrisDataObjectMap;
+    }
+
+    public String mapToString(Qris qris) {
+         String payloadFormatIndicator = qris.getPayloadFormatIndicatorAsString()   ;
+         String pointOfInitiationmethod = qris.getPointOfInitiationMethodAsString();
+         String merchantAccountInformation = qris.getMerchantAccountInformationAsStringAsString(qris.getMerchantAccountInformationDomestics().get(26), "26");
+         String domesticRepository = qris.getMerchantAccountInformationAsStringAsString(qris.getDomesticCentralRepository(),"51");
+         String mcc = qris.getMerchantCategoryCodeAsString();
+         String currency = qris.getCurrencyCodeAsString();
+         String tansactionAmount = qris.getTransactionAmountAsString();
+         String tip = qris.getTipAsString();
+         String countryCode = qris.getCountryCodeAsString();
+         String merchantName =qris.getMerchantNameAsString();
+         String merchantCity = qris.getMerchantCityAsString();
+         String postalCode = qris.getPostalCodeAsString();
+         String additionalData = qris.getAdditionalDataAsString();
+//         String billingId = null;
+         String crc = qris.getCrcAsString();
+
+        return payloadFormatIndicator +
+                pointOfInitiationmethod +
+                merchantAccountInformation +
+                domesticRepository +
+                mcc +
+                currency +
+                tansactionAmount +
+                tip +
+                countryCode +
+                merchantName +
+                merchantCity +
+                postalCode +
+                additionalData +
+//                billingId +
+                crc;
     }
 
     private void mapMerchantInformationLanguage(Map<Integer, QrisDataObject> payload, Qris object) {
@@ -113,6 +157,7 @@ public class QrisMapper {
             MerchantAccountInformation merchantAccountInformation = new MerchantAccountInformation();
             merchantAccountInformation.setGloballyUniqueIdentifier(merchantAccountInformationMap.get(0).getValue());
             merchantAccountInformation.setMerchantId(merchantAccountInformationMap.get(2).getValue());
+            merchantAccountInformation.setCriteria(MerchantCriteria.valueOf(merchantAccountInformationMap.get(3).getValue()));
             object.setDomesticCentralRepository(merchantAccountInformation);
         }
     }
