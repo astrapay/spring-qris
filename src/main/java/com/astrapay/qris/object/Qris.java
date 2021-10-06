@@ -128,7 +128,6 @@ public class Qris {
                 return "";
             }
         }).orElse("");
-
     }
 
     public String getTipAsString(){
