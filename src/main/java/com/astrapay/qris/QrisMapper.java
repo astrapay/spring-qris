@@ -44,17 +44,6 @@ public class QrisMapper {
         return object;
     }
 
-    public Map<Integer,Object> convertObjectToMap(Object o) throws IllegalAccessException {
-        Map<Integer,Object> qrisDataObjectMap = new HashMap<>();
-        Field[] allFields = o.getClass().getDeclaredFields();
-        for (int i = 0; i < allFields.length; i++) {
-            Field field = allFields[i];
-            field.setAccessible(true);
-            Object value = field.get(o);
-            qrisDataObjectMap.put(i, value);
-        }
-        return qrisDataObjectMap;
-    }
 
     public String mapToString(Qris qris) {
          String payloadFormatIndicator = qris.getPayloadFormatIndicatorAsString()   ;
@@ -70,7 +59,6 @@ public class QrisMapper {
          String merchantCity = qris.getMerchantCityAsString();
          String postalCode = qris.getPostalCodeAsString();
          String additionalData = qris.getAdditionalDataAsString();
-//         String billingId = null;
          String crc = qris.getCrcAsString();
 
         return payloadFormatIndicator +
@@ -86,7 +74,6 @@ public class QrisMapper {
                 merchantCity +
                 postalCode +
                 additionalData +
-//                billingId +
                 crc;
     }
 

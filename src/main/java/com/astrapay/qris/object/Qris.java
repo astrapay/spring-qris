@@ -95,7 +95,7 @@ public class Qris {
 
 
         int length =  globalUniquIdentifier.length()+pan.length()+merchantId.length()+merchantQriteria.length();
-        String valueMerchantAccountInformation = new StringBuilder().append(globalUniquIdentifier).append(pan).append(merchantId).append(merchantQriteria).toString();
+        String valueMerchantAccountInformation = globalUniquIdentifier + pan + merchantId + merchantQriteria;
 
         return tag + String.format("%02d", length) + valueMerchantAccountInformation;
     }
@@ -130,7 +130,6 @@ public class Qris {
 
     }
 
-    // TODO: perlu di benerin
     public String getTipAsString(){
         return Optional.ofNullable(this.tip).map(data-> {
             String currencyCode = "";
@@ -145,8 +144,8 @@ public class Qris {
                 }
 
                 if( data.fixed>0){
-                    String tipTag = "57";
-                    tipFixed=tipTag+String.format("%02d",(data.getFixed().toString().length()))+data.getFixed().toString();
+                    String tipTag = "56";
+                    tipFixed=tipTag+String.format("%02d",(String.valueOf(data.getFixed().intValue()).length()))+ data.getFixed().intValue();
                 }
 
                 currencyCode=tagCurrencyCode + tagLengthCurrencyCode + this.tip.indicator+tipPercentage+tipFixed;
