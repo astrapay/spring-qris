@@ -36,7 +36,7 @@ public class QrisMapper {
         object.setMerchantName(payload.get(59).getValue());
         object.setMerchantCity(payload.get(60).getValue());
         if(payload.containsKey(61)) {
-            object.setPostalCode(Integer.valueOf(payload.get(61).getValue()));
+            object.setPostalCode(payload.get(61).getValue());
         }
         mapAdditionalData(payload, object);
         mapMerchantInformationLanguage(payload, object);
@@ -45,37 +45,6 @@ public class QrisMapper {
     }
 
 
-    public String mapToString(Qris qris) {
-         String payloadFormatIndicator = qris.getPayloadFormatIndicatorAsString()   ;
-         String pointOfInitiationmethod = qris.getPointOfInitiationMethodAsString();
-         String merchantAccountInformation = qris.getMerchantAccountInformationAsStringAsString(qris.getMerchantAccountInformationDomestics().get(26), "26");
-         String domesticRepository = qris.getMerchantAccountInformationAsStringAsString(qris.getDomesticCentralRepository(),"51");
-         String mcc = qris.getMerchantCategoryCodeAsString();
-         String currency = qris.getCurrencyCodeAsString();
-         String tansactionAmount = qris.getTransactionAmountAsString();
-         String tip = qris.getTipAsString();
-         String countryCode = qris.getCountryCodeAsString();
-         String merchantName =qris.getMerchantNameAsString();
-         String merchantCity = qris.getMerchantCityAsString();
-         String postalCode = qris.getPostalCodeAsString();
-         String additionalData = qris.getAdditionalDataAsString();
-         String crc = qris.getCrcAsString();
-
-        return payloadFormatIndicator +
-                pointOfInitiationmethod +
-                merchantAccountInformation +
-                domesticRepository +
-                mcc +
-                currency +
-                tansactionAmount +
-                tip +
-                countryCode +
-                merchantName +
-                merchantCity +
-                postalCode +
-                additionalData +
-                crc;
-    }
 
     private void mapMerchantInformationLanguage(Map<Integer, QrisDataObject> payload, Qris object) {
         if(payload.containsKey(64)){
