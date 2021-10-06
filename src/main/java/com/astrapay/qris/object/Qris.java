@@ -115,7 +115,6 @@ public class Qris {
             String tagLengthCurrencyCode = String.format("%02d",(data.getNumericCodeAsString().length()));
             return tagCurrencyCode + tagLengthCurrencyCode + data.getNumericCodeAsString();
         }).orElse("");
-
     }
 
     public String getTransactionAmountAsString(){
