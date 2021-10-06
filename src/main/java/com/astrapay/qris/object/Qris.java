@@ -36,6 +36,7 @@ public class Qris {
     String crc;
 
 
+
     public String getPayloadFormatIndicatorAsString(){
         return Optional.ofNullable(this.payloadFormatIndicator).map(data-> {
             DecimalFormat df = new DecimalFormat();
