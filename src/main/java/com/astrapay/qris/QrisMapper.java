@@ -2,10 +2,8 @@ package com.astrapay.qris;
 
 import com.astrapay.qris.object.*;
 
-import java.util.Currency;
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.util.*;
 
 /**
  * @author Arthur Purnama
@@ -38,13 +36,15 @@ public class QrisMapper {
         object.setMerchantName(payload.get(59).getValue());
         object.setMerchantCity(payload.get(60).getValue());
         if(payload.containsKey(61)) {
-            object.setPostalCode(Integer.valueOf(payload.get(61).getValue()));
+            object.setPostalCode(payload.get(61).getValue());
         }
         mapAdditionalData(payload, object);
         mapMerchantInformationLanguage(payload, object);
         object.setCrc(payload.get(63).getValue());
         return object;
     }
+
+
 
     private void mapMerchantInformationLanguage(Map<Integer, QrisDataObject> payload, Qris object) {
         if(payload.containsKey(64)){
@@ -113,6 +113,7 @@ public class QrisMapper {
             MerchantAccountInformation merchantAccountInformation = new MerchantAccountInformation();
             merchantAccountInformation.setGloballyUniqueIdentifier(merchantAccountInformationMap.get(0).getValue());
             merchantAccountInformation.setMerchantId(merchantAccountInformationMap.get(2).getValue());
+            merchantAccountInformation.setCriteria(MerchantCriteria.valueOf(merchantAccountInformationMap.get(3).getValue()));
             object.setDomesticCentralRepository(merchantAccountInformation);
         }
     }
