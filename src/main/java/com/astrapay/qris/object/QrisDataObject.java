@@ -57,7 +57,7 @@ import java.util.Map;
 @MerchantAccountInformationCharLength(from = 51, to = 51, max = 32)
 @MerchantAccountInformationCharLength(from = 51, to = 51, id=2, max = 15)
 @MerchantAccountInformationPanIsNumber
-@NationalNumberingSystem
+//@NationalNumberingSystem
 @MerchantAccountInformationReverseDomain
 @MerchantAccountInformationCriteria
 @AdditionalDataField
