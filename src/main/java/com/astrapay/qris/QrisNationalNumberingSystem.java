@@ -15,7 +15,7 @@ public interface QrisNationalNumberingSystem {
         ASTRAPAY(93600822, Switching.ALTO),
         BANK_TABUNGAN_NEGARA(93600200,Switching.ALTO),
         DIGITAL_BCA(93600501,Switching.ALTO),
-
+        BANK_BPD_KALIMANTAN_TIMUR_KALIMANTAN_UTARA(93600124,Switching.ALTO),
 
 
 
