@@ -60,9 +60,61 @@
     </distributionManagement>
 
     <dependencies>
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>tomcat-embed-el</artifactId>
+                    <groupId>org.apache.tomcat.embed</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>tomcat-embed-core</artifactId>
+                    <groupId>org.apache.tomcat.embed</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>tomcat-embed-websocket</artifactId>
+                    <groupId>org.apache.tomcat.embed</groupId>
+                </exclusion>
+
+            </exclusions>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-core -->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>9.0.54</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>tomcat-annotations-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-el -->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-el</artifactId>
+            <version>9.0.54</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-annotations-api -->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-annotations-api</artifactId>
+            <version>9.0.54</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-websocket -->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-websocket</artifactId>
+            <version>9.0.54</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -93,6 +145,14 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
                 <version>6.1.0</version>
@@ -118,7 +178,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.6</version>
+                <version>0.8.5</version>
                 <configuration>
                     <excludes>
                         <exclude>META-INF/**</exclude>
@@ -147,7 +207,7 @@
                                 <rule>
                                     <limits>
                                         <limit>
-                                            <minimum>0.2</minimum>
+                                            <minimum>0.1</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
