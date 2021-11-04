@@ -15,6 +15,9 @@ public interface QrisNationalNumberingSystem {
         ASTRAPAY(93600822, Switching.ALTO),
         BANK_TABUNGAN_NEGARA(93600200,Switching.ALTO),
         DIGITAL_BCA(93600501,Switching.ALTO),
+        TRUEMONEY(93600828,Switching.ALTO),
+        DIPAY(93600826,Switching.ALTO),
+        BANK_GANESHA(93600161,Switching.ALTO),
         BANK_BPD_KALIMANTAN_TIMUR_KALIMANTAN_UTARA(93600124,Switching.ALTO),
 
 
@@ -40,6 +43,7 @@ public interface QrisNationalNumberingSystem {
         BANK_COMMONWEALTH(93600950, Switching.ARTAJASA),
         BANK_MAYORA(93600553, Switching.ARTAJASA),
         BPD_PAPUA(93600132,Switching.ARTAJASA),
+        BANK_KALBAR(93600123,Switching.ARTAJASA),
         BANK_JABAR_BANTEN_SYARIAH(93600425,Switching.ARTAJASA),
 
 
