@@ -1,8 +1,18 @@
 package com.astrapay.qris;
 
 import com.astrapay.qris.object.QrisPayload;
+import com.astrapay.qris.validation.CheckSumValidator;
+import org.hibernate.validator.internal.engine.constraintvalidation.ConstraintValidatorContextImpl;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
+import javax.validation.ConstraintValidatorContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -12,11 +22,20 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class SpringQrisApplicationTests {
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
     private final QrisParser qrisParser = new QrisParser();
+
+    @InjectMocks
+    private CheckSumValidator checkSumValidator;
+
+    @Mock
+    private QrisCheckSum qrisCheckSum;
 
     @Test
     void contextLoads() {
@@ -38,7 +57,10 @@ class SpringQrisApplicationTests {
                         "61" + "05" + "10640" +
                         "62" + "07" + "0703A01" +
                         "63" + "04" + "455C";
-        testsWithErrors(0, qris);
+
+        when(qrisCheckSum.generateChecksum(anyString())).thenCallRealMethod();
+        QrisPayload parse = qrisParser.parse(qris);
+        checkSumValidator.isValid(parse, Mockito.mock(ConstraintValidatorContext.class));
 
     }
 
