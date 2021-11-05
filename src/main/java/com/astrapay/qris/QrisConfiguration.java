@@ -72,4 +72,9 @@ public class QrisConfiguration implements WebMvcConfigurer {
         qrisModelAttributeMethodProcessor.setQrisParser(qrisParser);
         argumentResolvers.add(qrisModelAttributeMethodProcessor);
     }
+
+    @Bean
+    public QrisCheckSum qrisCheckSum(){
+        return new QrisCheckSum();
+    }
 }
