@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
  * @param <T> QRIS Pay Load
  */
 @Setter
-@AllArgsConstructor
 public class QrisHttpMessageConverter<T extends QrisPayload> extends AbstractHttpMessageConverter<T> {
 
     private QrisParser qrisParser;

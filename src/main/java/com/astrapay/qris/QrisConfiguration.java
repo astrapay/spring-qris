@@ -2,6 +2,7 @@ package com.astrapay.qris;
 
 import com.astrapay.qris.object.QrisPayload;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -14,22 +15,13 @@ import java.util.List;
  * @author Arthur Purnama
  */
 @Configuration
-public class QrisConfiguration implements WebMvcConfigurer {
-
-    @Autowired
-    private QrisHttpMessageConverter<QrisPayload> qrisHttpMessageConverter;
-
-    @Autowired
-    private QrisModelAttributeMethodProcessor qrisModelAttributeMethodProcessor;
-
-    @Autowired
-    private QrisParser qrisParser;
+public class QrisConfiguration {
 
     /**
      *
      * @return payload
      */
-    @Bean
+    @Bean("qrisHttpMessageConverter")
     public QrisHttpMessageConverter<QrisPayload> qrisHttpMessageConverter(){
         return new QrisHttpMessageConverter<>();
     }
@@ -38,7 +30,7 @@ public class QrisConfiguration implements WebMvcConfigurer {
      *
      * @return processor
      */
-    @Bean
+    @Bean("qrisModelAttributeMethodProcessor")
     public QrisModelAttributeMethodProcessor qrisModelAttributeMethodProcessor(){
         return new QrisModelAttributeMethodProcessor();
     }
@@ -61,15 +53,4 @@ public class QrisConfiguration implements WebMvcConfigurer {
         return new QrisParser();
     }
 
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        qrisHttpMessageConverter.setQrisParser(qrisParser);
-        converters.add(qrisHttpMessageConverter);
-    }
-
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        qrisModelAttributeMethodProcessor.setQrisParser(qrisParser);
-        argumentResolvers.add(qrisModelAttributeMethodProcessor);
-    }
 }
