@@ -81,7 +81,7 @@ public class QrisParser {
      * <b>4.3.1.2</b> Hanya boleh terdapat satu data object dengan ID spesifik di bawah root QR Code dan hanya boleh terdapat satu ID spesifik dalam template-nya.
      */
     private void parser(String qris, Map<Integer, QrisDataObject> qrisMap) {
-        String length;
+        String length;//6238 0115220121 0026830150 715ASTRAPA Y2100176
         for (int i = 0 ; i < qris.length(); i = i + 4 + Integer.parseInt(length)) {
             String id = qris.substring(i, i + 2);
             length = qris.substring(i + 2, i + 4);
