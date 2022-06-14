@@ -107,7 +107,7 @@ public class QrisPayload {
     @PointOfInitiationMethodValue
     @PayloadFormatIndicatorValue
     @MerchantAccountInformationExist
-    @MerchantAccountInformation51Exist
+//    @MerchantAccountInformation51Exist
 //    @MerchantCategoryCode
     @TransactionCurrency
     @TransactionAmount(id = 54)
