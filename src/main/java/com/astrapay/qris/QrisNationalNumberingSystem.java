@@ -19,7 +19,7 @@ public interface QrisNationalNumberingSystem {
         DIPAY(93600826,Switching.ALTO),
         BANK_GANESHA(93600161,Switching.ALTO),
         BANK_BPD_KALIMANTAN_TIMUR_KALIMANTAN_UTARA(93600124,Switching.ALTO),
-
+        MIDAZPAY(93600821, Switching.ALTO),
 
 
         BNI(93600009, Switching.ARTAJASA),
