@@ -47,6 +47,7 @@ public interface QrisNationalNumberingSystem {
         BANK_KALBAR(93600123,Switching.ARTAJASA),
         BANK_JABAR_BANTEN_SYARIAH(93600425,Switching.ARTAJASA),
         BANK_SHINHAN(93600152, Switching.ARTAJASA),
+        MOTION_BANKING(93600485, Switching.ARTAJASA),
 
 
         SINARMAS_RINTIS(93600153,Switching.RINTIS),
