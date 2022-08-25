@@ -49,6 +49,7 @@ public interface QrisNationalNumberingSystem {
         BANK_SHINHAN(93600152, Switching.ARTAJASA),
         MOTION_BANKING(93600485, Switching.ARTAJASA),
         PAC_CASH(93600820, Switching.ARTAJASA),
+        BANK_LAMPUNG(93600121, Switching.ARTAJASA),
 
 
         SINARMAS_RINTIS(93600153,Switching.RINTIS),
