@@ -21,6 +21,7 @@ public interface QrisNationalNumberingSystem {
         BANK_BPD_KALIMANTAN_TIMUR_KALIMANTAN_UTARA(93600124,Switching.ALTO),
         MIDAZPAY(93600821, Switching.ALTO),
         BANK_NEO_COMMERCE(93600490, Switching.ALTO),
+        PT_BANK_PANIN(93600019, Switching.ALTO),
 
 
         BNI(93600009, Switching.ARTAJASA),
@@ -49,6 +50,7 @@ public interface QrisNationalNumberingSystem {
         BANK_SHINHAN(93600152, Switching.ARTAJASA),
         MOTION_BANKING(93600485, Switching.ARTAJASA),
         PAC_CASH(93600820, Switching.ARTAJASA),
+        BANK_LAMPUNG(93600121, Switching.ARTAJASA),
 
 
         SINARMAS_RINTIS(93600153,Switching.RINTIS),
