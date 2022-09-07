@@ -280,6 +280,8 @@
                         <exclude>org.springframework:spring-context</exclude>
                         <!--[ERROR] spring-expression-5.3.20.jar: CVE-2016-1000027(9.8)-->
                         <exclude>org.springframework:spring-expression</exclude>
+                        <exclude>org.yaml:snakeyaml</exclude>
+
                     </excludes>
                 </configuration>
                 <executions>
