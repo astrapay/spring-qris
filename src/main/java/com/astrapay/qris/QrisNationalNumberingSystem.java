@@ -80,6 +80,7 @@ public interface QrisNationalNumberingSystem {
         BUMI_ARTA(93600076,Switching.RINTIS),
         BANK_INA_PERDANA(93600513, Switching.RINTIS),
         BPD_KALIMANTAN_BARAT(93600123, Switching.RINTIS),
+        QRIS_DSP(93600998, Switching.RINTIS),
 
 
         BANK_ACEH_SYARIAH(93600116,Switching.JALIN),

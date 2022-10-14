@@ -281,7 +281,7 @@
                         <!--[ERROR] spring-expression-5.3.20.jar: CVE-2016-1000027(9.8)-->
                         <exclude>org.springframework:spring-expression</exclude>
                         <exclude>org.yaml:snakeyaml</exclude>
-
+                        <exclude>com.fasterxml.jackson.core:jackson-databind</exclude>
                     </excludes>
                 </configuration>
                 <executions>
