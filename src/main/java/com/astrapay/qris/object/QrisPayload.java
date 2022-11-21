@@ -111,7 +111,6 @@ public class QrisPayload {
 //    @MerchantCategoryCode
     @TransactionCurrency
     @TransactionAmount(id = 54)
-//    @TipValueIndicator
     @TransactionAmount(id = 56)
     @TransactionAmount(id = 57)
     @TipValuePercentage
