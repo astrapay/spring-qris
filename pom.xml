@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.astrapay</groupId>
     <artifactId>spring-qris</artifactId>
-    <version>1.23-SNAPSHOT</version>
+    <version>1.23</version>
     <name>astrapay-qris</name>
     <description>QRIS Parser for Spring by AstraPay</description>
     <properties>
@@ -45,7 +45,7 @@
         <connection>scm:git:https://github.com/astrapay/spring-qris.git</connection>
         <developerConnection>scm:git:https://github.com/astrapay/spring-qris.git</developerConnection>
         <url>https://github.com/astrapay/spring-qris</url>
-        <tag>HEAD</tag>
+        <tag>spring-qris-1.23</tag>
     </scm>
 
     <distributionManagement>
