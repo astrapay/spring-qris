@@ -22,6 +22,7 @@ public interface QrisNationalNumberingSystem {
         MIDAZPAY(93600821, Switching.ALTO),
         BANK_NEO_COMMERCE(93600490, Switching.ALTO),
         PT_BANK_PANIN(93600019, Switching.ALTO),
+        SEABANK(93600535, Switching.ALTO),
 
 
         BNI(93600009, Switching.ARTAJASA),
