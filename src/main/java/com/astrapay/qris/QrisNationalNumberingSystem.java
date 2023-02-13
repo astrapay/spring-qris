@@ -23,6 +23,7 @@ public interface QrisNationalNumberingSystem {
         BANK_NEO_COMMERCE(93600490, Switching.ALTO),
         PT_BANK_PANIN(93600019, Switching.ALTO),
         BANK_JAGO(93600542, Switching.ALTO),
+        SEABANK(93600535, Switching.ALTO),
 
 
         BNI(93600009, Switching.ARTAJASA),
@@ -52,6 +53,7 @@ public interface QrisNationalNumberingSystem {
         MOTION_BANKING(93600485, Switching.ARTAJASA),
         PAC_CASH(93600820, Switching.ARTAJASA),
         BANK_LAMPUNG(93600121, Switching.ARTAJASA),
+        BANK_KALSEL(93600122, Switching.ARTAJASA),
 
 
         SINARMAS_RINTIS(93600153,Switching.RINTIS),
@@ -82,6 +84,8 @@ public interface QrisNationalNumberingSystem {
         BANK_INA_PERDANA(93600513, Switching.RINTIS),
         BPD_KALIMANTAN_BARAT(93600123, Switching.RINTIS),
         QRIS_DSP(93600998, Switching.RINTIS),
+        AMAR_BANK(93600531, Switching.RINTIS),
+        BANK_MASPION(93600157, Switching.RINTIS),
 
 
         BANK_ACEH_SYARIAH(93600116,Switching.JALIN),

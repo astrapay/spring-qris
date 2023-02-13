@@ -100,6 +100,14 @@
             <version>10.0.20</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-core -->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>10.1.4</version>
+        </dependency>
+
+
 
         <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-annotations-api -->
         <dependency>
@@ -284,6 +292,7 @@
                         <exclude>org.springframework:spring-web</exclude>
                         <exclude>org.springframework:spring-beans</exclude>
                         <exclude>org.springframework:spring-webmvc</exclude>
+<!--                        <exclude></exclude>-->
                         <!-- [ERROR] spring-context-5.3.20.jar: CVE-2016-1000027(9.8)-->
                         <exclude>org.springframework:spring-context</exclude>
                         <!--[ERROR] spring-expression-5.3.20.jar: CVE-2016-1000027(9.8)-->
