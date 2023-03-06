@@ -162,7 +162,7 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.31</version>
+            <version>2.0</version>
         </dependency>
 
 
@@ -170,7 +170,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>5.3.20</version>
+            <version>6.0.6</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-aop -->
         <dependency>
@@ -259,12 +259,12 @@
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.el</artifactId>
-            <version>3.0.0</version>
+            <version>3.0.1-b12</version>
         </dependency>
         <dependency>
             <groupId>javax.el</groupId>
             <artifactId>javax.el-api</artifactId>
-            <version>3.0.0</version>
+            <version>3.0.1-b06</version>
         </dependency>
     </dependencies>
 
@@ -286,7 +286,6 @@
                     <failBuildOnCVSS>6</failBuildOnCVSS>
                     <excludes>
                         <exclude>org.springframework.boot:spring-boot</exclude>
-                        <exclude>org.springframework:spring-core</exclude>
                         <exclude>org.springframework:spring-aop</exclude>
                         <exclude>org.springframework:spring-jcl</exclude>
                         <exclude>org.springframework:spring-web</exclude>
@@ -299,6 +298,8 @@
                         <exclude>org.springframework:spring-expression</exclude>
                         <exclude>org.yaml:snakeyaml</exclude>
                         <exclude>com.fasterxml.jackson.core:jackson-databind</exclude>
+<!--                        [ERROR] javax.el-3.0.1-b12.jar: CVE-2021-28170(7.5)-->
+                        <exclude>org.glassfish:javax.el</exclude>
                     </excludes>
                 </configuration>
                 <executions>
