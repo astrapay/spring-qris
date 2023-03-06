@@ -54,6 +54,8 @@ public interface QrisNationalNumberingSystem {
         PAC_CASH(93600820, Switching.ARTAJASA),
         BANK_LAMPUNG(93600121, Switching.ARTAJASA),
         BANK_KALSEL(93600122, Switching.ARTAJASA),
+        CITIBANK(93600031,  Switching.ARTAJASA),
+        BANK_ALADIN_SYARIAH(93600947, Switching.ARTAJASA),
 
 
         SINARMAS_RINTIS(93600153,Switching.RINTIS),
@@ -103,7 +105,8 @@ public interface QrisNationalNumberingSystem {
         BAYARIND(93600808,Switching.JALIN),
         POS_INDONESIA(93608161,Switching.JALIN),
         GPAY(93600813,Switching.JALIN),
-        BANK_RAYA(93600494, Switching.JALIN);
+        BANK_RAYA(93600494, Switching.JALIN),
+        YODU(93600830, Switching.JALIN);
 
         private Integer code;
         private Switching switching;
