@@ -286,6 +286,7 @@
                     <failBuildOnCVSS>6</failBuildOnCVSS>
                     <excludes>
                         <exclude>org.springframework.boot:spring-boot</exclude>
+                        <exclude>org.springframework:spring-core</exclude>
                         <exclude>org.springframework:spring-aop</exclude>
                         <exclude>org.springframework:spring-jcl</exclude>
                         <exclude>org.springframework:spring-web</exclude>
