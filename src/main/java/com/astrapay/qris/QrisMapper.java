@@ -115,9 +115,9 @@ public class QrisMapper {
             merchantAccountInformation.setMerchantId(merchantAccountInformationMap.get(2).getValue());
             // Jika ID "03" tidak tersedia maka Penerbit wajib mengisi nilai default “URE” dalam
             // message transaksi.
-            MerchantCriteria merchantCriteria = Objects.nonNull(merchantAccountInformationMap.get(3)) ?
-                    MerchantCriteria.valueOf(merchantAccountInformationMap.get(3).getValue()) : MerchantCriteria.URE;
-            merchantAccountInformation.setCriteria(merchantCriteria);
+            if(Objects.nonNull(merchantAccountInformationMap.get(3))) {
+                merchantAccountInformation.setCriteria(MerchantCriteria.valueOf(merchantAccountInformationMap.get(3).getValue()));
+            }
             object.setDomesticCentralRepository(merchantAccountInformation);
         }
     }
