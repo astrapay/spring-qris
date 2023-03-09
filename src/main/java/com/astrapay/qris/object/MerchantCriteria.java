@@ -10,6 +10,8 @@ package com.astrapay.qris.object;
  *      <tr><td>UME</td><td>Usaha Menengah</td><td>ans</td><td>3</td></tr>
  *      <tr><td>UBE</td><td>Usaha Besar</td><td>ans</td><td>3</td></tr>
  *      <tr><td>URE</td><td>Usaha Reguler</td><td>ans</td><td>3</td></tr>
+ *      <tr><td>PSO</td><td>Public Service Obligation</td><td>ans</td><td>3</td></tr>
+ *      <tr><td>BLU</td><td>Badan Layanan Umum</td></td><td>ans</td><td>3</td></tr>
  *</table>
  * Jika ID”03” tidak tersedia maka Penerbit wajib mengisi nilai default “URE” dalam message transaksi.
  */
@@ -33,5 +35,13 @@ public enum MerchantCriteria {
     /**
      * Usaha Reguler
      */
-    URE
+    URE,
+    /**
+     * Public Service Obligation
+     */
+    PSO,
+    /**
+     * Badan Layanan Umum
+     */
+    BLU
 }

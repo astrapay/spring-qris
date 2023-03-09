@@ -113,7 +113,11 @@ public class QrisMapper {
             MerchantAccountInformation merchantAccountInformation = new MerchantAccountInformation();
             merchantAccountInformation.setGloballyUniqueIdentifier(merchantAccountInformationMap.get(0).getValue());
             merchantAccountInformation.setMerchantId(merchantAccountInformationMap.get(2).getValue());
-            merchantAccountInformation.setCriteria(MerchantCriteria.valueOf(merchantAccountInformationMap.get(3).getValue()));
+            // Jika ID "03" tidak tersedia maka Penerbit wajib mengisi nilai default “URE” dalam
+            // message transaksi.
+            if(Objects.nonNull(merchantAccountInformationMap.get(3))) {
+                merchantAccountInformation.setCriteria(MerchantCriteria.valueOf(merchantAccountInformationMap.get(3).getValue()));
+            }
             object.setDomesticCentralRepository(merchantAccountInformation);
         }
     }
