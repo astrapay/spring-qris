@@ -104,8 +104,9 @@ public class Qris {
     private  String getMerchantCategoryCodeAsString(){
         return Optional.ofNullable(this.merchantCategoryCode).map(data-> {
             String tagMerchantCategory = "52";
-            String tagLengthMerchantQriteria = String.format("%02d",(data.toString().length()));
-            return tagMerchantCategory + tagLengthMerchantQriteria + data;
+            String formattedMerchantCategoryCode = String.format("%04d",data);
+            String tagLengthMerchantQriteria = String.format("%02d",(formattedMerchantCategoryCode.length()));
+            return tagMerchantCategory + tagLengthMerchantQriteria + formattedMerchantCategoryCode;
         }).orElse("");
     }
 
