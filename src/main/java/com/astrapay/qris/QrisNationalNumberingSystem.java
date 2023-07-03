@@ -106,8 +106,9 @@ public interface QrisNationalNumberingSystem {
         POS_INDONESIA(93608161,Switching.JALIN),
         GPAY(93600813,Switching.JALIN),
         BANK_RAYA(93600494, Switching.JALIN),
-        YODU(93600830, Switching.JALIN);
-
+        YODU(93600830, Switching.JALIN),
+        M_BAYAR(93600829,  Switching.ARTAJASA);
+    
         private Integer code;
         private Switching switching;
 
