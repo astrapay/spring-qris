@@ -24,6 +24,7 @@ public interface QrisNationalNumberingSystem {
         PT_BANK_PANIN(93600019, Switching.ALTO),
         BANK_JAGO(93600542, Switching.ALTO),
         SEABANK(93600535, Switching.ALTO),
+        CASHLEZ(93600839, Switching.ALTO),
 
 
         BNI(93600009, Switching.ARTAJASA),
