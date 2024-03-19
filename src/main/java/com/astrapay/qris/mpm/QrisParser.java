@@ -1,4 +1,4 @@
-package com.astrapay.qris;
+package com.astrapay.qris.mpm;
 
 import com.astrapay.qris.object.QrisDataObject;
 import com.astrapay.qris.object.QrisPayload;

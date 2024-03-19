@@ -1,7 +1,7 @@
 package com.astrapay.qris;
 
+import com.astrapay.qris.mpm.QrisParser;
 import com.astrapay.qris.object.QrisPayload;
-import lombok.AllArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;

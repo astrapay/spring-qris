@@ -1,5 +1,6 @@
 package com.astrapay.qris;
 
+import com.astrapay.qris.mpm.QrisParser;
 import com.astrapay.qris.object.QrisPayload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageConverter;
