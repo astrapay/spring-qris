@@ -1,7 +1,7 @@
 package com.astrapay.qris;
 
 import com.astrapay.qris.mpm.QrisParser;
-import com.astrapay.qris.object.QrisPayload;
+import com.astrapay.qris.mpm.object.QrisPayload;
 import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintViolation;

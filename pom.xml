@@ -405,6 +405,7 @@
                     <scmCommentPrefix>[ci skip]</scmCommentPrefix>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 

@@ -1,7 +1,7 @@
 package com.astrapay.qris.mpm;
 
-import com.astrapay.qris.object.QrisDataObject;
-import com.astrapay.qris.object.QrisPayload;
+import com.astrapay.qris.mpm.object.QrisDataObject;
+import com.astrapay.qris.mpm.object.QrisPayload;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

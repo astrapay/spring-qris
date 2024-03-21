@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.astrapay.qris.QrisConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.astrapay.qris.mpm.QrisConfiguration
