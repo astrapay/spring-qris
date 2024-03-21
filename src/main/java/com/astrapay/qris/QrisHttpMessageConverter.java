@@ -1,6 +1,5 @@
-package com.astrapay.qris.mpm;
+package com.astrapay.qris;
 
-import com.astrapay.qris.QrisMediaType;
 import com.astrapay.qris.mpm.QrisParser;
 import com.astrapay.qris.mpm.object.QrisPayload;
 import lombok.Setter;

@@ -1,6 +1,6 @@
 package com.astrapay.qris;
 
-import com.astrapay.qris.mpm.QrisHttpMessageConverter;
+import com.astrapay.qris.QrisHttpMessageConverter;
 import com.astrapay.qris.mpm.QrisModelAttributeMethodProcessor;
 import com.astrapay.qris.mpm.QrisParser;
 import com.astrapay.qris.mpm.object.QrisPayload;

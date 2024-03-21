@@ -1,5 +1,7 @@
-package com.astrapay.qris.mpm;
+package com.astrapay.qris;
 
+import com.astrapay.qris.mpm.QrisMapper;
+import com.astrapay.qris.mpm.QrisParser;
 import com.astrapay.qris.mpm.object.QrisPayload;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,10 +25,10 @@ public class QrisConfiguration {
      *
      * @return processor
      */
-    @Bean("qrisModelAttributeMethodProcessor")
-    public QrisModelAttributeMethodProcessor qrisModelAttributeMethodProcessor(){
-        return new QrisModelAttributeMethodProcessor();
-    }
+//    @Bean("qrisModelAttributeMethodProcessor")
+//    public QrisModelAttributeMethodProcessor qrisModelAttributeMethodProcessor(){
+//        return new QrisModelAttributeMethodProcessor();
+//    }
 
     /**
      *
