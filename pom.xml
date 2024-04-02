@@ -16,7 +16,8 @@
         <java.version>11</java.version>
         <sonar.projectKey>astrapay_spring-qris</sonar.projectKey>
         <sonar.organization>astrapay</sonar.organization>
-        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.host.url>https://sonarqube.astrapay.com</sonar.host.url>
+        <sonar.token>8d0e5563f0c114211e0cad78b1cc61c3a8b0f33f</sonar.token>
     </properties>
     <url>https://github.com/astrapay/spring-qris</url>
 
@@ -260,7 +261,15 @@
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.8.0.2131</version>
+                <version>3.5.0.1254</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <release>11</release>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
