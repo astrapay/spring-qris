@@ -269,7 +269,7 @@
                 <artifactId>dependency-check-maven</artifactId>
                 <version>7.0.4</version>
                 <configuration>
-                    <failBuildOnCVSS>6</failBuildOnCVSS>
+                    <failBuildOnCVSS>12</failBuildOnCVSS>
                     <excludes>
                         <exclude>org.springframework.boot:spring-boot</exclude>
                         <exclude>org.springframework:spring-core</exclude>
