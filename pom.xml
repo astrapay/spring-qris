@@ -253,81 +253,18 @@
             <artifactId>javax.el-api</artifactId>
             <version>3.0.1-b06</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.sonarsource.scanner.maven/sonar-maven-plugin -->
+        <dependency>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>3.7.0.1746</version>
+        </dependency>
+
     </dependencies>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.6.0.1398</version>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.5</version>
-                <executions>
-                    <execution>
-                        <id>default-prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>default-report</id>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>default-check</id>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <rule>
-                                    <element>BUNDLE</element>
-                                    <limits>
-                                        <limit>
-                                            <counter>COMPLEXITY</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.0</minimum>
-                                        </limit>
-                                    </limits>
-                                </rule>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*com/astrapay/qris/alto/dto/**</exclude>
-                        <exclude>**/*com/astrapay/qris/alto/service/model/**</exclude>
-                        <exclude>**/*com/astrapay/qris/alto/security/**</exclude>
-                        <exclude>**/*com/astrapay/qris/alto/validator/constraint/**</exclude>
-                        <exclude>**/*com/astrapay/qris/alto/validator/groups/**</exclude>
-                        <exclude>**/*com/astrapay/qris/alto/service/model/**</exclude>
-                        <exclude>**/*com/astrapay/qris/configuration/**</exclude>
-                        <exclude>**/*com/astrapay/qris/controller/old/advice/**</exclude>
-                        <exclude>**/*com/astrapay/qris/dto/**</exclude>
-                        <exclude>**/*com/astrapay/qris/entity/**</exclude>
-                        <exclude>**/*com/astrapay/qris/repository/**</exclude>
-                        <exclude>**/*com/astrapay/qris/validator/constraint/**</exclude>
-                        <exclude>**/*com/astrapay/qris/validator/groups/**</exclude>
-                        <exclude>**/*com/astrapay/qris/client/dto/**</exclude>
-                        <exclude>**/*com/astrapay/qris/rintis/dto/**</exclude>
-                        <exclude>**/*com/astrapay/qris/alto/client/dto/**</exclude>
-                        <exclude>**/*com/astrapay/qris/service/old/model/*</exclude>
-                        <exclude>**/*com/astrapay/qris/service/model/**</exclude>
-                        <exclude>**/*com/astrapay/qris/enums/**</exclude>
-                        <exclude>**/*com/astrapay/qris/alto/ftp/**</exclude>
-                        <exclude>**/*com/astrapay/qris/common/**</exclude>
-                        <exclude>**/*com/astrapay/qris/rintis/client/dto/**</exclude>
-                        <exclude>**/*com/astrapay/qris/rintis/enums/**</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
