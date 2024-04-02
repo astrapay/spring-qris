@@ -17,7 +17,7 @@
         <sonar.projectKey>astrapay_spring-qris</sonar.projectKey>
         <sonar.organization>astrapay</sonar.organization>
         <sonar.host.url>https://sonarqube.astrapay.com</sonar.host.url>
-        <sonar.token>8d0e5563f0c114211e0cad78b1cc61c3a8b0f33f</sonar.token>
+        <sonar.token>6d2ba734f7006d917de2b5979a6bf7e98490219b</sonar.token>
     </properties>
     <url>https://github.com/astrapay/spring-qris</url>
 

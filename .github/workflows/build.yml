@@ -41,7 +41,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn sonar:sonar -Dsonar.projectKey=spring-qris -Dsonar.branch.name=main -Dsonar.token=8d0e5563f0c114211e0cad78b1cc61c3a8b0f33f
+        run: mvn sonar:sonar -Dsonar.projectKey=spring-qris -Dsonar.branch.name=main -Dsonar.token=6d2ba734f7006d917de2b5979a6bf7e98490219b
 
       - name: Publish package
         run: mvn --batch-mode --settings settings.xml deploy -Dgpg.keyname=${{secrets.GPG_KEYNAME}} -Dgpg.passphrase=${{secrets.GPG_PASSPHRASE}}
