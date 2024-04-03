@@ -14,9 +14,9 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: Set up JDK 11
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
-          java-version: 11.0.13
+          java-version: 11
           distribution: 'adopt'
           server-id: ossrh
           server-username: MAVEN_USERNAME
@@ -41,7 +41,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+        run: mvn sonar:sonar -Dsonar.projectKey=spring-qris -Dsonar.branch.name=main -Dsonar.token=6d2ba734f7006d917de2b5979a6bf7e98490219b
 
       - name: Publish package
         run: mvn --batch-mode --settings settings.xml deploy -Dgpg.keyname=${{secrets.GPG_KEYNAME}} -Dgpg.passphrase=${{secrets.GPG_PASSPHRASE}}
