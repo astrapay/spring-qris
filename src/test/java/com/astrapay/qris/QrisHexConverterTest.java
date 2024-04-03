@@ -126,7 +126,7 @@ public class QrisHexConverterTest {
         byte[] value = converter.convertByteOrNumberToArrayByte("4F07A000000602202050075152495343504D5A0A9360123411234567899F5F200B52696B692044657269616E5F2D046964656E5F501772696B692E64657269616E407172697363706D2E636F6D9F25027899633F9F");
         var expectedOutput = "6181934F07A000000602202050075152495343504D5A0A9360123411234567899F5F200B52696B692044657269616E5F2D046964656E5F501772696B692E64657269616E407172697363706D2E636F6D9F25027899633F9F";
         var byteArrayOutputStream = new ByteArrayOutputStream();
-        byteArrayOutputStream.write(converter.convertToPrimitive(APPLICATION_TEMPLATE.getByteTag())[0]);
+        byteArrayOutputStream.write(APPLICATION_TEMPLATE.getByteTag());
         byteArrayOutputStream.write((byte)0x81);
         byteArrayOutputStream.write((byte)0x93);
         byteArrayOutputStream.write(value);

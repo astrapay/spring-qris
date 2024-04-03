@@ -31,7 +31,7 @@ public class QrisHexConverter {
 
 
     //if you want to directly encode all TLV information into HEX
-    public String encode(byte[] value, Byte[] tags) throws IOException {
+    public String encode(byte[] value, byte[] tags) throws IOException {
         var value_byteArray = new ByteArrayOutputStream();
         //TAG INDICATOR
         value_byteArray.write(tags[0]);
@@ -58,7 +58,7 @@ public class QrisHexConverter {
         return Hex.encodeHexString(byteArrayOutputStream.toByteArray(), false);
     }
 
-    public byte[] encodeToByte(byte[] value, Byte[] tags) throws IOException {
+    public byte[] encodeToByte(byte[] value, byte[] tags) throws IOException {
         var value_byteArray = new ByteArrayOutputStream();
         //TAG INDICATOR
         value_byteArray.write(tags[0]);
@@ -78,7 +78,7 @@ public class QrisHexConverter {
         return Base64.getEncoder().encodeToString(value);
     }
 
-    public String encodeToBase64(byte[] value, Byte[] tags) throws IOException {
+    public String encodeToBase64(byte[] value, byte[] tags) throws IOException {
         var valueInByteArray = encodeToByte(value, tags);
         return Base64.getEncoder().encodeToString(valueInByteArray);
     }
