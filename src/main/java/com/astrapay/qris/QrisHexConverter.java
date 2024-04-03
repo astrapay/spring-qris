@@ -4,6 +4,7 @@ import org.apache.commons.codec.binary.Hex;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 
 public class QrisHexConverter {
 
@@ -55,6 +56,31 @@ public class QrisHexConverter {
     //if you want to encode ByteArrayOutputStream type of data into HEX
     public String encode(ByteArrayOutputStream byteArrayOutputStream) {
         return Hex.encodeHexString(byteArrayOutputStream.toByteArray(), false);
+    }
+
+    public byte[] encodeToByte(byte[] value, byte tag, byte subtag) throws IOException {
+        var value_byteArray = new ByteArrayOutputStream();
+        //TAG INDICATOR
+        value_byteArray.write(tag);
+        //SUBTAG INDICATOR
+        if(subtag != NO_SUBTAG){
+            value_byteArray.write(subtag);
+        }
+        //LENGTH INDICATOR
+        value_byteArray.write(value.length);
+        //VALUE
+        value_byteArray.write(value);
+        return value_byteArray.toByteArray();
+
+    }
+
+    public String encodeToBase64(byte[] value) {
+        return Base64.getEncoder().encodeToString(value);
+    }
+
+    public String encodeToBase64(byte[] value, byte tag, byte subtag) throws IOException {
+        var valueInByteArray = encodeToByte(value, tag, subtag);
+        return Base64.getEncoder().encodeToString(valueInByteArray);
     }
 
     public String convertAlphaNumericHexToString (String hexString, int index) throws DecoderException {

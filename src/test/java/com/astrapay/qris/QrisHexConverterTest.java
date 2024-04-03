@@ -88,5 +88,85 @@ public class QrisHexConverterTest {
         assertEquals(expectedOutput, converter.encode(issuerUrlByte, ISSUER_URL.getByteTag(), ISSUER_URL.getByteSubTag()));
     }
 
+    @Test
+    void testConvertAlphaNumericHexIntoString() throws DecoderException {
+        var hexString = "5152495343504D";
+        var index = 0;
+        var expectedOutput = "QRISCPM";
+        assertEquals(expectedOutput, converter.convertAlphaNumericHexToString(hexString, index));
+    }
+
+    @Test
+    void testConvertCompressedNumericHexToString() {
+        var hexString = "9360123411234567899F";
+        var index = 0;
+        var expectedOutput = "9360123411234567899";
+        assertEquals(expectedOutput, converter.convertCompressedNumericHexToString(hexString, index));
+    }
+
+    @Test
+    void testByteHexToString() {
+        var hexString = "A0000006022020";
+        var index = 0;
+        var expectedOutput = "A0000006022020";
+        assertEquals(expectedOutput, converter.convertByteOrNumberHexToString(hexString, index));
+    }
+
+    @Test
+    void testNumberHexToString() {
+        var hexString = "7899";
+        var index = 0;
+        var expectedOutput = "7899";
+        assertEquals(expectedOutput, converter.convertByteOrNumberHexToString(hexString, index));
+    }
+
+    @Test
+    void testTag61With4DigitLength() throws DecoderException, IOException {
+        // Test case 1
+        byte[] value = converter.convertByteOrNumberToArrayByte("4F07A000000602202050075152495343504D5A0A9360123411234567899F5F200B52696B692044657269616E5F2D046964656E5F501772696B692E64657269616E407172697363706D2E636F6D9F25027899633F9F");
+        var expectedOutput = "6181934F07A000000602202050075152495343504D5A0A9360123411234567899F5F200B52696B692044657269616E5F2D046964656E5F501772696B692E64657269616E407172697363706D2E636F6D9F25027899633F9F";
+        var byteArrayOutputStream = new ByteArrayOutputStream();
+        byteArrayOutputStream.write(APPLICATION_TEMPLATE.getByteTag());
+        byteArrayOutputStream.write((byte)0x81);
+        byteArrayOutputStream.write((byte)0x93);
+        byteArrayOutputStream.write(value);
+        assertEquals(expectedOutput, converter.encode(byteArrayOutputStream));
+    }
+
+    @Test
+    void testTag63() throws DecoderException, IOException {
+        byte[] valueInByte = converter.convertByteOrNumberToArrayByte("9F743C313233343536373839303132333435363738393031323334353637383930313233343536373839303132333435363738393031323334353637383930");
+        var expectedOutput = "633F9F743C313233343536373839303132333435363738393031323334353637383930313233343536373839303132333435363738393031323334353637383930";
+        assertEquals(expectedOutput, converter.encode(valueInByte, APPLICATION_SPECIFIC_TRANSPARENT_TEMPLATE.getByteTag(), APPLICATION_SPECIFIC_TRANSPARENT_TEMPLATE.getByteSubTag()));
+    }
+
+    @Test
+    void testEncodeToBase64() throws DecoderException, IOException {
+        var value = converter.convertAlphaNumericToArrayByte("CPV01");
+        var expectedOutput = "hQVDUFYwMQ==";
+        assertEquals(expectedOutput, converter.encodeToBase64(value, PAYLOAD_FORMAT_INDICATOR.getByteTag(), PAYLOAD_FORMAT_INDICATOR.getByteSubTag()));
+    }
+
+//    @Test
+//    void testConcatEncodeToBase64() throws IOException {
+//        var value3 = converter.convertAlphaNumericToArrayByte("CPV01");
+//        var value = converter.convertAlphaNumericToArrayByte("A0000006022020");
+//        var value2 = converter.convertAlphaNumericToArrayByte("QRISCPM");
+//        byte[] valueArray3 = converter.encodeToByte(value3, PAYLOAD_FORMAT_INDICATOR.getByteTag(), PAYLOAD_FORMAT_INDICATOR.getByteSubTag());
+//        byte[] valueArray = converter.encodeToByte(value, ADF_NAME.getByteTag(), ADF_NAME.getByteSubTag());
+//        byte[] valueArray2 = converter.encodeToByte(value2, APPLICATION_LABEL.getByteTag(), APPLICATION_LABEL.getByteSubTag());
+//        //combined the two byte array
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        byteArrayOutputStream.write(valueArray3);
+//        byteArrayOutputStream.write(APPLICATION_TEMPLATE.getByteTag());
+//        byteArrayOutputStream.write((byte)0x81);
+//        byteArrayOutputStream.write((byte)0x93);
+//        byteArrayOutputStream.write
+//        byteArrayOutputStream.write(valueArray);
+//        byteArrayOutputStream.write(valueArray2);
+//        var base64 = converter.encodeToBase64(byteArrayOutputStream.toByteArray());
+//        var expectedOutput = "NEYwN0EwMDAwMDYwMjIwMjBQNFJJS0lTQ1BNOjUwMDc1MTI0OTUzNDU2Nzg5OUY";
+//        assertEquals(expectedOutput, base64);
+//    }
 }
 
