@@ -261,6 +261,11 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version> <!-- Or the latest version available -->
+        </dependency>
     </dependencies>
 
     <build>
@@ -405,7 +410,6 @@
                     <scmCommentPrefix>[ci skip]</scmCommentPrefix>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 
