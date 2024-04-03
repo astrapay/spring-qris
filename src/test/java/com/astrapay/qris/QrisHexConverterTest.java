@@ -147,26 +147,25 @@ public class QrisHexConverterTest {
         assertEquals(expectedOutput, converter.encodeToBase64(value, PAYLOAD_FORMAT_INDICATOR.getByteTag()));
     }
 
-//    @Test
-//    void testConcatEncodeToBase64() throws IOException {
-//        var value3 = converter.convertAlphaNumericToArrayByte("CPV01");
-//        var value = converter.convertAlphaNumericToArrayByte("A0000006022020");
-//        var value2 = converter.convertAlphaNumericToArrayByte("QRISCPM");
-//        byte[] valueArray3 = converter.encodeToByte(value3, PAYLOAD_FORMAT_INDICATOR.getByteT;
-//        byte[] valueArray = converter.encodeToByte(value, ADF_NAME.getByteT;
-//        byte[] valueArray2 = converter.encodeToByte(value2, APPLICATION_LABEL.getByteT;
-//        //combined the two byte array
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        byteArrayOutputStream.write(valueArray3);
-//        byteArrayOutputStream.write(APPLICATION_TEMPLATE.getByteTag());
-//        byteArrayOutputStream.write((byte)0x81);
-//        byteArrayOutputStream.write((byte)0x93);
-//        byteArrayOutputStream.write
-//        byteArrayOutputStream.write(valueArray);
-//        byteArrayOutputStream.write(valueArray2);
-//        var base64 = converter.encodeToBase64(byteArrayOutputStream.toByteArray());
-//        var expectedOutput = "NEYwN0EwMDAwMDYwMjIwMjBQNFJJS0lTQ1BNOjUwMDc1MTI0OTUzNDU2Nzg5OUY";
-//        assertEquals(expectedOutput, base64);
-//    }
+    @Test
+    void testConcatEncodeToBase64() throws IOException, DecoderException {
+        var value3 = converter.convertAlphaNumericToArrayByte("CPV01");
+        var value = converter.convertByteOrNumberToArrayByte("A0000006022020");
+        var value2 = converter.convertAlphaNumericToArrayByte("QRISCPM");
+        byte[] valueArray3 = converter.encodeToByte(value3, PAYLOAD_FORMAT_INDICATOR.getByteTag());
+        byte[] valueArray = converter.encodeToByte(value, ADF_NAME.getByteTag());
+        byte[] valueArray2 = converter.encodeToByte(value2, APPLICATION_LABEL.getByteTag());
+        //combined the two byte array
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        byteArrayOutputStream.write(valueArray3);
+        byteArrayOutputStream.write(APPLICATION_TEMPLATE.getByteTag());
+        byteArrayOutputStream.write((byte)0x81);
+        byteArrayOutputStream.write((byte)0x93);
+        byteArrayOutputStream.write(valueArray);
+        byteArrayOutputStream.write(valueArray2);
+        var base64 = converter.encodeToBase64(byteArrayOutputStream.toByteArray());
+        var expectedOutput = "hQVDUFYwMWGBk08HoAAABgIgIFAHUVJJU0NQTQ==";
+        assertEquals(expectedOutput, base64);
+    }
 }
 
