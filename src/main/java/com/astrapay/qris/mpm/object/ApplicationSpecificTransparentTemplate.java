@@ -1,21 +1,25 @@
 package com.astrapay.qris.mpm.object;
 
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 @Builder
+@Getter
+@Setter
 public class ApplicationSpecificTransparentTemplate {
     // tag 9F74
     String issuerData;
     // tag 9F26
-    Byte[] applicationCryptogramInformation;
+    byte[] applicationCryptogram;
     // tag 9F27
     Byte cryptogramInformationData;
     // tag 9F10
-    Byte[] issuerApplicationDate;
+    byte[] issuerApplicationData;
     // tag 9F36
-    Byte[] applicationTransactionCounter;
+    byte[] applicationTransactionCounter;
     // tag 82
-    Byte[] applicationInterchangeProfile;
+    byte[] applicationInterchangeProfile;
     // tag 9F37
-    Byte[] unpredictableNumber;
+    byte[] unpredictableNumber;
 }

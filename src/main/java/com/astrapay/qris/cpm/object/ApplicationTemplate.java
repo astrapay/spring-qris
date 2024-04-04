@@ -2,17 +2,21 @@ package com.astrapay.qris.cpm.object;
 
 import com.astrapay.qris.mpm.object.ApplicationSpecificTransparentTemplate;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Builder
+@Getter
+@Setter
 public class ApplicationTemplate {
     // tag 4F
-    Byte[] adfName;
+    byte[] adfName;
     // tag 50
     String applicationLabel;
     // tag 57
-    Byte[] track2EquivalentData;
+    byte[] track2EquivalentData;
     // tag 5A
     String applicationPan;
     // tag 5F20
@@ -22,9 +26,9 @@ public class ApplicationTemplate {
     // tag 5F50
     String issuerUrl;
     // tag 9F08
-    Byte[] applicationVersionNumber;
+    byte[] applicationVersionNumber;
     // tag 9F19
-    BigDecimal tokenRequestorId;
+    String tokenRequestorId;
     //tag 9F24
     String paymentAccountReference;
     // tag 9F25
