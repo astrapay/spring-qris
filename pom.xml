@@ -301,6 +301,7 @@
                         <exclude>com.fasterxml.jackson.core:jackson-databind</exclude>
                         <!--                        [ERROR] javax.el-3.0.1-b12.jar: CVE-2021-28170(7.5)-->
                         <exclude>org.glassfish:javax.el</exclude>
+                        <exclude>commons-codec:commons-codec</exclude>
                     </excludes>
                 </configuration>
                 <executions>
