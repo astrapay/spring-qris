@@ -292,14 +292,14 @@
                         <exclude>org.springframework:spring-web</exclude>
                         <exclude>org.springframework:spring-beans</exclude>
                         <exclude>org.springframework:spring-webmvc</exclude>
-<!--                        <exclude></exclude>-->
+                        <!--                        <exclude></exclude>-->
                         <!-- [ERROR] spring-context-5.3.20.jar: CVE-2016-1000027(9.8)-->
                         <exclude>org.springframework:spring-context</exclude>
                         <!--[ERROR] spring-expression-5.3.20.jar: CVE-2016-1000027(9.8)-->
                         <exclude>org.springframework:spring-expression</exclude>
                         <exclude>org.yaml:snakeyaml</exclude>
                         <exclude>com.fasterxml.jackson.core:jackson-databind</exclude>
-<!--                        [ERROR] javax.el-3.0.1-b12.jar: CVE-2021-28170(7.5)-->
+                        <!--                        [ERROR] javax.el-3.0.1-b12.jar: CVE-2021-28170(7.5)-->
                         <exclude>org.glassfish:javax.el</exclude>
                     </excludes>
                 </configuration>
