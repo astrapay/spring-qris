@@ -11,15 +11,15 @@ public class ApplicationSpecificTransparentTemplate {
     // tag 9F74
     String issuerData;
     // tag 9F26
-    byte[] applicationCryptogram;
+    String applicationCryptogram;
     // tag 9F27
-    Byte cryptogramInformationData;
+    String cryptogramInformationData;
     // tag 9F10
-    byte[] issuerApplicationData;
+    String issuerApplicationData;
     // tag 9F36
-    byte[] applicationTransactionCounter;
+    String applicationTransactionCounter;
     // tag 82
-    byte[] applicationInterchangeProfile;
+    String applicationInterchangeProfile;
     // tag 9F37
-    byte[] unpredictableNumber;
+    String unpredictableNumber;
 }

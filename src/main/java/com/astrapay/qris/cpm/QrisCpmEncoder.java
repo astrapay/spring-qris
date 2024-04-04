@@ -43,26 +43,25 @@ public class QrisCpmEncoder {
         if(Objects.isNull(applicationTemplate)) {
             return new byte[FIRST_INDEX];
         }
-        byte[] track2EquivalentDataSubTag = Optional.ofNullable(applicationTemplate.getTrack2EquivalentData()).map(track2EquivalentData ->
-                this.concatByteArrays(TagIndicator.TRACK_2_EQUIVALENT_DATA.getByteTag(), this.getTagLength(track2EquivalentData), track2EquivalentData))
-                .orElse(new byte[FIRST_INDEX]);
+       
         byte[] cardholderNameSubTag = Optional.ofNullable(applicationTemplate.getCardholderName()).map(this::getCardholderName).orElse(new byte[FIRST_INDEX]);
         byte[] issuerUrlSubtag = Optional.ofNullable(applicationTemplate.getIssuerUrl()).map(this::getIssuerUrl).orElse(new byte[FIRST_INDEX]);
-        byte[] appVersionNumberSubTag = Optional.ofNullable(applicationTemplate.getApplicationVersionNumber()).map(appVersionNumber ->
-                this.concatByteArrays(TagIndicator.APPLICATION_VERSION_NUMBER.getByteTag(), this.getTagLength(appVersionNumber), appVersionNumber))
-                .orElse(new byte[FIRST_INDEX]);
         byte[] paymentAccountRefSubTag = Optional.ofNullable(applicationTemplate.getPaymentAccountReference()).map(this::getPaymentAccountReference).orElse(new byte[FIRST_INDEX]);
         ByteArrayOutputStream applicationTemplateStream = new ByteArrayOutputStream();
         applicationTemplateStream.write(this.getAdfName());
         applicationTemplateStream.write(this.getApplicationLabel());
-        applicationTemplateStream.write(track2EquivalentDataSubTag);
+        if(Objects.nonNull(applicationTemplate.getTrack2EquivalentData())) {
+            applicationTemplateStream.write(this.getTrack2EquivalentData(applicationTemplate.getTrack2EquivalentData()));
+        }
         if(Objects.nonNull(applicationTemplate.getApplicationPan())) {
             applicationTemplateStream.write(this.getApplicationPan(applicationTemplate.getApplicationPan()));
         }
         applicationTemplateStream.write(cardholderNameSubTag);
         applicationTemplateStream.write(this.getLanguagePreference());
         applicationTemplateStream.write(issuerUrlSubtag);
-        applicationTemplateStream.write(appVersionNumberSubTag);
+        if(Objects.nonNull(applicationTemplate.getApplicationVersionNumber())) {
+            applicationTemplateStream.write(this.getApplicationVersionNumber(applicationTemplate.getApplicationVersionNumber()));
+        }
         if (Objects.nonNull(applicationTemplate.getLast4DigitsPan())) {
             applicationTemplateStream.write(this.getLast4DigitsPan(applicationTemplate.getLast4DigitsPan()));
         }
@@ -75,38 +74,31 @@ public class QrisCpmEncoder {
         return this.concatByteArrays(TagIndicator.APPLICATION_TEMPLATE.getByteTag(), this.getTagLength(applicationTemplateByteArray), applicationTemplateByteArray);
     }
     
-    private byte[] getApplicationSpecificTransparentTemplate(ApplicationSpecificTransparentTemplate applicationSpecificTransparentTemplate) throws IOException{
+    private byte[] getApplicationSpecificTransparentTemplate(ApplicationSpecificTransparentTemplate applicationSpecificTransparentTemplate) throws IOException, DecoderException {
         if(Objects.isNull(applicationSpecificTransparentTemplate)) {
             return new byte[FIRST_INDEX];
         }
         byte[] issuerDataSubTag = Optional.ofNullable(applicationSpecificTransparentTemplate.getIssuerData()).map(this::getIssuerData).orElse(new byte[FIRST_INDEX]);
-        byte[] appCryptogramSubTag = Optional.ofNullable(applicationSpecificTransparentTemplate.getApplicationCryptogram()).map(appCryptogram ->
-                        this.concatByteArrays(TagIndicator.APPLICATION_CRYPTOGRAM.getByteTag(), this.getTagLength(appCryptogram), appCryptogram))
-                .orElse(new byte[FIRST_INDEX]);
-        byte[] cryptogramInformationSubTag = Optional.ofNullable(applicationSpecificTransparentTemplate.getCryptogramInformationData()).map(cryptogramInformationData ->
-                        this.concatByteArrays(TagIndicator.CRYPTOGRAM_INFORMATION_DATA.getByteTag(), this.getTagLength(new byte[]{cryptogramInformationData}), new byte[]{cryptogramInformationData}))
-                .orElse(new byte[FIRST_INDEX]);
-        byte[] issuerApplicationDataSubTag = Optional.ofNullable(applicationSpecificTransparentTemplate.getIssuerApplicationData()).map(issuerApplicationData ->
-                        this.concatByteArrays(TagIndicator.ISSUER_APPLICATION_DATA.getByteTag(), this.getTagLength(issuerApplicationData), issuerApplicationData))
-                .orElse(new byte[FIRST_INDEX]);
-        byte[] applicationTransactionCounterSubTag = Optional.ofNullable(applicationSpecificTransparentTemplate.getApplicationTransactionCounter()).map(applicationTransactionCounter ->
-                        this.concatByteArrays(TagIndicator.APPLICATION_TRANSACTION_COUNTER.getByteTag(), this.getTagLength(applicationTransactionCounter), applicationTransactionCounter))
-                .orElse(new byte[FIRST_INDEX]);
-        byte[] applicationInterchangeProfileSubTag = Optional.ofNullable(applicationSpecificTransparentTemplate.getApplicationInterchangeProfile()).map(applicationInterchangeProfile ->
-                        this.concatByteArrays(TagIndicator.APPLICATION_INTERCHANGE_PROFILE.getByteTag(), this.getTagLength(applicationInterchangeProfile), applicationInterchangeProfile))
-                .orElse(new byte[FIRST_INDEX]);
-        byte[] unpredictableNumberSubTag = Optional.ofNullable(applicationSpecificTransparentTemplate.getUnpredictableNumber()).map(unpredictableNumber ->
-                        this.concatByteArrays(TagIndicator.UNPREDICTABLE_NUMBER.getByteTag(), this.getTagLength(unpredictableNumber), unpredictableNumber))
-                .orElse(new byte[FIRST_INDEX]);
-        
         ByteArrayOutputStream appSpecificTransparentTemplateStream = new ByteArrayOutputStream();
         appSpecificTransparentTemplateStream.write(issuerDataSubTag);
-        appSpecificTransparentTemplateStream.write(appCryptogramSubTag);
-        appSpecificTransparentTemplateStream.write(cryptogramInformationSubTag);
-        appSpecificTransparentTemplateStream.write(issuerApplicationDataSubTag);
-        appSpecificTransparentTemplateStream.write(applicationTransactionCounterSubTag);
-        appSpecificTransparentTemplateStream.write(applicationInterchangeProfileSubTag);
-        appSpecificTransparentTemplateStream.write(unpredictableNumberSubTag);
+        if(Objects.nonNull(applicationSpecificTransparentTemplate.getApplicationCryptogram())) {
+            appSpecificTransparentTemplateStream.write(this.getApplicationCryptogram(applicationSpecificTransparentTemplate.getApplicationCryptogram()));
+        }
+        if(Objects.nonNull(applicationSpecificTransparentTemplate.getCryptogramInformationData())) {
+            appSpecificTransparentTemplateStream.write(this.getCryptogramInformationData(applicationSpecificTransparentTemplate.getCryptogramInformationData()));
+        }
+        if(Objects.nonNull(applicationSpecificTransparentTemplate.getIssuerApplicationData())) {
+            appSpecificTransparentTemplateStream.write(this.getIssuerApplicationData(applicationSpecificTransparentTemplate.getIssuerApplicationData()));
+        }
+        if(Objects.nonNull(applicationSpecificTransparentTemplate.getApplicationTransactionCounter())) {
+            appSpecificTransparentTemplateStream.write(this.getApplicationTransactionCounter(applicationSpecificTransparentTemplate.getApplicationTransactionCounter()));
+        }
+        if(Objects.nonNull(applicationSpecificTransparentTemplate.getApplicationInterchangeProfile())) {
+            appSpecificTransparentTemplateStream.write(this.getApplicationInterchangeProfile(applicationSpecificTransparentTemplate.getApplicationInterchangeProfile()));
+        }
+        if(Objects.nonNull(applicationSpecificTransparentTemplate.getUnpredictableNumber())) {
+            appSpecificTransparentTemplateStream.write(this.getUnpredictableNumber(applicationSpecificTransparentTemplate.getUnpredictableNumber()));
+        }
         byte[] appSpecificTransparentTemplateBytes = appSpecificTransparentTemplateStream.toByteArray();
         return this.concatByteArrays(TagIndicator.APPLICATION_SPECIFIC_TRANSPARENT_TEMPLATE.getByteTag(), this.getTagLength(appSpecificTransparentTemplateBytes), appSpecificTransparentTemplateBytes);
     }
@@ -127,6 +119,16 @@ public class QrisCpmEncoder {
         String applicationLabel = "QRISCPM";
         byte[] byteValue = qrisHexConverter.convertAlphaNumericToArrayByte(applicationLabel);
         return this.concatByteArrays(TagIndicator.APPLICATION_LABEL.getByteTag(), this.getTagLength(byteValue), byteValue);
+    }
+    
+    private byte[] getTrack2EquivalentData(String data) throws DecoderException {
+        byte[] byteValue = qrisHexConverter.convertByteOrNumberToArrayByte(data);
+        return this.concatByteArrays(TagIndicator.TRACK_2_EQUIVALENT_DATA.getByteTag(), this.getTagLength(byteValue), byteValue);
+    }
+    
+    private byte[] getApplicationVersionNumber(String version) throws DecoderException {
+        byte[] byteValue = qrisHexConverter.convertByteOrNumberToArrayByte(version);
+        return this.concatByteArrays(TagIndicator.APPLICATION_VERSION_NUMBER.getByteTag(), this.getTagLength(byteValue), byteValue);
     }
     
     private byte[] getApplicationPan(String applicationPan) throws DecoderException {
@@ -165,6 +167,36 @@ public class QrisCpmEncoder {
     private byte[] getIssuerData(String issuerData) {
         byte[] byteValue = qrisHexConverter.convertAlphaNumericToArrayByte(issuerData);
         return this.concatByteArrays(TagIndicator.ISSUER_QRIS_DATA.getByteTag(), this.getTagLength(byteValue), byteValue);
+    }
+    
+    private byte[] getApplicationCryptogram(String appCryptogram) throws DecoderException {
+        byte[] byteValue = qrisHexConverter.convertByteOrNumberToArrayByte(appCryptogram);
+        return this.concatByteArrays(TagIndicator.APPLICATION_CRYPTOGRAM.getByteTag(), this.getTagLength(byteValue), byteValue);
+    }
+    
+    private byte[] getCryptogramInformationData(String cryptogram) throws DecoderException {
+        byte[] byteValue = qrisHexConverter.convertByteOrNumberToArrayByte(cryptogram);
+        return this.concatByteArrays(TagIndicator.CRYPTOGRAM_INFORMATION_DATA.getByteTag(), this.getTagLength(byteValue), byteValue);
+    }
+    
+    private byte[] getIssuerApplicationData(String issuerAppData) throws DecoderException {
+        byte[] byteValue = qrisHexConverter.convertByteOrNumberToArrayByte(issuerAppData);
+        return this.concatByteArrays(TagIndicator.ISSUER_APPLICATION_DATA.getByteTag(), this.getTagLength(byteValue), byteValue);
+    }
+    
+    private byte[] getApplicationTransactionCounter(String appTransactionCounter) throws DecoderException {
+        byte[] byteValue = qrisHexConverter.convertByteOrNumberToArrayByte(appTransactionCounter);
+        return this.concatByteArrays(TagIndicator.APPLICATION_TRANSACTION_COUNTER.getByteTag(), this.getTagLength(byteValue), byteValue);
+    }
+    
+    private byte[] getApplicationInterchangeProfile(String appInterchangeProfile) throws DecoderException {
+        byte[] byteValue = qrisHexConverter.convertByteOrNumberToArrayByte(appInterchangeProfile);
+        return this.concatByteArrays(TagIndicator.APPLICATION_INTERCHANGE_PROFILE.getByteTag(), this.getTagLength(byteValue), byteValue);
+    }
+    
+    private byte[] getUnpredictableNumber(String unpredictableNumber) throws DecoderException {
+        byte[] byteValue = qrisHexConverter.convertByteOrNumberToArrayByte(unpredictableNumber);
+        return this.concatByteArrays(TagIndicator.UNPREDICTABLE_NUMBER.getByteTag(), this.getTagLength(byteValue), byteValue);
     }
     
     public byte[] getTagLength(byte[] value) {

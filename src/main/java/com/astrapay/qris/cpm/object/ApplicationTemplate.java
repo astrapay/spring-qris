@@ -12,11 +12,11 @@ import java.math.BigDecimal;
 @Setter
 public class ApplicationTemplate {
     // tag 4F
-    byte[] adfName;
+    String adfName;
     // tag 50
     String applicationLabel;
     // tag 57
-    byte[] track2EquivalentData;
+    String track2EquivalentData;
     // tag 5A
     String applicationPan;
     // tag 5F20
@@ -26,7 +26,7 @@ public class ApplicationTemplate {
     // tag 5F50
     String issuerUrl;
     // tag 9F08
-    byte[] applicationVersionNumber;
+    String applicationVersionNumber;
     // tag 9F19
     String tokenRequestorId;
     //tag 9F24
