@@ -4,10 +4,12 @@ import com.astrapay.qris.QrisHexConverter;
 import com.astrapay.qris.cpm.object.ApplicationTemplate;
 import com.astrapay.qris.cpm.object.QrisCpm;
 import com.astrapay.qris.mpm.object.ApplicationSpecificTransparentTemplate;
+import org.apache.commons.codec.DecoderException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -90,6 +92,40 @@ public class QrisCpmEncoderTest {
         Assertions.assertEquals(expectedOutput, qrisCpmEncoder.encode(qrisCpm));
     }
     
+    @Test
+    void testEncodeToBase64_exception() throws DecoderException {
+        ApplicationSpecificTransparentTemplate applicationSpecificTransparentTemplate = ApplicationSpecificTransparentTemplate.builder()
+                .issuerData("123456789012345678901234567890123456789012345678901234567890")
+                .build();
+        ApplicationTemplate applicationTemplate = ApplicationTemplate.builder()
+                .applicationPan("9360123411234567899")
+                .cardholderName("Riki Derian")
+                .issuerUrl("riki.derian@qriscpm.com")
+                .last4DigitsPan("7899")
+                .applicationSpecificTransparentTemplate(applicationSpecificTransparentTemplate)
+                .build();
+        QrisCpm qrisCpm = QrisCpm.builder()
+                .applicationTemplate(applicationTemplate)
+                .build();
+        Mockito.doThrow(new DecoderException()).when(qrisHexConverter).convertCompressedNumericToArrayByte(Mockito.anyString());
+        Assertions.assertThrows(IOException.class, () -> qrisCpmEncoder.encode(qrisCpm));
+    }
     
+    @Test
+    void testEncodeToBase64_EmptyQr() {
+        Assertions.assertDoesNotThrow(() -> qrisCpmEncoder.encode(new QrisCpm()));
+    }
     
+    @Test
+    void testGetLength_overLimit() {
+        byte[] foo = new byte[16777216];
+        Assertions.assertThrows(IllegalStateException.class, () -> qrisCpmEncoder.getTagLength(foo));
+    }
+    
+    @Test
+    void testGetLength_maxLength() {
+        byte[] foo = new byte[16777215];
+        byte[] expectedLength = new byte[]{(byte)0x83, (byte)0xFF, (byte)0xFF, (byte)0xFF};
+        Assertions.assertArrayEquals(expectedLength, qrisCpmEncoder.getTagLength(foo));
+    }
 }

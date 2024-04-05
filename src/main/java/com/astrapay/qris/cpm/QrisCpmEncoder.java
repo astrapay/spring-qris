@@ -216,7 +216,9 @@ public class QrisCpmEncoder {
         } else if( valLength < 0x1000000 ) {
             // length of up to 16777215(0xFFFFFF) can be represented in three bytes
             // 0x83 = 10000011
-            return new byte[] {(byte) 0x83,  (byte) (valLength / 0x10000), (byte) (valLength/ 0x100), (byte) (valLength % 0x100)};
+            byte firstTwoDigits = (byte) (valLength / 0x10000);
+            int firstTwoDigitsMod = valLength % 0x10000;
+            return new byte[] {(byte) 0x83, firstTwoDigits, (byte) (firstTwoDigitsMod / 0x100), (byte) (valLength % 0x100)};
         } else {
             throw new IllegalStateException("Length ["+valLength+"] out of range (0x1000000)");
         }
