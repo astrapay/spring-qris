@@ -14,6 +14,9 @@ public class QrisHexConverter {
     int SUFFIX_INDEX = 1;
     final String UNEVEN_COMPRESSED_NUMERIC_SUFFIX = "F";
 
+    int FIRST_TAG_HEX_INDEX = 0;
+    int SECOND_TAG_HEX_INDEX = 1;
+
     public byte[] convertByteOrNumberToArrayByte(String numberOrByte) throws DecoderException {
         //acceptable string is a string that represent byte or number
         return Hex.decodeHex(numberOrByte);
@@ -34,10 +37,10 @@ public class QrisHexConverter {
     public String encode(byte[] value, byte[] tags) throws IOException {
         var value_byteArray = new ByteArrayOutputStream();
         //TAG INDICATOR
-        value_byteArray.write(tags[0]);
+        value_byteArray.write(tags[FIRST_TAG_HEX_INDEX]);
         //SUBTAG INDICATOR
-        if(tags.length > 1) {
-            value_byteArray.write(tags[1]);
+        if(tags.length > SECOND_TAG_HEX_INDEX) {
+            value_byteArray.write(tags[SECOND_TAG_HEX_INDEX]);
         }
         //LENGTH INDICATOR
         value_byteArray.write(value.length);
@@ -61,10 +64,10 @@ public class QrisHexConverter {
     public byte[] encodeToByte(byte[] value, byte[] tags) throws IOException {
         var value_byteArray = new ByteArrayOutputStream();
         //TAG INDICATOR
-        value_byteArray.write(tags[0]);
+        value_byteArray.write(tags[FIRST_TAG_HEX_INDEX]);
         //SUBTAG INDICATOR
-        if(tags.length > 1){
-            value_byteArray.write(tags[1]);
+        if(tags.length > SECOND_TAG_HEX_INDEX){
+            value_byteArray.write(tags[SECOND_TAG_HEX_INDEX]);
         }
         //LENGTH INDICATOR
         value_byteArray.write(value.length);
