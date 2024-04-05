@@ -1,6 +1,7 @@
 package com.astrapay.qris.validation;
 
-import com.astrapay.qris.object.QrisDataObject;
+import com.astrapay.qris.mpm.object.QrisDataObject;
+import com.astrapay.qris.mpm.validation.LanguagePreferenceValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

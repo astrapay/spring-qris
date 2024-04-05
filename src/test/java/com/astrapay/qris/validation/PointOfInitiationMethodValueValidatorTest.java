@@ -1,5 +1,6 @@
 package com.astrapay.qris.validation;
 
+import com.astrapay.qris.mpm.validation.PointOfInitiationMethodValueValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

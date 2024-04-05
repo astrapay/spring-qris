@@ -1,6 +1,7 @@
 package com.astrapay.qris.validation;
 
-import com.astrapay.qris.object.QrisDataObject;
+import com.astrapay.qris.mpm.object.QrisDataObject;
+import com.astrapay.qris.mpm.validation.MerchantAccountInformationCriteriaValidator;
 import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintValidatorContext;
