@@ -1,11 +1,13 @@
 package com.astrapay.qris;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
+import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 
+@Service
 public class QrisHexConverter {
 
     final int EVEN_LENGTH_CHECK = 2;
