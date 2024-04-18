@@ -1,8 +1,8 @@
 package com.astrapay.qris.cpm.validations;
 
 import com.astrapay.qris.mpm.object.QrisDataObject;
-import com.astrapay.qris.cpm.validation.ApplicationIdentifierValidator;
-import com.astrapay.qris.cpm.validation.constraints.ApplicationIdentifier;
+import com.astrapay.qris.cpm.validation.ApplicationDefinitionFileNameValidator;
+import com.astrapay.qris.cpm.validation.constraints.ApplicationDefinitionFileName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,13 +18,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class ApplicationIdentifierValidatorTest {
+public class ApplicationDefinitionFileNameValidatorTest {
 
     @InjectMocks
-    private ApplicationIdentifierValidator applicationIdentifierValidator;
+    private ApplicationDefinitionFileNameValidator applicationDefinitionFileNameValidator;
 
     @Mock
-    private ApplicationIdentifier applicationIdentifier;
+    private ApplicationDefinitionFileName applicationIdentifier;
 
     @Mock
     private ConstraintValidatorContext context;
@@ -34,12 +34,12 @@ public class ApplicationIdentifierValidatorTest {
         when(applicationIdentifier.id()).thenReturn("4F");
         when(applicationIdentifier.hexValue()).thenReturn("A0000006022020");
 
-        applicationIdentifierValidator.initialize(applicationIdentifier);
+        applicationDefinitionFileNameValidator.initialize(applicationIdentifier);
 
         Map<String, QrisDataObject> value = new HashMap<>();
         value.put("4F", new QrisDataObject("4F", "07", "A0000006022020"));
 
-        assertTrue(applicationIdentifierValidator.isValid(value, context));
+        assertTrue(applicationDefinitionFileNameValidator.isValid(value, context));
     }
 
     @Test
@@ -47,11 +47,11 @@ public class ApplicationIdentifierValidatorTest {
         when(applicationIdentifier.id()).thenReturn("4F");
         when(applicationIdentifier.hexValue()).thenReturn("A0000006022020");
 
-        applicationIdentifierValidator.initialize(applicationIdentifier);
+        applicationDefinitionFileNameValidator.initialize(applicationIdentifier);
 
         Map<String, QrisDataObject> value = new HashMap<>();
         value.put("4F", new QrisDataObject("4F", "07", "B0000006022020"));
 
-        assertFalse(applicationIdentifierValidator.isValid(value, context));
+        assertFalse(applicationDefinitionFileNameValidator.isValid(value, context));
     }
 }

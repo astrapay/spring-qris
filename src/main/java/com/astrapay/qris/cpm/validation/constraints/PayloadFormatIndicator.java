@@ -1,6 +1,6 @@
 package com.astrapay.qris.cpm.validation.constraints;
 
-import com.astrapay.qris.cpm.validation.ValueFormatIndicatorValidator;
+import com.astrapay.qris.cpm.validation.PayloadFormatIndicatorValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -12,10 +12,10 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Documented
-@Constraint(validatedBy = {ValueFormatIndicatorValidator.class})
+@Constraint(validatedBy = {PayloadFormatIndicatorValidator.class})
 @Target({FIELD})
 @Retention(RUNTIME)
-public @interface ValueFormatIndicator {
+public @interface PayloadFormatIndicator {
 
     /**
      *

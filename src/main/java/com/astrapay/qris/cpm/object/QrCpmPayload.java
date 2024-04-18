@@ -1,8 +1,6 @@
 package com.astrapay.qris.cpm.object;
 
-import com.astrapay.qris.cpm.validation.constraints.CpmConditionalField;
-import com.astrapay.qris.cpm.validation.constraints.CpmMandatoryField;
-import com.astrapay.qris.cpm.validation.constraints.HexLength;
+import com.astrapay.qris.cpm.validation.constraints.*;
 
 import java.util.Map;
 
@@ -35,6 +33,9 @@ public class QrCpmPayload {
     @HexLength(id = "9F36", min = 2, max = 2)
     @HexLength(id = "9F37", min = 4, max = 4)
     @HexLength(id = "82", min = 2, max = 2)
+    @Track2EquivalentData
+    @ApplicationDefinitionFileName
+    @ApplicationLabel
 
     private Map<String, QrisCpmObject> qrisCpmRoot;
 }

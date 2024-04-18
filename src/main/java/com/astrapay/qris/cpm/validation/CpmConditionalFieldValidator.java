@@ -23,8 +23,14 @@ public class CpmConditionalFieldValidator implements ConstraintValidator<CpmCond
 
     @Override
     public boolean isValid(Map<String, QrisDataObject> value, ConstraintValidatorContext context) {
-        QrisDataObject data57Object = value.get(this.id);
-        QrisDataObject data5AObject = value.get(applicationPanTag);
+        QrisDataObject data57Object = null;
+        QrisDataObject data5AObject = null;
+        if(value.containsKey(this.id)){
+            data57Object = value.get(this.id);
+        }
+        if (value.containsKey(this.applicationPanTag)){
+            data5AObject = value.get(this.applicationPanTag);
+        }
         if(data5AObject == null && data57Object != null){
             return true;
         }

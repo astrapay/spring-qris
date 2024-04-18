@@ -1,7 +1,7 @@
 package com.astrapay.qris.cpm.validations;
 import com.astrapay.qris.mpm.object.QrisDataObject;
-import com.astrapay.qris.cpm.validation.ValueFormatIndicatorValidator;
-import com.astrapay.qris.cpm.validation.constraints.ValueFormatIndicator;
+import com.astrapay.qris.cpm.validation.PayloadFormatIndicatorValidator;
+import com.astrapay.qris.cpm.validation.constraints.PayloadFormatIndicator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,10 +20,10 @@ import static org.mockito.Mockito.when;
 public class ValueFormatIndicatorValidatorTest {
 
     @InjectMocks
-    private ValueFormatIndicatorValidator valueFormatIndicatorValidator;
+    private PayloadFormatIndicatorValidator valueFormatIndicatorValidator;
 
     @Mock
-    private ValueFormatIndicator valueFormatIndicator;
+    private PayloadFormatIndicator valueFormatIndicator;
 
     @Mock
     private ConstraintValidatorContext context;
