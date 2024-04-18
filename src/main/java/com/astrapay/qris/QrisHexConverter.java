@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Base64;
 
 @Service
@@ -12,7 +13,6 @@ public class QrisHexConverter {
 
     final int EVEN_LENGTH_CHECK = 2;
     final int ZERO = 0;
-    int NO_SUBTAG = 0;
     int SUFFIX_INDEX = 1;
     final String UNEVEN_COMPRESSED_NUMERIC_SUFFIX = "F";
 
@@ -101,6 +101,17 @@ public class QrisHexConverter {
             return hexString.substring(index, hexString.length() - SUFFIX_INDEX);
         }
         return hexString.substring(index);
+    }
+
+
+    public static byte[] hexStringToByteArray(String s) {
+        byte[] byteArray = new byte[s.length() / 2];
+        ByteBuffer buffer = ByteBuffer.wrap(byteArray);
+        for (int i = 0; i < s.length(); i += 2) {
+            buffer.put((byte) ((Character.digit(s.charAt(i), 16) << 4)
+                    + Character.digit(s.charAt(i + 1), 16)));
+        }
+        return byteArray;
     }
 
 
