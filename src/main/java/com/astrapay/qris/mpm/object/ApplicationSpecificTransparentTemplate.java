@@ -1,12 +1,12 @@
 package com.astrapay.qris.mpm.object;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Builder
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ApplicationSpecificTransparentTemplate {
     // tag 9F74
     String issuerData;
