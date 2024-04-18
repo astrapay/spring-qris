@@ -1,15 +1,15 @@
 package com.astrapay.qris.cpm.object;
 
 import com.astrapay.qris.mpm.object.ApplicationSpecificTransparentTemplate;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Builder
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ApplicationTemplate {
     // tag 4F
     String adfName;
