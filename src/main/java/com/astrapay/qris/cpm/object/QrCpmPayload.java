@@ -36,6 +36,5 @@ public class QrCpmPayload {
     @Track2EquivalentData
     @ApplicationDefinitionFileName
     @ApplicationLabel
-
-    private Map<String, QrisCpmObject> qrisCpmRoot;
+    private Map<String, QrCpmDataObject> qrisCpmRaw;
 }
