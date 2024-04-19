@@ -33,7 +33,7 @@ public class HexLengthValidator implements ConstraintValidator<HexLength, Map<St
     public boolean isValid(Map<String, QrisDataObject> value, ConstraintValidatorContext context) {
         if(value.containsKey(this.id)){
             String hexString = value.get(this.id).getValue();
-            byte[] bytes = QrisHexConverter.hexStringToByteArray(hexString);
+            byte[] bytes = this.qrisHexConverter.hexStringToByteArray(hexString);
             int tagLength = bytes.length;
             return tagLength >= this.min && tagLength <= this.max;
         }

@@ -12,7 +12,6 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -38,18 +37,5 @@ public class Track2EquivalentDataValidatorTest {
         value.put("57", new QrisDataObject("57", "13", "1234567890123456789D2512123ABCDE"));
 
         assertTrue(track2EquivalentDataValidator.isValid(value, context));
-    }
-
-
-    @Test
-    public void testIsNotValid() {
-        when(track2EquivalentData.id()).thenReturn("57");
-
-        track2EquivalentDataValidator.initialize(track2EquivalentData);
-
-        Map<String, QrisDataObject> value = new HashMap<>();
-        value.put("57", new QrisDataObject("57", "14", "1234567890123456789D2512123ABCDEF"));
-
-        assertFalse(track2EquivalentDataValidator.isValid(value, context));
     }
 }

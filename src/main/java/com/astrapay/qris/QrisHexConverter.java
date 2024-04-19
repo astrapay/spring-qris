@@ -18,6 +18,8 @@ public class QrisHexConverter {
 
     int FIRST_TAG_HEX_INDEX = 0;
     int SECOND_TAG_HEX_INDEX = 1;
+    int RADIX = 16;
+    int SHIFT_NUMBER = 4;
 
     public byte[] convertByteOrNumberToArrayByte(String numberOrByte) throws DecoderException {
         //acceptable string is a string that represent byte or number
@@ -104,12 +106,12 @@ public class QrisHexConverter {
     }
 
 
-    public static byte[] hexStringToByteArray(String s) {
-        byte[] byteArray = new byte[s.length() / 2];
+    public byte[] hexStringToByteArray(String s) {
+    byte[] byteArray = new byte[s.length() / EVEN_LENGTH_CHECK];
         ByteBuffer buffer = ByteBuffer.wrap(byteArray);
-        for (int i = 0; i < s.length(); i += 2) {
-            buffer.put((byte) ((Character.digit(s.charAt(i), 16) << 4)
-                    + Character.digit(s.charAt(i + 1), 16)));
+        for (int i = ZERO; i < s.length(); i += EVEN_LENGTH_CHECK) {
+            buffer.put((byte) ((Character.digit(s.charAt(i), RADIX) << SHIFT_NUMBER)
+                    + Character.digit(s.charAt(i + SUFFIX_INDEX), RADIX)));
         }
         return byteArray;
     }
