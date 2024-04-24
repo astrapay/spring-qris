@@ -88,6 +88,13 @@ public class QrisHexConverter {
         return Base64.getEncoder().encodeToString(valueInByteArray);
     }
 
+    public byte[] decodeFromBase64(String value) {
+        return Base64.getDecoder().decode(value);
+    }
+
+    public String convertAlphaNumericHexToString (String hexString) throws DecoderException {
+        return new String(Hex.decodeHex(hexString));
+    }
     public String convertAlphaNumericHexToString (String hexString, int index) throws DecoderException {
         return new String(Hex.decodeHex(hexString.substring(index)));
     }
@@ -102,6 +109,7 @@ public class QrisHexConverter {
         }
         return hexString.substring(index);
     }
+
 
 
 }
