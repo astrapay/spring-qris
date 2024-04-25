@@ -35,8 +35,9 @@ class QrCpmParserTest {
      * DATA_MOCK_BASE64_3 all available tag = 85, 61 > 4F, 50, 5A, 5F20, 5F2D, 5F50, 63 >> 9F74
      * DATA_MOCK_BASE64_4 all available tag = 85, 61 > 4F, 50, 5A, 9F25, 9F76 (UNKNOWN TAG), 63 >> 9F74
      * DATA_MOCK_BASE64_5 all available tag = 85, 61 > 4F, 50, 5A, 5F20, 5F2D, 9F25, 63 >> 9F74, 9F26, 9F10, 9F36, 82, 9F37
-     * DATA_MOCK_BASE64_5 all available tag = 85, 61 > 4F, 50, 5A, 5F20, 5F2D, 9F25, 9F19, 9F24, 63 >> 9F74, 9F26, 9F10, 9F36, 82, 9F37
-     * DATA_MOCK_BASE64_5 all available tag = 85
+     * DATA_MOCK_BASE64_6 all available tag = 85, 61 > 4F, 50, 5A, 5F20, 5F2D, 9F25, 9F19, 9F24, 63 >> 9F74, 9F26, 9F10, 9F36, 82, 9F37
+     * DATA_MOCK_BASE64_7 all available tag = 85
+     * DATA_MOCK_BASE64_8 all available tag = 85, 61 > 4F
      */
     private static final String DATA_MOCK_BASE64_1 = "hQVDUFYwMWFFTwegAAAGAiAgUAdRUklTQ1BNWgqTYAkUMBAFMXIPXy0EaWRlbmMen3QbY2hlcXVlOjk1Njc3MjQ5NTA5MDUxODk4MDc0";
     private static final String DATA_MOCK_BASE64_2 = "hQVDUFYwMWFQTwegAAAGAiAgUAdRUklTQ1BNWgqTYAAUF0URgIWfXyAOU0VORFkgQUdVU1RJQU5fLQRpZGVunyUCCFljE590EMl/VZmz53/iKI8rM1dUcFs=";
@@ -45,6 +46,7 @@ class QrCpmParserTest {
     private static final String DATA_MOCK_BASE64_5 = "hQVDUFYwMWFtTwegAAAGAiAgUAdRUklTQ1BNWgqTYAAUF0URgIWfXyAOU0VORFkgQUdVU1RJQU5fLQRpZGVunyUCCFljMJ90EMl/VZmz53/iKI8rM1dUcFufJgIRIp8nAhEinxACESKfNgIRIoICESKfNwIRIg==";
     private static final String DATA_MOCK_BASE64_6 = "hQVDUFYwMWF3TwegAAAGAiAgUAdRUklTQ1BNWgqTYAAUF0URgIWfXyAOU0VORFkgQUdVU1RJQU5fLQRpZGVunyUCCFmfGQIRIp8kAmFiYzCfdBDJf1WZs+d/4iiPKzNXVHBbnyYCESKfJwIRIp8QAhEinzYCESKCAhEinzcCESI=";
     private static final String DATA_MOCK_BASE64_7 = "hQVDUFYwMQ==";
+    private static final String DATA_MOCK_BASE64_8 = "hQVDUFYwMWEJTwegAAAGAiAg";
 
 
     @BeforeEach
@@ -890,6 +892,67 @@ class QrCpmParserTest {
         Assertions.assertEquals(tag85.getTag(), actualTag85.getTag());
         Assertions.assertEquals(tag85.getValue(), actualTag85.getValue());
         Assertions.assertEquals(tag85.getLength(), actualTag85.getLength());
+    }
+
+    @Test
+    void testParse_withDataMock_8() throws IOException, DecoderException {
+        QrCpmPayload expectedResult = new QrCpmPayload();
+        expectedResult.setPayloadBase64(DATA_MOCK_BASE64_8);
+        expectedResult.setPayloadHex("8505435056303161094F07A0000006022020");
+
+        QrCpmDataObject tag4F = new QrCpmDataObject();
+        tag4F.setTag(TagIndicator.ADF_NAME.getValue());
+        tag4F.setLength("14");
+        tag4F.setValue("A0000006022020");
+
+        Map<String, QrCpmDataObject> tag61TemplateMap = new HashMap<>();
+        tag61TemplateMap.put(TagIndicator.ADF_NAME.getValue(), tag4F);
+
+        QrCpmDataObject tag85 = new QrCpmDataObject();
+        tag85.setTag(TagIndicator.PAYLOAD_FORMAT_INDICATOR.getValue());
+        tag85.setLength("5");
+        tag85.setValue("CPV01");
+
+        QrCpmDataObject tag61 = new QrCpmDataObject();
+        tag61.setTag(TagIndicator.APPLICATION_TEMPLATE.getValue());
+        tag61.setLength("18");
+        tag61.setValue("4F07A0000006022020");
+        tag61.setTemplateMap(tag61TemplateMap);
+
+        QrCpmPayload qrCpmPayload = qrCpmParser.parse(DATA_MOCK_BASE64_8);
+
+        Assertions.assertEquals(expectedResult.getPayloadHex(), qrCpmPayload.getPayloadHex());
+
+        QrCpmDataObject actualTag85 = qrCpmPayload.getQrisRoot().get(TagIndicator.PAYLOAD_FORMAT_INDICATOR.getValue());
+        Assertions.assertEquals(tag85.getTag(), actualTag85.getTag());
+        Assertions.assertEquals(tag85.getValue(), actualTag85.getValue());
+        Assertions.assertEquals(tag85.getLength(), actualTag85.getLength());
+
+        QrCpmDataObject actualTag61 = qrCpmPayload.getQrisRoot().get(TagIndicator.APPLICATION_TEMPLATE.getValue());
+        Assertions.assertEquals(tag61.getTag(), actualTag61.getTag());
+        Assertions.assertEquals(tag61.getValue(), actualTag61.getValue());
+        Assertions.assertEquals(tag61.getLength(), actualTag61.getLength());
+
+
+        Map<String, QrCpmDataObject> actualTag61TemplateMap = actualTag61.getTemplateMap();
+        Assertions.assertEquals(tag61TemplateMap.size(), actualTag61TemplateMap.size());
+        Assertions.assertEquals(tag61TemplateMap.get(TagIndicator.ADF_NAME.getValue()).getValue(), actualTag61TemplateMap.get(TagIndicator.ADF_NAME.getValue()).getValue());
+        Assertions.assertEquals(tag61TemplateMap.get(TagIndicator.ADF_NAME.getValue()).getLength(), actualTag61TemplateMap.get(TagIndicator.ADF_NAME.getValue()).getLength());
+
+        Assertions.assertNull(actualTag61TemplateMap.get(TagIndicator.APPLICATION_LABEL.getValue()));
+        Assertions.assertNull(actualTag61TemplateMap.get(TagIndicator.APP_PAN.getValue()));
+        Assertions.assertNull(actualTag61TemplateMap.get(TagIndicator.LANGUAGE_PREFERENCE.getValue()));
+        Assertions.assertNull(actualTag61TemplateMap.get(TagIndicator.TRACK_2_EQUIVALENT_DATA.getValue()));
+        Assertions.assertNull(actualTag61TemplateMap.get(TagIndicator.ISSUER_URL.getValue()));
+        Assertions.assertNull(actualTag61TemplateMap.get(TagIndicator.LAST_4_DIGIT_PAN.getValue()));
+        Assertions.assertNull(actualTag61TemplateMap.get(TagIndicator.CARDHOLDER_NAME.getValue()));
+        Assertions.assertNull(actualTag61TemplateMap.get(TagIndicator.TOKEN_REQUESTOR_ID.getValue()));
+        Assertions.assertNull(actualTag61TemplateMap.get(TagIndicator.PAYMENT_ACCOUNT_REFERENCE.getValue()));
+        Assertions.assertNull(actualTag61TemplateMap.get(TagIndicator.APPLICATION_VERSION_NUMBER.getValue()));
+
+        Assertions.assertNull(actualTag61TemplateMap.get(TagIndicator.APPLICATION_SPECIFIC_TRANSPARENT_TEMPLATE.getValue()));
+
+
     }
 
 }
