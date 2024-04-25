@@ -15,7 +15,13 @@ import java.util.Map;
 @Setter
 public class QrCpmPayload {
     // object to represent payload (unparsed, string format) and do validations
+
+    //https://astrapay.atlassian.net/wiki/spaces/PD/pages/2546434491/Dokumentasi+QRIS+CPM -> link to the documentation why we need BASE 64 and HEX payload
+
+    //the original value of the payload in base64
     private String payloadBase64;
+
+    //the converted value of the payload in HEX
     private String payloadHex;
 
     @CpmMandatoryField

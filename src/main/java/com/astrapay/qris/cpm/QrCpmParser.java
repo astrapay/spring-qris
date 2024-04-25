@@ -63,6 +63,21 @@ public class QrCpmParser {
         qrCpmPayload.setQrisRoot(qrisCpmMap);
     }
 
+
+    /***
+     * main function to parse HEX based data.
+     * @param qrisCpmSubTag -> list of the tag that needed to be parsed from parent level .can refer to QrCpmConfiguration for the list
+     * @param payloadHexBased -> HEX based data.
+     * @param qrisCpmMap -> map to store the parsed data
+     *
+     * step by step :
+     * 1. loop through the qrisCpmSubTag list
+     * 2. compare the tag from the list with the current tag in the payloadHexBased
+     * 3. if the tag is the same, extract the length of the value. if not then just skip to the next tag
+     * 4. extract the value based on the length
+     * 5. set the value to qrisCpmMap
+     * 6. keep track of the current position because not all tag is mandatory (can refer to https://astrapay.atlassian.net/wiki/spaces/PD/pages/2686451746/Solutioning+QR+CPM )
+     */
     private void parser(List<String> qrisCpmSubTag, String payloadHexBased, Map<String, QrCpmDataObject> qrisCpmMap) throws DecoderException {
         int counter = 0;
         int currentPosition = 0;
@@ -119,10 +134,18 @@ public class QrCpmParser {
 
         return valueInHexString;
     }
+
+    /***
+     * to parse the root level of the QR CPM (can refer to QrCpmConfiguration @Bean qrisCpmSubTag)
+     */
     private void parseRoot(String payloadHexBased, Map<String, QrCpmDataObject> qrisCpmMap) throws DecoderException {
         parser(qrisCpmSubTag, payloadHexBased, qrisCpmMap);
     }
 
+    /***
+     * to parse the application template sub tag (can refer to QrCpmConfiguration @Bean applicationTemplateSubTag)
+     * in order to parse application template need to parse the root first
+     */
     private void parseApplicationTemplate(Map<String, QrCpmDataObject> qrCpmDataObject) throws DecoderException {
         if(qrCpmDataObject.containsKey(TagIndicator.APPLICATION_TEMPLATE.getValue())){
             Map<String, QrCpmDataObject> qrCpmDataObjectSubMap = new LinkedHashMap<>();
@@ -134,6 +157,10 @@ public class QrCpmParser {
             applicationTemplate.setTemplateMap(qrCpmDataObjectSubMap);
         }
     }
+    /***
+     * to parse the application specific transparent template sub tag (can refer to QrCpmConfiguration @Bean applicationSpecificTransparentTemplateSubTag)
+     * in order to parse application specific transparent template need to parse the application template first
+     */
 
     private void parseApplicationSpecificTransparentTemplate(Map<String, QrCpmDataObject> qrCpmDataObject) throws DecoderException {
         QrCpmDataObject applicationTemplate = qrCpmDataObject.get(TagIndicator.APPLICATION_TEMPLATE.getValue());
