@@ -24,6 +24,7 @@ public class QrCpmPayload {
     //the converted value of the payload in HEX
     private String payloadHex;
 
+    //link to documentations https://astrapay.atlassian.net/wiki/spaces/PD/pages/2546434491/Dokumentasi+QRIS+CPM
     @CpmMandatoryField
     @CpmMandatoryField(id = "85")
     @CpmMandatoryField(id = "61")
