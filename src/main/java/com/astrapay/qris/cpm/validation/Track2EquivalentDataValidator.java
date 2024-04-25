@@ -42,11 +42,11 @@ public class Track2EquivalentDataValidator implements ConstraintValidator<Track2
             var hexString = value.get(this.id).getValue();
             hexString = hexString.replaceAll("\\s+", "");
             var fieldSeparatorIndex = hexString.indexOf(FIELD_SEPARATOR);
-            if (hexString.length() % EVEN_NUMBER_CHECKER == FIRST_INDEX) {
-                discretionaryData = hexString.substring(fieldSeparatorIndex + SERVICE_CODE_LAST_INDEX, hexString.length()); // Discretionary Data
-            } else {
+            if (!FIRST_INDEX.equals(hexString.length() % EVEN_NUMBER_CHECKER)){
                 return false;
             }
+
+            discretionaryData = hexString.substring(fieldSeparatorIndex + SERVICE_CODE_LAST_INDEX, hexString.length()); // Discretionary Data
 
             // Extract each field
             pan = hexString.substring(FIRST_INDEX, fieldSeparatorIndex); // Primary Account Number (PAN)
@@ -55,18 +55,14 @@ public class Track2EquivalentDataValidator implements ConstraintValidator<Track2
             serviceCode = hexString.substring(fieldSeparatorIndex + EXPIRATION_DATE_LAST_INDEX, fieldSeparatorIndex + SERVICE_CODE_LAST_INDEX); // Service Code
 
 
-            boolean result;
             if (pan.length() > PAN_MAX_LENGTH) {
                 return false;
             }
-            ;
 
-            result = fieldSeparatorString.equals(FIELD_SEPARATOR)
+            return fieldSeparatorString.equals(FIELD_SEPARATOR)
                     && isValidNibbleLength(fieldSeparatorString, FIELD_SEPARATOR_LENGTH)
                     && isValidNibbleLength(expirationDate, EXPIRATION_DATE_LENGTH)
                     && isValidNibbleLength(serviceCode, SERVICE_CODE_LENGTH);
-
-            return result;
         }
         return true;
     }
