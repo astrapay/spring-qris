@@ -58,9 +58,11 @@ class QrCpmParserTest {
 
     @BeforeEach
     void setup(){
+        qrisCpmSubTag.clear();
         qrisCpmSubTag.add(TagIndicator.PAYLOAD_FORMAT_INDICATOR.getValue());
         qrisCpmSubTag.add(TagIndicator.APPLICATION_TEMPLATE.getValue());
 
+        applicationTemplateSubTag.clear();
         applicationTemplateSubTag.add(TagIndicator.ADF_NAME.getValue());
         applicationTemplateSubTag.add(TagIndicator.APPLICATION_LABEL.getValue());
         applicationTemplateSubTag.add(TagIndicator.TRACK_2_EQUIVALENT_DATA.getValue());
@@ -74,6 +76,7 @@ class QrCpmParserTest {
         applicationTemplateSubTag.add(TagIndicator.PAYMENT_ACCOUNT_REFERENCE.getValue());
         applicationTemplateSubTag.add(TagIndicator.APPLICATION_SPECIFIC_TRANSPARENT_TEMPLATE.getValue());
 
+        applicationSpecificTransparentTemplateSubTag.clear();
         applicationSpecificTransparentTemplateSubTag.add(TagIndicator.ISSUER_QRIS_DATA.getValue());
         applicationSpecificTransparentTemplateSubTag.add(TagIndicator.APPLICATION_CRYPTOGRAM.getValue());
         applicationSpecificTransparentTemplateSubTag.add(TagIndicator.CRYPTOGRAM_INFORMATION_DATA.getValue());
