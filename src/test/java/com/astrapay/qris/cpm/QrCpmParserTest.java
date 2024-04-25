@@ -29,15 +29,6 @@ class QrCpmParserTest {
     @Spy
     private QrisHexConverter qrisHexConverter;
 
-    @Spy
-    private List<String> qrisCpmSubTag = new ArrayList<>();
-
-    @Spy
-    private List<String> applicationTemplateSubTag = new ArrayList<>();
-
-    @Spy
-    private List<String> applicationSpecificTransparentTemplateSubTag = new ArrayList<>();
-
     /**
      * DATA_MOCK_BASE64_1 all available tag = 85, 61 > 4F, 50, 5A, 5F2D, 63 >> 9F74
      * DATA_MOCK_BASE64_2 all available tag = 85, 61 > 4F, 50, 5A, 5F20, 5F2D, 9F25, 63 >> 9F74
@@ -58,11 +49,11 @@ class QrCpmParserTest {
 
     @BeforeEach
     void setup(){
-        qrisCpmSubTag.clear();
+        List<String> qrisCpmSubTag = new ArrayList<>();
         qrisCpmSubTag.add(TagIndicator.PAYLOAD_FORMAT_INDICATOR.getValue());
         qrisCpmSubTag.add(TagIndicator.APPLICATION_TEMPLATE.getValue());
 
-        applicationTemplateSubTag.clear();
+        List<String> applicationTemplateSubTag = new ArrayList<>();
         applicationTemplateSubTag.add(TagIndicator.ADF_NAME.getValue());
         applicationTemplateSubTag.add(TagIndicator.APPLICATION_LABEL.getValue());
         applicationTemplateSubTag.add(TagIndicator.TRACK_2_EQUIVALENT_DATA.getValue());
@@ -76,7 +67,7 @@ class QrCpmParserTest {
         applicationTemplateSubTag.add(TagIndicator.PAYMENT_ACCOUNT_REFERENCE.getValue());
         applicationTemplateSubTag.add(TagIndicator.APPLICATION_SPECIFIC_TRANSPARENT_TEMPLATE.getValue());
 
-        applicationSpecificTransparentTemplateSubTag.clear();
+        List<String> applicationSpecificTransparentTemplateSubTag = new ArrayList<>();
         applicationSpecificTransparentTemplateSubTag.add(TagIndicator.ISSUER_QRIS_DATA.getValue());
         applicationSpecificTransparentTemplateSubTag.add(TagIndicator.APPLICATION_CRYPTOGRAM.getValue());
         applicationSpecificTransparentTemplateSubTag.add(TagIndicator.CRYPTOGRAM_INFORMATION_DATA.getValue());
@@ -85,6 +76,9 @@ class QrCpmParserTest {
         applicationSpecificTransparentTemplateSubTag.add(TagIndicator.APPLICATION_INTERCHANGE_PROFILE.getValue());
         applicationSpecificTransparentTemplateSubTag.add(TagIndicator.UNPREDICTABLE_NUMBER.getValue());
 
+        qrCpmParser.setQrisCpmSubTag(qrisCpmSubTag);
+        qrCpmParser.setApplicationTemplateSubTag(applicationTemplateSubTag);
+        qrCpmParser.setApplicationSpecificTransparentTemplateSubTag(applicationSpecificTransparentTemplateSubTag);
     }
 
     @Test

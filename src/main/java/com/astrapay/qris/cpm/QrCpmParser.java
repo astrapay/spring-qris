@@ -5,6 +5,7 @@ import com.astrapay.qris.cpm.enums.DataType;
 import com.astrapay.qris.cpm.enums.TagIndicator;
 import com.astrapay.qris.cpm.object.QrCpmDataObject;
 import com.astrapay.qris.cpm.object.QrCpmPayload;
+import lombok.Setter;
 import org.apache.commons.codec.DecoderException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,12 +29,15 @@ public class QrCpmParser {
     private static final Integer START_INDEX_TO_CONVERT_COMPRESSED_NUMERIC = 0;
 
     @Autowired
+    @Setter
     private List<String> qrisCpmSubTag;
 
     @Autowired
+    @Setter
     private List<String> applicationTemplateSubTag;
 
     @Autowired
+    @Setter
     private List<String> applicationSpecificTransparentTemplateSubTag;
 
     public QrCpmPayload parse(String payloadBase64) throws IOException, DecoderException {
