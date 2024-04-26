@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import static com.astrapay.qris.cpm.enums.TagIndicator.*;
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
@@ -97,6 +98,14 @@ public class QrisHexConverterTest {
     }
 
     @Test
+    void testConvertAlphaNumericHexIntoString_withoutIndex() throws DecoderException {
+        var hexString = "5152495343504D";
+        var expectedOutput = "QRISCPM";
+        assertEquals(expectedOutput, converter.convertAlphaNumericHexToString(hexString));
+    }
+
+
+    @Test
     void testConvertCompressedNumericHexToString() {
         var hexString = "9360123411234567899F";
         var index = 0;
@@ -166,6 +175,12 @@ public class QrisHexConverterTest {
         var base64 = converter.encodeToBase64(byteArrayOutputStream.toByteArray());
         var expectedOutput = "hQVDUFYwMWGBk08HoAAABgIgIFAHUVJJU0NQTQ==";
         assertEquals(expectedOutput, base64);
+    }
+
+    @Test
+    void testDecodeFromBase64() {
+        var base64 = "hQVDUFYwMQ==";
+        assertNotNull(converter.decodeFromBase64(base64));
     }
 }
 

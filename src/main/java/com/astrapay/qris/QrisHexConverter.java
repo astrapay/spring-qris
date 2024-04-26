@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Base64;
 
 @Service
@@ -12,12 +13,13 @@ public class QrisHexConverter {
 
     final int EVEN_LENGTH_CHECK = 2;
     final int ZERO = 0;
-    int NO_SUBTAG = 0;
     int SUFFIX_INDEX = 1;
     final String UNEVEN_COMPRESSED_NUMERIC_SUFFIX = "F";
 
     int FIRST_TAG_HEX_INDEX = 0;
     int SECOND_TAG_HEX_INDEX = 1;
+    int RADIX = 16;
+    int SHIFT_NUMBER = 4;
 
     public byte[] convertByteOrNumberToArrayByte(String numberOrByte) throws DecoderException {
         //acceptable string is a string that represent byte or number
@@ -88,6 +90,13 @@ public class QrisHexConverter {
         return Base64.getEncoder().encodeToString(valueInByteArray);
     }
 
+    public byte[] decodeFromBase64(String value) {
+        return Base64.getDecoder().decode(value);
+    }
+
+    public String convertAlphaNumericHexToString (String hexString) throws DecoderException {
+        return new String(Hex.decodeHex(hexString));
+    }
     public String convertAlphaNumericHexToString (String hexString, int index) throws DecoderException {
         return new String(Hex.decodeHex(hexString.substring(index)));
     }
@@ -101,6 +110,17 @@ public class QrisHexConverter {
             return hexString.substring(index, hexString.length() - SUFFIX_INDEX);
         }
         return hexString.substring(index);
+    }
+
+
+    public byte[] hexStringToByteArray(String s) {
+    byte[] byteArray = new byte[s.length() / EVEN_LENGTH_CHECK];
+        ByteBuffer buffer = ByteBuffer.wrap(byteArray);
+        for (int i = ZERO; i < s.length(); i += EVEN_LENGTH_CHECK) {
+            buffer.put((byte) ((Character.digit(s.charAt(i), RADIX) << SHIFT_NUMBER)
+                    + Character.digit(s.charAt(i + SUFFIX_INDEX), RADIX)));
+        }
+        return byteArray;
     }
 
 
