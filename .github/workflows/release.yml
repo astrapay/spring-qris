@@ -40,7 +40,9 @@ jobs:
       - name: Release package
         run: |
           gpg --list-keys
-          mvn --batch-mode --settings settings.xml -B -X release:clean release:prepare release:perform -Dgpg.keyname=${{secrets.GPG_KEYNAME}} -Dgpg.passphrase=${{secrets.GPG_PASSPHRASE}} -e
+#          mvn --batch-mode --settings settings.xml -B -X release:clean release:prepare release:perform -Dgpg.keyname=${{secrets.GPG_KEYNAME}} -Dgpg.passphrase=${{secrets.GPG_PASSPHRASE}} -e
+          mvn --batch-mode --settings settings.xml -B -X release:clean release:prepare release:perform -e
+
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
