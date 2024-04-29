@@ -444,9 +444,9 @@
 <!--                            </gpgArguments>-->
 <!--                        </configuration>-->
 
-<!--                        <configuration>-->
-<!--                            <skip>true</skip>-->
-<!--                        </configuration>-->
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
 
                         <executions>
                             <execution>
