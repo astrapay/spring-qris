@@ -424,6 +424,7 @@
     <profiles>
         <profile>
             <id>release</id>
+
             <activation>
                 <property>
                     <name>gpg.passphrase</name>
