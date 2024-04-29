@@ -41,23 +41,18 @@
         </license>
     </licenses>
 
-    <scm>
-        <connection>scm:git:https://github.com/astrapay/spring-qris.git</connection>
-        <developerConnection>scm:git:https://github.com/astrapay/spring-qris.git</developerConnection>
-        <url>https://github.com/astrapay/spring-qris</url>
-        <tag>spring-qris-1.30</tag>
-    </scm>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
+
+<!--    <distributionManagement>-->
+<!--        <snapshotRepository>-->
+<!--            <id>ossrh</id>-->
+<!--            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>-->
+<!--        </snapshotRepository>-->
+<!--        <repository>-->
+<!--            <id>ossrh</id>-->
+<!--            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+<!--        </repository>-->
+<!--    </distributionManagement>-->
 
     <dependencies>
         <dependency>
@@ -463,4 +458,28 @@
         </profile>
     </profiles>
 
+    <repositories>
+        <repository>
+            <id>astrapay-nexus</id>
+            <url>https://nexus.astrapay.com/repository/astrapay-nexus/</url>
+        </repository>
+    </repositories>
+
+    <scm>
+        <connection>scm:git:https://github.com/astrapay/spring-qris.git</connection>
+        <developerConnection>scm:git:https://github.com/astrapay/spring-qris.git</developerConnection>
+        <url>https://github.com/astrapay/spring-qris</url>
+        <tag>spring-qris-1.30</tag>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <url>https://nexus.astrapay.com/repository/maven-snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>nexus-releases</id>
+            <url>https://nexus.astrapay.com/repository/maven-releases/</url>
+        </repository>
+    </distributionManagement>
 </project>
