@@ -1,6 +1,3 @@
 # spring-qris#
 Spring QRIS
 
-
-
-
