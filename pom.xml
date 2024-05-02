@@ -10,14 +10,14 @@
     <groupId>com.astrapay</groupId>
     <artifactId>spring-qris</artifactId>
     <version>1.33-SNAPSHOT</version>
-    <name>astrapay-qris</name>
+    <name>spring-qris</name>
     <description>QRIS Parser for Spring by AstraPay</description>
-    <properties>
-        <java.version>11</java.version>
-        <sonar.projectKey>astrapay_spring-qris</sonar.projectKey>
-        <sonar.organization>astrapay</sonar.organization>
-        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-    </properties>
+<!--    <properties>-->
+<!--        <java.version>11</java.version>-->
+<!--        <sonar.projectKey>astrapay_spring-qris</sonar.projectKey>-->
+<!--        <sonar.organization>astrapay</sonar.organization>-->
+<!--        <sonar.host.url>https://sonarcloud.io</sonar.host.url>-->
+<!--    </properties>-->
     <url>https://github.com/astrapay/spring-qris</url>
 
     <developers>
