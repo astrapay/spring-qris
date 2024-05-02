@@ -10,7 +10,7 @@
     <groupId>com.astrapay</groupId>
     <artifactId>spring-qris</artifactId>
     <version>1.33-SNAPSHOT</version>
-    <name>spring-qris</name>
+    <name>astrapay-qris</name>
     <description>QRIS Parser for Spring by AstraPay</description>
 <!--    <properties>-->
 <!--        <java.version>11</java.version>-->
