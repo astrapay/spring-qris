@@ -14,9 +14,9 @@
     <description>QRIS Parser for Spring by AstraPay</description>
     <properties>
         <java.version>11</java.version>
-        <sonar.projectKey>astrapay_spring-qris</sonar.projectKey>
-        <sonar.organization>astrapay</sonar.organization>
-        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+<!--        <sonar.projectKey>astrapay_spring-qris</sonar.projectKey>-->
+<!--        <sonar.organization>astrapay</sonar.organization>-->
+<!--        <sonar.host.url>https://sonarcloud.io</sonar.host.url>-->
     </properties>
     <url>https://github.com/astrapay/spring-qris</url>
 
@@ -279,6 +279,11 @@
                 <configuration>
                     <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.0</version>
             </plugin>
             <plugin>
                 <groupId>org.owasp</groupId>
