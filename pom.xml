@@ -466,10 +466,10 @@
     </repositories>
 
     <scm>
-        <connection>scm:git:https://github.com/astrapay/spring-qris.git</connection>
-        <developerConnection>scm:git:https://github.com/astrapay/spring-qris.git</developerConnection>
-        <url>https://github.com/astrapay/spring-qris</url>
-        <tag>spring-qris-1.30</tag>
+        <connection>scm:git:git@github.com:astrapay/spring-qris.git</connection>
+        <developerConnection>scm:git:git@github.com:astrapay/spring-qris.git</developerConnection>
+        <url>scm:git:git@github.com:astrapay/spring-qris.git</url>
+        <tag>spring-qris-1.35</tag>
     </scm>
 
     <distributionManagement>
