@@ -234,6 +234,14 @@
             <version>2.7.18</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-wrapper-plugin -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-wrapper-plugin</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+
+
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-jcl -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -274,12 +282,12 @@
             <version>1.15</version> <!-- Or the latest version available -->
         </dependency>
     </dependencies>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>maven2</id>
-            <url>https://repo.maven.apache.org/maven2/</url>
-        </pluginRepository>
-    </pluginRepositories>
+<!--    <pluginRepositories>-->
+<!--        <pluginRepository>-->
+<!--            <id>maven2</id>-->
+<!--            <url>https://repo.maven.apache.org/maven2/</url>-->
+<!--        </pluginRepository>-->
+<!--    </pluginRepositories>-->
     <build>
 
         <plugins>
