@@ -26,7 +26,8 @@ public class QrCpmParser {
 
     private static final Integer SIZE_TO_EXTRACT_LENGTH = 2;
     private static final Integer HEX_PAIR_REPRESENTATION = 2;
-    private static final Integer START_INDEX_TO_CONVERT_COMPRESSED_NUMERIC = 0;
+    private static final Integer FIRST_INDEX = 0;
+    private static final Integer DEFAULT_TAG_LENGTH_IN_BYTES = 1;
 
     @Autowired
     @Setter
@@ -88,22 +89,46 @@ public class QrCpmParser {
             String currentTag =  payloadHexBased.substring(currentPosition, currentPosition + tag.length());
 
             if(tag.equals(currentTag)){
-                int lengthStartIndex = currentPosition + tag.length();
-                int lengthEndIndex = currentPosition + tag.length() + SIZE_TO_EXTRACT_LENGTH;
-
-                String lengthHexBased = payloadHexBased.substring(lengthStartIndex, lengthEndIndex);
-
+                int lengthTagStartIndex = currentPosition + tag.length();
+                int lengthTagByteCount = getTagLengthByteCount(qrisHexConverter.convertByteOrNumberToArrayByte(payloadHexBased.substring(lengthTagStartIndex)));
+                int lengthTagHexCount = getLengthInHex(lengthTagByteCount);
+                int lengthTagEndIndex = currentPosition + tag.length() + lengthTagHexCount;
                 //multiply by 2 because each value represent pair of hex. ex : length 1 = 00, length 2 = 00 00, length 3 = 00 00 00
-                Integer lengthIntegerBased = Integer.parseInt(lengthHexBased, HEX_RADIX) * HEX_PAIR_REPRESENTATION;
-
-                String valueInHexString = payloadHexBased.substring(lengthEndIndex, lengthEndIndex + lengthIntegerBased);
+                String lengthTag = payloadHexBased.substring(lengthTagStartIndex, lengthTagEndIndex);
+                Integer valueLengthInHex= this.getLengthValue(lengthTag, lengthTagByteCount);
+                String valueInHexString = payloadHexBased.substring(lengthTagEndIndex, lengthTagEndIndex + valueLengthInHex);
                 String value = this.getRealTagValue(currentTag, valueInHexString);
                 this.insertTLVMap(currentTag, value, qrisCpmMap);
 
-                currentPosition = lengthEndIndex + lengthIntegerBased;
+                currentPosition = lengthTagEndIndex + valueLengthInHex;
             }
 
             counter++;
+        }
+    }
+    // function to get the length of the tag in bytes
+    private int getLengthValue(String lengthTag, int lengthTagByteCount) {
+        // if the length is represented by more than 1 byte, then the first doesn't actually represent the length
+        if(lengthTagByteCount > DEFAULT_TAG_LENGTH_IN_BYTES) {
+            lengthTag = lengthTag.substring(DEFAULT_TAG_LENGTH_IN_BYTES * HEX_PAIR_REPRESENTATION);
+        }
+        return Integer.parseInt(lengthTag, HEX_RADIX) * HEX_PAIR_REPRESENTATION;
+    }
+    
+    // get the number of bytes representing the length of the tag
+    // if byte 8 is 1, then the length of the tag is represented by more than 1 byte:
+    //    byte 7 to 1 represents the number of subsequent bytes representing the length of the tag
+    // else, the length is 1 byte
+    // refer to EMV 4.4 Book 3 Application Specification, Annex B, B2
+    private int getTagLengthByteCount(byte[] qrByte) {
+        byte tagLength = qrByte[FIRST_INDEX];
+        // 0x80 = 10000000, tagLength & 0x80 will remove bits b7-b1
+        if ((tagLength & 0x80) == 0x80) {
+            int unsignedLength = this.getUnsignedInt(tagLength);
+            // total length = first byte + subsequent bytes
+            return DEFAULT_TAG_LENGTH_IN_BYTES + unsignedLength;
+        } else {
+            return DEFAULT_TAG_LENGTH_IN_BYTES;
         }
     }
 
@@ -129,7 +154,7 @@ public class QrCpmParser {
         }
 
         if(DataType.COMPRESSED_NUMERIC.equals(dataType)){
-            return qrisHexConverter.convertCompressedNumericHexToString(valueInHexString, START_INDEX_TO_CONVERT_COMPRESSED_NUMERIC);
+            return qrisHexConverter.convertCompressedNumericHexToString(valueInHexString, FIRST_INDEX);
         }
 
         return valueInHexString;
@@ -175,6 +200,17 @@ public class QrCpmParser {
             applicationSpecificTransparentTemplate.setTemplateMap(qrCpmDataObjectSubMap);
 
         }
+    }
+    
+    private int getLengthInHex(int lengthInBytes) {
+        // one byte is represented by two hex characters
+        return lengthInBytes * HEX_PAIR_REPRESENTATION;
+    }
+    
+    private int getUnsignedInt(byte val) {
+        // Byte is represented in two's complement, so we need to convert it to unsigned
+        // 0x7F = 10000000, tagLength & 0x7F will remove bit b8
+        return Byte.toUnsignedInt(val) & 0x7F;
     }
 
 }

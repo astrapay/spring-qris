@@ -954,5 +954,44 @@ class QrCpmParserTest {
 
 
     }
-
+    
+    @Test
+    void testParse_tagLengthMoreThan1Byte_1() throws DecoderException, IOException {
+        String qrText = "hQVDUFYwMWGBhU8HoAAABgIgIFAHUVJJU0NQTVoKk2AACRIACFB0j18gCkFTRVAgQUdVUyBfLQRpZGVuX1AebWFpbHRvOkEySDJIRU1JTkdXQVlAR01BSUwuQ09NnyUCB0hjK590KFNHUFNeNzc1MjUtNTAxMDAyMklCMVVBRUEtMDU1NTE1MDQyNTQwLU4=";
+        QrCpmPayload qrCpmPayload = qrCpmParser.parse(qrText);
+        Map<String, QrCpmDataObject> qrisRoot = qrCpmPayload.getQrisRoot();
+        Assertions.assertEquals(qrisRoot.get(TagIndicator.PAYLOAD_FORMAT_INDICATOR.getValue()).getValue(),"CPV01");
+        Map<String, QrCpmDataObject> applicationTemplate = qrisRoot.get(TagIndicator.APPLICATION_TEMPLATE.getValue()).getTemplateMap();
+        Assertions.assertEquals(applicationTemplate.get(TagIndicator.ADF_NAME.getValue()).getValue(), "A0000006022020");
+        Assertions.assertEquals(applicationTemplate.get(TagIndicator.APPLICATION_LABEL.getValue()).getValue(), "QRISCPM");
+        Assertions.assertEquals(applicationTemplate.get(TagIndicator.APP_PAN.getValue()).getValue(), "9360000912000850748");
+        Assertions.assertEquals(applicationTemplate.get(TagIndicator.CARDHOLDER_NAME.getValue()).getValue(), "ASEP AGUS ");
+        Assertions.assertEquals(applicationTemplate.get(TagIndicator.LANGUAGE_PREFERENCE.getValue()).getValue(), "iden");
+        Assertions.assertEquals(applicationTemplate.get(TagIndicator.ISSUER_URL.getValue()).getValue(), "mailto:A2H2HEMINGWAY@GMAIL.COM");
+        Assertions.assertEquals(applicationTemplate.get(TagIndicator.LAST_4_DIGIT_PAN.getValue()).getValue(), "0748");
+       
+        Map<String, QrCpmDataObject> applicationSpecificTransparentTemplate = applicationTemplate.get(TagIndicator.APPLICATION_SPECIFIC_TRANSPARENT_TEMPLATE.getValue()).getTemplateMap();
+        
+        Assertions.assertEquals(applicationSpecificTransparentTemplate.get(TagIndicator.ISSUER_QRIS_DATA.getValue()).getValue(), "534750535E37373532352D35303130303232494231554145412D3035353531353034323534302D4E");
+    }
+    
+    @Test
+    void testParse_tagLengthMoreThan1Byte_2() throws DecoderException, IOException {
+        String qrText = "hQVDUFYwMWGBk08HoAAABgIgIFAHUVJJU0NQTVoKk2ASNBEjRWeJn18gC1Jpa2kgRGVyaWFuXy0EaWRlbl9QF3Jpa2kuZGVyaWFuQHFyaXNjcG0uY29tnyUCeJljP590PDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MA==";
+        QrCpmPayload qrCpmPayload = qrCpmParser.parse(qrText);
+        Map<String, QrCpmDataObject> qrisRoot = qrCpmPayload.getQrisRoot();
+        Assertions.assertEquals(qrisRoot.get(TagIndicator.PAYLOAD_FORMAT_INDICATOR.getValue()).getValue(),"CPV01");
+        Map<String, QrCpmDataObject> applicationTemplate = qrisRoot.get(TagIndicator.APPLICATION_TEMPLATE.getValue()).getTemplateMap();
+        Assertions.assertEquals(applicationTemplate.get(TagIndicator.ADF_NAME.getValue()).getValue(), "A0000006022020");
+        Assertions.assertEquals(applicationTemplate.get(TagIndicator.APPLICATION_LABEL.getValue()).getValue(), "QRISCPM");
+        Assertions.assertEquals(applicationTemplate.get(TagIndicator.APP_PAN.getValue()).getValue(), "9360123411234567899");
+        Assertions.assertEquals(applicationTemplate.get(TagIndicator.CARDHOLDER_NAME.getValue()).getValue(), "Riki Derian");
+        Assertions.assertEquals(applicationTemplate.get(TagIndicator.LANGUAGE_PREFERENCE.getValue()).getValue(), "iden");
+        Assertions.assertEquals(applicationTemplate.get(TagIndicator.ISSUER_URL.getValue()).getValue(), "riki.derian@qriscpm.com");
+        Assertions.assertEquals(applicationTemplate.get(TagIndicator.LAST_4_DIGIT_PAN.getValue()).getValue(), "7899");
+        
+        Map<String, QrCpmDataObject> applicationSpecificTransparentTemplate = applicationTemplate.get(TagIndicator.APPLICATION_SPECIFIC_TRANSPARENT_TEMPLATE.getValue()).getTemplateMap();
+        
+        Assertions.assertEquals(applicationSpecificTransparentTemplate.get(TagIndicator.ISSUER_QRIS_DATA.getValue()).getValue(), "313233343536373839303132333435363738393031323334353637383930313233343536373839303132333435363738393031323334353637383930");
+    }
 }
