@@ -106,22 +106,21 @@ public class QrCpmParser {
             counter++;
         }
     }
+    // function to get the length of the tag in bytes
     private int getLengthValue(String lengthTag, int lengthTagByteCount) {
-        // function to get the length of the tag in bytes
+        // if the length is represented by more than 1 byte, then the first doesn't actually represent the length
         if(lengthTagByteCount > DEFAULT_TAG_LENGTH_IN_BYTES) {
-            // if the length is represented by more than 1 byte, then the first doesn't actually represent the length
             lengthTag = lengthTag.substring(DEFAULT_TAG_LENGTH_IN_BYTES * HEX_PAIR_REPRESENTATION);
         }
         return Integer.parseInt(lengthTag, HEX_RADIX) * HEX_PAIR_REPRESENTATION;
     }
     
-    
+    // get the number of bytes representing the length of the tag
+    // if byte 8 is 1, then the length of the tag is represented by more than 1 byte:
+    //    byte 7 to 1 represents the number of subsequent bytes representing the length of the tag
+    // else, the length is 1 byte
+    // refer to EMV 4.4 Book 3 Application Specification, Annex B, B2
     private int getTagLengthByteCount(byte[] qrByte) {
-        // get the number of bytes representing the length of the tag
-        // if byte 8 is 1, then the length of the tag is represented by more than 1 byte:
-        //    byte 7 to 1 represents the number of subsequent bytes representing the length of the tag
-        // else, the length is 1 byte
-        // refer to EMV 4.4 Book 3 Application Specification, Annex B, B2
         byte tagLength = qrByte[FIRST_INDEX];
         // 0x80 = 10000000, tagLength & 0x80 will remove bits b7-b1
         if ((tagLength & 0x80) == 0x80) {
