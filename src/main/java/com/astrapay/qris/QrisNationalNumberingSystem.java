@@ -25,7 +25,7 @@ public interface QrisNationalNumberingSystem {
         BANK_JAGO(93600542, Switching.ALTO),
         SEABANK(93600535, Switching.ALTO),
         CASHLEZ(93600839, Switching.ALTO),
-        PT_HONEST_FINANCIAL_TECHNOLOGIES(93600847, Switching.ALTO),
+        HONEST(93600847, Switching.ALTO),
 
 
         BNI(93600009, Switching.ARTAJASA),
