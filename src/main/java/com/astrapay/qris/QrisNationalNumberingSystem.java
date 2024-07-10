@@ -25,6 +25,7 @@ public interface QrisNationalNumberingSystem {
         BANK_JAGO(93600542, Switching.ALTO),
         SEABANK(93600535, Switching.ALTO),
         CASHLEZ(93600839, Switching.ALTO),
+        HONEST(93600847, Switching.ALTO),
 
 
         BNI(93600009, Switching.ARTAJASA),
@@ -61,7 +62,7 @@ public interface QrisNationalNumberingSystem {
         BANK_SULUTGO(93600127, Switching.ARTAJASA),
         BANK_WOORI_SAUDARA(93600212, Switching.ARTAJASA),
         BANK_PEMBANGUNAN_DAERAH_BENGKULU( 93600133, Switching.ARTAJASA),
-        
+
         SINARMAS_RINTIS(93600153,Switching.RINTIS),
         KB_BUKOPIN(93600441,Switching.RINTIS),
         BPD_JATIM_RINTIS(93600114,Switching.RINTIS),
@@ -114,7 +115,7 @@ public interface QrisNationalNumberingSystem {
         YODU(93600830, Switching.JALIN),
         GDC_PAY(93600832, Switching.JALIN),
         MANDIRI_TASPEN(93600564, Switching.JALIN);
-    
+
         private Integer code;
         private Switching switching;
 
