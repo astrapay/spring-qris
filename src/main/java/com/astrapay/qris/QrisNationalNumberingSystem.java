@@ -26,6 +26,7 @@ public interface QrisNationalNumberingSystem {
         SEABANK(93600535, Switching.ALTO),
         CASHLEZ(93600839, Switching.ALTO),
         HONEST(93600847, Switching.ALTO),
+        FINPAY(93600777, Switching.ALTO),
 
 
         BNI(93600009, Switching.ARTAJASA),
