@@ -27,6 +27,7 @@ public interface QrisNationalNumberingSystem {
         CASHLEZ(93600839, Switching.ALTO),
         HONEST(93600847, Switching.ALTO),
         FINPAY(93600777, Switching.ALTO),
+        BANK_CAPITAL_INDONESIA(93600054, Switching.ALTO),
 
 
         BNI(93600009, Switching.ARTAJASA),
