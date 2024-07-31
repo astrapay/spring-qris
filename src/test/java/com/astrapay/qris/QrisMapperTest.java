@@ -2,12 +2,16 @@ package com.astrapay.qris;
 
 import com.astrapay.qris.mpm.QrisMapper;
 import com.astrapay.qris.mpm.QrisParser;
-import com.astrapay.qris.mpm.object.Qris;
-import com.astrapay.qris.mpm.object.QrisPayload;
+import com.astrapay.qris.mpm.object.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -43,7 +47,87 @@ class QrisMapperTest {
     Qris qris = qrisMapper.map(qrisPayload.getQrisRoot());
     assertEquals(payloadString,qris.toString());
   }
-  
-  
+
+  @Test
+  void testMapMerchantInformationLanguage() throws Exception {
+    // Setup the payload map with mock data
+    Map<Integer, QrisDataObject> payload = new HashMap<>();
+    Map<Integer, QrisDataObject> templateMap = new HashMap<>();
+
+    // Populate the template map with mock data
+    templateMap.put(0, new QrisDataObject("00", "3", "en_IN")); // Language Preference
+    templateMap.put(1, new QrisDataObject("01", "3", "Alt Merchant Name")); // Alternate Merchant Name
+    templateMap.put(2, new QrisDataObject("02", "3", "Alt Merchant City")); // Alternate Merchant City
+
+    // Create and populate the QrisDataObject for key 64
+    QrisDataObject languageDataObject = new QrisDataObject("64", "3", "lang");
+    languageDataObject.setTemplateMap(templateMap);
+    payload.put(64, languageDataObject);
+
+    // Create a new Qris object
+    Qris qrisObject = new Qris();
+
+    // Use reflection to access the private method
+    Method method = QrisMapper.class.getDeclaredMethod("mapMerchantInformationLanguage", Map.class, Qris.class);
+    method.setAccessible(true);
+    method.invoke(qrisMapper, payload, qrisObject);
+
+    // Verify the results
+    MerchantInformationLanguage result = qrisObject.getMerchantInformationLanguage();
+    assertNotNull(result, "MerchantInformationLanguage should not be null");
+
+    // Check the alternate merchant name and city
+    assertEquals("Alt Merchant Name", result.getMerchantNameAlternateLanguage(), "MerchantNameAlternateLanguage should match the expected value");
+    assertEquals("Alt Merchant City", result.getMerchantCityAlternateLanguage(), "MerchantCityAlternateLanguage should match the expected value");
+  }
+
+  @Test
+  void testMapAdditionalData() throws Exception {
+    // Setup the payload map with mock data
+    Map<Integer, QrisDataObject> payload = new LinkedHashMap<>();
+    Map<Integer, QrisDataObject> templateMap = new LinkedHashMap<>();
+
+    // Populate the template map with mock data
+    templateMap.put(1, new QrisDataObject("01", "3", "Value1"));
+    templateMap.put(2, new QrisDataObject("02", "3", "Value2"));
+    templateMap.put(3, new QrisDataObject("03", "3", "Value3"));
+    templateMap.put(4, new QrisDataObject("04", "3", "Value4"));
+    templateMap.put(5, new QrisDataObject("05", "3", "Value5"));
+    templateMap.put(6, new QrisDataObject("06", "3", "Value6"));
+    templateMap.put(7, new QrisDataObject("07", "3", "Value7"));
+    templateMap.put(8, new QrisDataObject("08", "3", "Value8"));
+    templateMap.put(9, new QrisDataObject("09", "3", "ConsumerRequest"));
+
+    // Create and populate the QrisDataObject for key 62
+    QrisDataObject additionalDataObject = new QrisDataObject("62", "99", "AdditionalDataValue");
+    additionalDataObject.setTemplateMap(templateMap);
+    payload.put(62, additionalDataObject);
+
+    // Create a new Qris object
+    Qris qrisObject = new Qris();
+
+    // Use reflection to access the private method
+    Method method = QrisMapper.class.getDeclaredMethod("mapAdditionalData", Map.class, Qris.class);
+    method.setAccessible(true);
+    method.invoke(qrisMapper, payload, qrisObject);
+
+    // Verify the results
+    AdditionalData result = qrisObject.getAdditionalData();
+    assertNotNull(result, "AdditionalData should not be null");
+
+    // Check data objects
+    Map<Integer, String> expectedDataObjects = new LinkedHashMap<>();
+    for (int i = 1; i <= 8; i++) {
+      expectedDataObjects.put(i, "Value" + i);
+    }
+    assertEquals(expectedDataObjects, result.getDataObjects(), "DataObjects should match the expected values");
+
+    // Check additional data value
+    assertEquals("AdditionalDataValue", result.getValue(), "AdditionalData value should match");
+
+    // Check consumer data request
+    assertEquals("ConsumerRequest", result.getConsumerDataRequest(), "ConsumerDataRequest should match");
+
+  }
 
 }
