@@ -6,10 +6,11 @@ import com.astrapay.qris.cpm.object.QrCpmDataObject;
 import com.astrapay.qris.cpm.object.QrisCpm;
 import com.astrapay.qris.mpm.object.ApplicationSpecificTransparentTemplate;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
-@NoArgsConstructor
+@Service
 public class QrCpmMapper {
     // map from QrCpmPayload to QrisCpm
 
