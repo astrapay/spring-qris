@@ -29,6 +29,7 @@ public interface QrisNationalNumberingSystem {
         FINPAY(93600777, Switching.ALTO),
         BANK_CAPITAL_INDONESIA(93600054, Switching.ALTO),
 
+
         BNI(93600009, Switching.ARTAJASA),
         IMKAS(93600789, Switching.ARTAJASA),
         PERMATA(93600013, Switching.ARTAJASA),
