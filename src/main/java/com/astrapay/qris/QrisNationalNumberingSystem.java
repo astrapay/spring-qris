@@ -28,7 +28,8 @@ public interface QrisNationalNumberingSystem {
         HONEST(93600847, Switching.ALTO),
         FINPAY(93600777, Switching.ALTO),
         BANK_CAPITAL_INDONESIA(93600054, Switching.ALTO),
-
+        PT_BPD_SUMATERA_UTARA(93600117, Switching.ALTO),
+        PT_NUSAPAY_SOLUSI_INDONESIA(93600836, Switching.ALTO),
 
         BNI(93600009, Switching.ARTAJASA),
         IMKAS(93600789, Switching.ARTAJASA),
