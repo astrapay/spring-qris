@@ -31,6 +31,7 @@ public interface QrisNationalNumberingSystem {
         PT_BPD_SUMATERA_UTARA(93600117, Switching.ALTO),
         PT_NUSAPAY_SOLUSI_INDONESIA(93600836, Switching.ALTO),
         PAYLABS(93600849, Switching.ALTO),
+        XENDIT(93600848, Switching.ALTO),
 
         BNI(93600009, Switching.ARTAJASA),
         IMKAS(93600789, Switching.ARTAJASA),
