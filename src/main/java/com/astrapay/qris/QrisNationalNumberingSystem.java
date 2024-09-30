@@ -51,7 +51,6 @@ public interface QrisNationalNumberingSystem {
         BANK_MUAMALAT(93600147, Switching.ARTAJASA),
         BANK_BPD_JAMBI(93600115, Switching.ARTAJASA),
         BANK_QNB(93600167, Switching.ARTAJASA),
-        BANK_COMMONWEALTH(93600950, Switching.ARTAJASA),
         BANK_MAYORA(93600553, Switching.ARTAJASA),
         BPD_PAPUA(93600132,Switching.ARTAJASA),
         BANK_KALBAR(93600123,Switching.ARTAJASA),
@@ -99,6 +98,8 @@ public interface QrisNationalNumberingSystem {
         AMAR_BANK(93600531, Switching.RINTIS),
         BANK_MASPION(93600157, Switching.RINTIS),
         BANK_CCBI(93600036, Switching.RINTIS),
+        BLUEPAY_RINTIS(93600919, Switching.RINTIS),
+        YOURPAY(93600923, Switching.RINTIS),
 
 
         BANK_ACEH_SYARIAH(93600116,Switching.JALIN),
