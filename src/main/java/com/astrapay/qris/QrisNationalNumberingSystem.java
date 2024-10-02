@@ -100,6 +100,7 @@ public interface QrisNationalNumberingSystem {
         BANK_CCBI(93600036, Switching.RINTIS),
         BLUEPAY_RINTIS(93600919, Switching.RINTIS),
         YOURPAY(93600923, Switching.RINTIS),
+        PT_BANK_MESTIKA_DHARMA(93600151, Switching.RINTIS),
 
 
         BANK_ACEH_SYARIAH(93600116,Switching.JALIN),
@@ -120,6 +121,7 @@ public interface QrisNationalNumberingSystem {
         BANK_RAYA(93600494, Switching.JALIN),
         YODU(93600830, Switching.JALIN),
         GDC_PAY(93600832, Switching.JALIN),
+        BATPAY(93600841, Switching.JALIN),
         MANDIRI_TASPEN(93600564, Switching.JALIN);
 
         private Integer code;
