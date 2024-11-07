@@ -32,6 +32,10 @@ public interface QrisNationalNumberingSystem {
         PT_NUSAPAY_SOLUSI_INDONESIA(93600836, Switching.ALTO),
         PAYLABS(93600849, Switching.ALTO),
         XENDIT(93600848, Switching.ALTO),
+        ZIPAY(93600825, Switching.ALTO),
+        NETZME_ALTO(93600814, Switching.ALTO),
+        MNC_SPIN_ALTO(93600816, Switching.ALTO),
+        GUDANG_VOUCHER_ALTO(93600916, Switching.ALTO),
 
         BNI(93600009, Switching.ARTAJASA),
         IMKAS(93600789, Switching.ARTAJASA),
@@ -122,6 +126,7 @@ public interface QrisNationalNumberingSystem {
         YODU(93600830, Switching.JALIN),
         GDC_PAY(93600832, Switching.JALIN),
         BATPAY(93600841, Switching.JALIN),
+        PT_BANK_PANIN_DUBAI_SYARIAH(93600517, Switching.JALIN),
         MANDIRI_TASPEN(93600564, Switching.JALIN);
 
         private Integer code;
