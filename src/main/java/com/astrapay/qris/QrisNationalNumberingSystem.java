@@ -36,6 +36,7 @@ public interface QrisNationalNumberingSystem {
         NETZME_ALTO(93600814, Switching.ALTO),
         MNC_SPIN_ALTO(93600816, Switching.ALTO),
         GUDANG_VOUCHER_ALTO(93600916, Switching.ALTO),
+        PT_SUPER_BANK_INDONESIA(93600562,Switching.ALTO),
 
         BNI(93600009, Switching.ARTAJASA),
         IMKAS(93600789, Switching.ARTAJASA),
