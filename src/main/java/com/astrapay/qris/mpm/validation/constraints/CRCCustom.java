@@ -1,33 +1,34 @@
 package com.astrapay.qris.mpm.validation.constraints;
 
-import com.astrapay.qris.mpm.validation.PayloadFormatIndicatorFirstPositionValidator;
+import com.astrapay.qris.mpm.validation.CRCLastPositionCustomValidator;
+import com.astrapay.qris.mpm.validation.CRCLastPositionValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * <b>3.2 Organisasi Data</b>
- * Payload Format Indicator (ID "00") adalah data object pertama di bawah root.<br/>
- * <b>4.6.1.1</b> Payload Format Indicator (ID "00") harus menjadi urutan pertama data object dalam QR Code.
+ * CRC (ID "63") adalah data object terakhir di bawah root.<br/>
+ * <b>4.6.1.2</b> CRC (ID "63") harus menjadi urutan terakhir data object dalam QR Code.
  */
 @Documented
-@Constraint(validatedBy = {PayloadFormatIndicatorFirstPositionValidator.class})
-@Target({METHOD,FIELD})
+@Constraint(validatedBy = {CRCLastPositionCustomValidator.class})
+@Target({ElementType.METHOD, FIELD})
 @Retention(RUNTIME)
-public @interface PayloadFormatIndicatorFirstPosition {
+public @interface CRCCustom {
 
-        /**
+    /**
      *
      * @return String
      */
-    String message() default "Payload Format Indicator (ID 00) harus menjadi urutan pertama data object dalam QR Code.";
+    String message() default "CRC custom";
 
     /**
      *

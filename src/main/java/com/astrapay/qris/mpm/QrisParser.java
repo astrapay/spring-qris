@@ -1,6 +1,8 @@
 package com.astrapay.qris.mpm;
 
 import com.astrapay.qris.mpm.object.QrisDataObject;
+import com.astrapay.qris.mpm.object.QrisDataObjectTransfer;
+import com.astrapay.qris.mpm.object.QrisDataObjectTuntas;
 import com.astrapay.qris.mpm.object.QrisPayload;
 
 import java.util.LinkedHashMap;
@@ -20,6 +22,24 @@ public class QrisParser {
     public QrisPayload parse(String qris) {
         QrisPayload qrisPayload = new QrisPayload();
         qrisPayload.setPayload(qris);
+        parse(qrisPayload);
+
+        return qrisPayload;
+    }
+
+    public QrisPayload parseCoba(String qris) {
+//        QrisPayload qrisPayload = new QrisPayload();
+//        qrisPayload.setPayload(qris);
+        QrisPayload qrisPayload = new QrisPayload();
+
+        if(qris.contains("Kopi")){
+            qrisPayload = new QrisDataObjectTuntas();
+        } else {
+            qrisPayload = new QrisDataObjectTransfer();
+        }
+//        QrisDataObjectTuntas qrisPayloadz = new QrisDataObjectTuntas();
+        qrisPayload.setPayload(qris);
+
         parse(qrisPayload);
         return qrisPayload;
     }

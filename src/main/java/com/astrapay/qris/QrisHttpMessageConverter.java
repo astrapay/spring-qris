@@ -42,7 +42,7 @@ public class QrisHttpMessageConverter<T extends QrisPayload> extends AbstractHtt
     @SuppressWarnings("unchecked")
     protected T readInternal(Class<? extends T> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
         String text = new BufferedReader(new InputStreamReader(inputMessage.getBody(), StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
-        return (T) qrisParser.parse(text);
+        return (T) qrisParser.parseCoba(text);
     }
 
     @Override

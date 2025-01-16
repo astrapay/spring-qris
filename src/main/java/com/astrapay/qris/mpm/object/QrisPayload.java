@@ -102,7 +102,6 @@ public class QrisPayload {
     @CharLength(from=63, to=63, min=4, max=4)
     @CharLength(from=64, to=99, min=1, max=99)
     @MerchantAccountInformation2To45Exist
-    @PayloadFormatIndicatorFirstPosition
     @CRCLastPosition
     @PointOfInitiationMethodValue
     @PayloadFormatIndicatorValue

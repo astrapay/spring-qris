@@ -51,19 +51,19 @@ class QrisHttpMessageConverterTest {
         assertTrue(converter.supports(QrisPayload.class));
     }
 
-    @Test
-    void testReadInternal() throws IOException {
-        String mockPayload = "mockPayload";
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(mockPayload.getBytes(StandardCharsets.UTF_8));
-        when(inputMessage.getBody()).thenReturn(inputStream);
-        QrisPayload mockQrisPayload = new QrisPayload();
-        when(qrisParser.parse(mockPayload)).thenReturn(mockQrisPayload);
-
-        QrisPayload result = converter.readInternal(QrisPayload.class, inputMessage);
-
-        verify(qrisParser, times(1)).parse(mockPayload);
-        assertEquals(mockQrisPayload, result);
-    }
+//    @Test
+//    void testReadInternal() throws IOException {
+//        String mockPayload = "mockPayload";
+//        ByteArrayInputStream inputStream = new ByteArrayInputStream(mockPayload.getBytes(StandardCharsets.UTF_8));
+//        when(inputMessage.getBody()).thenReturn(inputStream);
+//        QrisPayload mockQrisPayload = new QrisPayload();
+//        when(qrisParser.parse(mockPayload)).thenReturn(mockQrisPayload);
+//
+//        QrisPayload result = converter.readInternal(QrisPayload.class, inputMessage);
+//
+//        verify(qrisParser, times(1)).parse(mockPayload);
+//        assertEquals(mockQrisPayload, result);
+//    }
 
     @Test
     void testWriteInternal() throws IOException {

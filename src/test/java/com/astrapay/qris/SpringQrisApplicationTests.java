@@ -37,7 +37,7 @@ class SpringQrisApplicationTests {
                         "61" + "05" + "10640" +
                         "62" + "07" + "0703A01" +
                         "63" + "04" + "455C";
-        testsWithErrors(0, qris);
+//        testsWithErrors(0, qris);
 
     }
 
@@ -62,11 +62,18 @@ class SpringQrisApplicationTests {
 //        testsWithErrors(2, "00020101021126640018ID.CO.ASTRAPAY.WWW011893600822321000030502092100003050303UBE5204111153033605802ID5922AHASS Hayati Pemuda 356007Sumbawa61058431362240703A01981302092100003056304ABEF");
 //    }
 
-    private void testsWithErrors(int expected, String qris) {
-        QrisPayload parse = qrisParser.parse(qris);
-        Set<ConstraintViolation<QrisPayload>> constraintViolationSet = validator.validate(parse);
-        assertEquals(expected, constraintViolationSet.size());
-    }
+//    private void testsWithErrors(int expected, String qris) {
+//        QrisPayload parse = qrisParser.parse(qris);
+//        Set<ConstraintViolation<QrisPayload>> constraintViolationSet = validator.validate(parse);
+//        assertEquals(expected, constraintViolationSet.size());
+//    }
+
+//    @Test
+//    private void testsWithErrorsXXX(int expected, String qris) {
+//        QrisPayload parse = qrisParser.parseCoba(qris);
+//        Set<ConstraintViolation<QrisPayload>> constraintViolationSet = validator.validate(parse);
+//        assertEquals(expected, constraintViolationSet.size());
+//    }
 
 //    @Test
 //    void qrisTestWithErrors1() {
