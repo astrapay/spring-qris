@@ -39,6 +39,8 @@ public interface QrisNationalNumberingSystem {
         PT_SUPER_BANK_INDONESIA(93600562,Switching.ALTO),
         PT_BANK_NANO_SYARIAH(93600253,Switching.ALTO),
 
+        BANK_JASA_JAKARTA(93600472, Switching.ALTO),
+
         BNI(93600009, Switching.ARTAJASA),
         IMKAS(93600789, Switching.ARTAJASA),
         PERMATA(93600013, Switching.ARTAJASA),
