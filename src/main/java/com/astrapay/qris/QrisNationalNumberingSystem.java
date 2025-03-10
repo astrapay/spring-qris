@@ -42,7 +42,6 @@ public interface QrisNationalNumberingSystem {
         BANK_JASA_JAKARTA(93600472, Switching.ALTO),
 
         BNI(93600009, Switching.ARTAJASA),
-        IMKAS(93600789, Switching.ARTAJASA),
         PERMATA(93600013, Switching.ARTAJASA),
         BPD_JATIM(93600114, Switching.ARTAJASA),
         BPD_BALI(93600129, Switching.ARTAJASA),
@@ -74,6 +73,7 @@ public interface QrisNationalNumberingSystem {
         BANK_SULUTGO(93600127, Switching.ARTAJASA),
         BANK_WOORI_SAUDARA(93600212, Switching.ARTAJASA),
         BANK_PEMBANGUNAN_DAERAH_BENGKULU( 93600133, Switching.ARTAJASA),
+        CASHFAZZ( 93600837, Switching.ARTAJASA),
 
         SINARMAS_RINTIS(93600153,Switching.RINTIS),
         KB_BUKOPIN(93600441,Switching.RINTIS),
