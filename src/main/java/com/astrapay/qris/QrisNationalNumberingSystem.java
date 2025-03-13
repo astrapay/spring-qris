@@ -41,7 +41,7 @@ public interface QrisNationalNumberingSystem {
 
         BANK_JASA_JAKARTA(93600472, Switching.ALTO),
         ALLO_BANK(93600567, Switching.ALTO),
-        BPKRS(93600688, Switching.ALTO),
+        BPRKS(93600688, Switching.ALTO),
 
         BNI(93600009, Switching.ARTAJASA),
         PERMATA(93600013, Switching.ARTAJASA),
