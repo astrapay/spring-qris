@@ -36,7 +36,7 @@ jobs:
 
   Release-Perform:
     needs: Release-Prepare
-    uses: astrapay/github-workflows-backend/.github/workflows/release-perform-java-17.yml@master
+    uses: astrapay/github-workflows-backend/.github/workflows/release-perform.yml@master
     secrets:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
