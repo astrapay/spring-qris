@@ -13,7 +13,7 @@ concurrency:
 jobs:   
   Build-Test:
     if: ${{ github.actor != 'dependabot[bot]' && !contains(github.event.pull_request.labels.*.name, 'dependencies') && !contains(github.event.head_commit.message, '[ci-skip]') }}
-    uses: astrapay/github-workflows-backend/.github/workflows/build-test-java-17.yml@master
+    uses: astrapay/github-workflows-backend/.github/workflows/build-test.yml@master
     secrets:
       DEPLOYMENT_CREDENTIALS: ${{ secrets.DEPLOYMENT_CREDENTIALS }}
       BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
@@ -23,11 +23,11 @@ jobs:
 
   Package-Snapshot:
     needs: Build-Test
-    uses: astrapay/github-workflows-backend/.github/workflows/package-snapshot-java-17.yml@master
+    uses: astrapay/github-workflows-backend/.github/workflows/package-snapshot.yml@master
 
   Release-Prepare:
     needs: Package-Snapshot
-    uses: astrapay/github-workflows-backend/.github/workflows/release-prepare-java-17.yml@master
+    uses: astrapay/github-workflows-backend/.github/workflows/release-prepare.yml@master
     with:
       environment: PROD
     secrets:
@@ -36,7 +36,7 @@ jobs:
 
   Release-Perform:
     needs: Release-Prepare
-    uses: astrapay/github-workflows-backend/.github/workflows/release-perform-java.yml@master
+    uses: astrapay/github-workflows-backend/.github/workflows/release-perform.yml@master
     secrets:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
