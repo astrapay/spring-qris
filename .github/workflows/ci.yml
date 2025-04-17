@@ -1,0 +1,19 @@
+# .github/workflows/ci.yml
+name: CI Pipeline Spring Qris
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize] #untuk menentukan trigger dari pipeline
+    branches-ignore:
+      - 'dependabot**/**/*'
+
+jobs:
+  ci:
+    if: ${{ github.actor != 'dependabot[bot]' && !contains(github.event.pull_request.labels.*.name, 'dependencies') }}
+    uses: astrapay/github-workflows-backend/.github/workflows/build-test-java-17.yml@master
+    secrets:
+      deployment_credentials: ${{ secrets.DEPLOYMENT_CREDENTIALS }}
+      bucket_name: ${{ secrets.BUCKET_NAME }}
+      project_id: ${{ secrets.PROJECT_ID }}
+      sonar_token: ${{ secrets.SONAR_TOKEN }}
+      maven_settings: ${{ secrets.MAVEN_SETTINGS }}

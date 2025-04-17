@@ -1,0 +1,51 @@
+name: CD Pipeline Spring Qris
+
+on:
+  push:
+    branches:
+      - master
+      - testcd
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  
+jobs:   
+  Build-Test:
+    if: ${{ github.actor != 'dependabot[bot]' && !contains(github.event.pull_request.labels.*.name, 'dependencies') && !contains(github.event.head_commit.message, '[ci-skip]') }}
+    uses: astrapay/github-workflows-backend/.github/workflows/build-test-java-17.yml@master
+    secrets:
+      DEPLOYMENT_CREDENTIALS: ${{ secrets.DEPLOYMENT_CREDENTIALS }}
+      BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      MAVEN_SETTINGS: ${{ secrets.MAVEN_SETTINGS }}
+
+  Package-Snapshot:
+    needs: Build-Test
+    uses: astrapay/github-workflows-backend/.github/workflows/package-snapshot-java-17.yml@master
+
+  Release-Prepare:
+    needs: Package-Snapshot
+    uses: astrapay/github-workflows-backend/.github/workflows/release-prepare-java-17.yml@master
+    with:
+      environment: PROD
+    secrets:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}     
+
+  Release-Perform:
+    needs: Release-Prepare
+    uses: astrapay/github-workflows-backend/.github/workflows/release-perform-java-17.yml@master
+    secrets:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
+
+  Rollback-Release:
+    needs: [Release-Perform]
+    if: ${{ (failure() || cancelled()) && needs.Release-Prepare.result == 'success' }}
+    uses: astrapay/github-workflows-backend/.github/workflows/rollback-java-17.yml@master
+    secrets:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
+        
