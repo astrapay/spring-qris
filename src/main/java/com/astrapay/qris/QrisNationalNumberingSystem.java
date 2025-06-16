@@ -1,5 +1,8 @@
 package com.astrapay.qris;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public interface QrisNationalNumberingSystem {
 
     enum Switching{
@@ -38,48 +41,11 @@ public interface QrisNationalNumberingSystem {
         GUDANG_VOUCHER_ALTO(93600916, Switching.ALTO),
         PT_SUPER_BANK_INDONESIA(93600562,Switching.ALTO),
         PT_BANK_NANO_SYARIAH(93600253,Switching.ALTO),
-
         BANK_JASA_JAKARTA(93600472, Switching.ALTO),
         ALLO_BANK(93600567, Switching.ALTO),
         BPRKS(93600688, Switching.ALTO),
         AGI(93600037, Switching.ALTO),
         INACASH(93600831, Switching.ALTO),
-
-        BNI(93600009, Switching.ARTAJASA),
-        PERMATA(93600013, Switching.ARTAJASA),
-        BPD_JATIM(93600114, Switching.ARTAJASA),
-        BPD_BALI(93600129, Switching.ARTAJASA),
-        BANK_SYARIAH_MANDIRI(93600451, Switching.ARTAJASA),
-        NOBU(93600503, Switching.ARTAJASA),
-        TSEL_LINK_AJA(93600911, Switching.ARTAJASA),
-        OVO(93600912, Switching.ARTAJASA),
-        GOPAY(93600914, Switching.ARTAJASA),
-        DANA(93600915, Switching.ARTAJASA),
-        PAYTREN(93600917, Switching.ARTAJASA),
-        UOB(93600023, Switching.ARTAJASA),
-        BPD_NTT(93600130, Switching.ARTAJASA),
-        GUDANG_VOUCHER(93600916, Switching.ARTAJASA),
-        BANK_MUAMALAT(93600147, Switching.ARTAJASA),
-        BANK_BPD_JAMBI(93600115, Switching.ARTAJASA),
-        BANK_QNB(93600167, Switching.ARTAJASA),
-        BANK_MAYORA(93600553, Switching.ARTAJASA),
-        BPD_PAPUA(93600132,Switching.ARTAJASA),
-        BANK_KALBAR(93600123,Switching.ARTAJASA),
-        BANK_JABAR_BANTEN_SYARIAH(93600425,Switching.ARTAJASA),
-        BANK_SHINHAN(93600152, Switching.ARTAJASA),
-        MOTION_BANKING(93600485, Switching.ARTAJASA),
-        PAC_CASH(93600820, Switching.ARTAJASA),
-        BANK_LAMPUNG(93600121, Switching.ARTAJASA),
-        BANK_KALSEL(93600122, Switching.ARTAJASA),
-        CITIBANK(93600031,  Switching.ARTAJASA),
-        BANK_ALADIN_SYARIAH(93600947, Switching.ARTAJASA),
-        M_BAYAR(93600829,  Switching.ARTAJASA),
-        BANK_SULUTGO(93600127, Switching.ARTAJASA),
-        BANK_WOORI_SAUDARA(93600212, Switching.ARTAJASA),
-        BANK_PEMBANGUNAN_DAERAH_BENGKULU( 93600133, Switching.ARTAJASA),
-        CASHFAZZ( 93600837, Switching.ARTAJASA),
-        BANK_CIMB_NIAGA(93600022, Switching.ARTAJASA),
-
 
         SINARMAS_RINTIS(93600153,Switching.RINTIS),
         KB_BUKOPIN(93600441,Switching.RINTIS),
@@ -115,6 +81,41 @@ public interface QrisNationalNumberingSystem {
         BLUEPAY_RINTIS(93600919, Switching.RINTIS),
         YOURPAY(93600923, Switching.RINTIS),
         PT_BANK_MESTIKA_DHARMA(93600151, Switching.RINTIS),
+
+        BNI(93600009, Switching.ARTAJASA),
+        PERMATA(93600013, Switching.ARTAJASA),
+        BPD_JATIM(93600114, Switching.ARTAJASA),
+        BPD_BALI(93600129, Switching.ARTAJASA),
+        BANK_SYARIAH_MANDIRI(93600451, Switching.ARTAJASA),
+        NOBU(93600503, Switching.ARTAJASA),
+        TSEL_LINK_AJA(93600911, Switching.ARTAJASA),
+        OVO(93600912, Switching.ARTAJASA),
+        GOPAY(93600914, Switching.ARTAJASA),
+        DANA(93600915, Switching.ARTAJASA),
+        PAYTREN(93600917, Switching.ARTAJASA),
+        UOB(93600023, Switching.ARTAJASA),
+        BPD_NTT(93600130, Switching.ARTAJASA),
+        GUDANG_VOUCHER(93600916, Switching.ARTAJASA),
+        BANK_MUAMALAT(93600147, Switching.ARTAJASA),
+        BANK_BPD_JAMBI(93600115, Switching.ARTAJASA),
+        BANK_QNB(93600167, Switching.ARTAJASA),
+        BANK_MAYORA(93600553, Switching.ARTAJASA),
+        BPD_PAPUA(93600132,Switching.ARTAJASA),
+        BANK_KALBAR(93600123,Switching.ARTAJASA),
+        BANK_JABAR_BANTEN_SYARIAH(93600425,Switching.ARTAJASA),
+        BANK_SHINHAN(93600152, Switching.ARTAJASA),
+        MOTION_BANKING(93600485, Switching.ARTAJASA),
+        PAC_CASH(93600820, Switching.ARTAJASA),
+        BANK_LAMPUNG(93600121, Switching.ARTAJASA),
+        BANK_KALSEL(93600122, Switching.ARTAJASA),
+        CITIBANK(93600031,  Switching.ARTAJASA),
+        BANK_ALADIN_SYARIAH(93600947, Switching.ARTAJASA),
+        M_BAYAR(93600829,  Switching.ARTAJASA),
+        BANK_SULUTGO(93600127, Switching.ARTAJASA),
+        BANK_WOORI_SAUDARA(93600212, Switching.ARTAJASA),
+        BANK_PEMBANGUNAN_DAERAH_BENGKULU( 93600133, Switching.ARTAJASA),
+        CASHFAZZ( 93600837, Switching.ARTAJASA),
+        BANK_CIMB_NIAGA(93600022, Switching.ARTAJASA),
 
 
         BANK_ACEH_SYARIAH(93600116,Switching.JALIN),
@@ -154,15 +155,25 @@ public interface QrisNationalNumberingSystem {
         public Switching getSwitching() {
             return switching;
         }
-        public static QrisNationalNumberingSystem.Pjsp valueOf(Integer code) throws IllegalArgumentException {
-            QrisNationalNumberingSystem.Pjsp pjspReturn = null;
-            for (QrisNationalNumberingSystem.Pjsp pjsp : values())
-                if (pjsp.getCode().equals(code)) {
-                    pjspReturn = pjsp;
-                    break;
-                }
-            if (pjspReturn == null) throw new IllegalArgumentException("Invalid MCC " + code);
-            return pjspReturn;
+
+        private static final Map<String, Pjsp> nnsPjspMap = new HashMap<>();
+
+        static {
+            for (Pjsp pjsp : values()) {
+                nnsPjspMap.putIfAbsent(pjsp.getCode().toString(), pjsp);
+            }
+        }
+        
+        public static Pjsp valueOf(Integer code) throws IllegalArgumentException {
+            return nnsPjspMap.computeIfAbsent(code.toString(), k -> {
+                throw new IllegalArgumentException("No Pjsp found for NNS number: " + code);
+            });
+        }
+
+        public static String getSwitcherFromCode(String code) throws IllegalArgumentException {
+            return nnsPjspMap.computeIfAbsent(code, k -> {
+                throw new IllegalArgumentException("No Switching found for NNS number: " + code);
+            }).getSwitching().toString();
         }
     }
 }
