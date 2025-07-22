@@ -116,7 +116,7 @@ public interface QrisNationalNumberingSystem {
         BLUEPAY_RINTIS(93600919, Switching.RINTIS),
         YOURPAY(93600923, Switching.RINTIS),
         PT_BANK_MESTIKA_DHARMA(93600151, Switching.RINTIS),
-        QOIN_RINTIS(93600842, Switching.RINTIS ),
+        QOIN_RINTIS(93600842, Switching.RINTIS),
 
 
         BANK_ACEH_SYARIAH(93600116,Switching.JALIN),
