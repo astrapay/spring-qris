@@ -44,6 +44,7 @@ public interface QrisNationalNumberingSystem {
         BPRKS(93600688, Switching.ALTO),
         AGI(93600037, Switching.ALTO),
         INACASH(93600831, Switching.ALTO),
+        QOIN(93600842, Switching.ALTO ),
 
         BNI(93600009, Switching.ARTAJASA),
         PERMATA(93600013, Switching.ARTAJASA),
@@ -115,6 +116,7 @@ public interface QrisNationalNumberingSystem {
         BLUEPAY_RINTIS(93600919, Switching.RINTIS),
         YOURPAY(93600923, Switching.RINTIS),
         PT_BANK_MESTIKA_DHARMA(93600151, Switching.RINTIS),
+        QOIN_RINTIS(93600842, Switching.RINTIS ),
 
 
         BANK_ACEH_SYARIAH(93600116,Switching.JALIN),
