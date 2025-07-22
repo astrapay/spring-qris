@@ -44,7 +44,7 @@ public interface QrisNationalNumberingSystem {
         BPRKS(93600688, Switching.ALTO),
         AGI(93600037, Switching.ALTO),
         INACASH(93600831, Switching.ALTO),
-        QOIN(93600842, Switching.ALTO ),
+        QOIN(93600842, Switching.ALTO),
 
         BNI(93600009, Switching.ARTAJASA),
         PERMATA(93600013, Switching.ARTAJASA),
