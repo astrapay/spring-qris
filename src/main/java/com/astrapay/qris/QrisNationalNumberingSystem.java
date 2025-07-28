@@ -184,6 +184,7 @@ public interface QrisNationalNumberingSystem {
         YUKK_RINTIS(93600817, Switching.RINTIS),
         GPAY_RINTIS(93600813,Switching.RINTIS),
         DIPAY_RINTIS(93600826,Switching.RINTIS),
+        BANK_BTN_SYARIAH(936002004,Switching.RINTIS),
 
 
         BANK_ACEH_SYARIAH(93600116,Switching.JALIN),
