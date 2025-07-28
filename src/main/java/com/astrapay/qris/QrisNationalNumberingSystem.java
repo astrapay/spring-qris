@@ -45,6 +45,7 @@ public interface QrisNationalNumberingSystem {
         AGI(93600037, Switching.ALTO),
         INACASH(93600831, Switching.ALTO),
         QOIN(93600842, Switching.ALTO),
+        BANK_EKA_ALTO(93600690, Switching.ALTO),
 
         BNI(93600009, Switching.ARTAJASA),
         PERMATA(93600013, Switching.ARTAJASA),
@@ -80,6 +81,25 @@ public interface QrisNationalNumberingSystem {
         BANK_PEMBANGUNAN_DAERAH_BENGKULU( 93600133, Switching.ARTAJASA),
         CASHFAZZ( 93600837, Switching.ARTAJASA),
         BANK_CIMB_NIAGA(93600022, Switching.ARTAJASA),
+        BANK_COMMONWEALTH(93600950, Switching.ARTAJASA),
+        DIGIBANK(93600046, Switching.ARTAJASA),
+        BANK_MEGA_SYARIAH(93600506, Switching.ARTAJASA),
+        BANK_BK_BUKOPIN_SYARIAH(93600521, Switching.ARTAJASA),
+        KROM_BANK(93600459, Switching.ARTAJASA),
+        BANK_BTPN_SYARIAH(93600547, Switching.ARTAJASA),
+        BANK_INDEX(93600555, Switching.ARTAJASA),
+        BPRS_HIJRA(93600689, Switching.ARTAJASA),
+        BANK_OF_INDIA(93600146, Switching.ARTAJASA),
+        BANK_EKA(93600690, Switching.ARTAJASA),
+        BANK_JTRUST(93600095, Switching.ARTAJASA),
+        BANK_NTB_SYARIAH(93600128, Switching.ARTAJASA),
+        BANK_JATENG(93600113, Switching.ARTAJASA),
+        BANK_SULTRA(93600135, Switching.ARTAJASA),
+        BPD_MALUKU_DAN_MALUKU_UTARA(93600131, Switching.ARTAJASA),
+        JAWARA_MOBILE(93600137, Switching.ARTAJASA),
+        VIRGO(93600835, Switching.ARTAJASA),
+        DUTAMONEY(93600838, Switching.ARTAJASA),
+
 
 
         SINARMAS_RINTIS(93600153,Switching.RINTIS),
@@ -117,6 +137,15 @@ public interface QrisNationalNumberingSystem {
         YOURPAY(93600923, Switching.RINTIS),
         PT_BANK_MESTIKA_DHARMA(93600151, Switching.RINTIS),
         QOIN_RINTIS(93600842, Switching.RINTIS),
+        BANK_IBK_INDONESIA(93600945, Switching.RINTIS),
+        BANK_VICTORIA_INTERNATIONAL(93600566, Switching.RINTIS),
+        BANK_CTBC(93600949, Switching.RINTIS),
+        BANK_BPD_KALIMANTAN_TENGAH(93600125, Switching.RINTIS),
+        PAPRIKA(93600823, Switching.RINTIS),
+        EZEELINK(93600922, Switching.RINTIS),
+        WOI(93600844, Switching.RINTIS),
+        PAKAIDONK(93600845, Switching.RINTIS),
+        YOOPAY(93600843, Switching.RINTIS),
 
 
         BANK_ACEH_SYARIAH(93600116,Switching.JALIN),
@@ -139,6 +168,12 @@ public interface QrisNationalNumberingSystem {
         GDC_PAY(93600832, Switching.JALIN),
         BATPAY(93600841, Switching.JALIN),
         PT_BANK_PANIN_DUBAI_SYARIAH(93600517, Switching.JALIN),
+        FELLO(93600827, Switching.JALIN),
+        SALDOMU(93600921, Switching.JALIN),
+        DUWIT(93600834, Switching.JALIN),
+        INACASH_JALIN(93600831, Switching.JALIN),
+        WIDE(93600833, Switching.JALIN),
+        VISI_JAYA_INDONESIA(93600824, Switching.JALIN),
         MANDIRI_TASPEN(93600564, Switching.JALIN);
 
         private Integer code;
