@@ -30,7 +30,7 @@ class QrisNationalNumberingSystemTest {
 
     @Test
     void testPjspWithCode() {
-        var result = QrisNationalNumberingSystem.Pjsp.valueOf(93600002);
-        assertEquals(QrisNationalNumberingSystem.Pjsp.BRI, result);
+        var result = QrisNationalNumberingSystem.Pjsp.valueOf(93600899);
+        assertEquals(QrisNationalNumberingSystem.Pjsp.DOKU, result);
     }
 }
