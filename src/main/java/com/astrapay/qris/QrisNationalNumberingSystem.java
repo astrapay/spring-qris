@@ -53,7 +53,7 @@ public interface QrisNationalNumberingSystem {
         DANA_ALTO(93600915, Switching.ALTO),
         YUKK_ALTO(93600817, Switching.ALTO),
         YOURPAY_ALTO(93600923, Switching.ALTO),
-        BAYARIND(93600809, Switching.ALTO),
+        BAYARIND_ALTO(93600809, Switching.ALTO),
 
         BNI(93600009, Switching.ARTAJASA),
         PERMATA(93600013, Switching.ARTAJASA),
