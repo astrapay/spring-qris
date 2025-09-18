@@ -124,7 +124,7 @@ public interface QrisNationalNumberingSystem {
         BATPAY_ARTAJASA(93600841, Switching.ARTAJASA),
 
         SINARMAS_RINTIS(93600153,Switching.RINTIS),
-        KB_BUKOPIN(93600441,Switching.RINTIS),
+        KB_BANK(93600441,Switching.RINTIS),
         BPD_JATIM_RINTIS(93600114,Switching.RINTIS),
         DANAMON(93600011, Switching.RINTIS),
         BANK_RIAU_KEPRI(93600119,Switching.RINTIS),
@@ -186,6 +186,7 @@ public interface QrisNationalNumberingSystem {
         GPAY_RINTIS(93600813,Switching.RINTIS),
         DIPAY_RINTIS(93600826,Switching.RINTIS),
         BANK_BTN_SYARIAH(936002004,Switching.RINTIS),
+        PT_BANK_SBI_INDONESIA(93600498,Switching.RINTIS),
 
 
         BANK_ACEH_SYARIAH(93600116,Switching.JALIN),
