@@ -274,6 +274,7 @@ jobs:
   Release-Prepare:
     runs-on: self-hosted
     environment: 'PROD'
+    needs: deploy-snapshot
 
     steps:
       - name: Checkout code
@@ -344,6 +345,7 @@ jobs:
 
   Release-Perform:
     runs-on: self-hosted
+    needs: Release-Prepare
 
     steps:
       - name: Checkout code
@@ -399,6 +401,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   Rollback-Version:
+    needs: Release-Perform
+    if: ${{ (failure() || cancelled()) && needs.Release-Prepare.result == 'success' }}
     runs-on: self-hosted
 
     steps:
