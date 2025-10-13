@@ -273,7 +273,7 @@ jobs:
 
   Release-Prepare:
     runs-on: self-hosted
-    environment: ${{ PROD }}
+    environment: 'PROD'
 
     steps:
       - name: Checkout code
