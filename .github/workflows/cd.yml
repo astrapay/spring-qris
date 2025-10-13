@@ -32,10 +32,8 @@ jobs:
           distribution: 'adopt'
           overwrite-settings: false
 
-      - name: Set up Maven settings
-        run: |
-          echo "${{ secrets.MAVEN_SETTINGS }}" | base64 --decode > /home/docker/.m2/settings.xml
-          echo "${{ secrets.MAVEN_SETTINGS }}" | base64 --decode > $HOME/.m2/settings.xml
+      - name: Ensure mvnw executable
+        run: chmod +x mvnw
 
       - name: Cache Maven settings
         uses: actions/cache@v4.2.4
