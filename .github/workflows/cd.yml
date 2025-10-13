@@ -19,7 +19,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
@@ -32,8 +32,10 @@ jobs:
           distribution: 'adopt'
           overwrite-settings: false
 
-      - name: Ensure mvnw executable
-        run: chmod +x mvnw
+      - name: Set up Maven settings
+        run: |
+          echo "${{ secrets.MAVEN_SETTINGS }}" | base64 --decode > /home/docker/.m2/settings.xml
+          echo "${{ secrets.MAVEN_SETTINGS }}" | base64 --decode > $HOME/.m2/settings.xml
 
       - name: Cache Maven settings
         uses: actions/cache@v4.2.4
@@ -48,7 +50,7 @@ jobs:
           ./mvnw clean compile
 
   unit-test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build
 
     steps:
@@ -111,7 +113,7 @@ jobs:
 
 
   sca-test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build
 
     steps:
@@ -145,58 +147,58 @@ jobs:
           path: target/dependency-check-report.html
 
   sast:
-     runs-on: ubuntu-latest
-     needs: [unit-test, sca-test]
+    runs-on: self-hosted
+    needs: [unit-test, sca-test]
 
-     steps:
-     - name: Checkout code
-       uses: actions/checkout@v5
-       with:
-           fetch-depth: 0
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
-     - name: Set up JDK 17
-       uses: actions/setup-java@v5
-       with:
-         java-version: '17'
-         distribution: 'adopt'
-         overwrite-settings: false
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          overwrite-settings: false
 
-     - name: Restore Target Directory
-       uses: actions/cache@v4.2.4
-       with:
-         path: target
-         key: ${{ github.run_id }}-target-${{ hashFiles('**/target/**') }}
-         restore-keys: |
-           ${{ github.run_id }}-target-
+      - name: Restore Target Directory
+        uses: actions/cache@v4.2.4
+        with:
+          path: target
+          key: ${{ github.run_id }}-target-${{ hashFiles('**/target/**') }}
+          restore-keys: |
+            ${{ github.run_id }}-target-
 
-     - name: Run SAST
-       run: |
-           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-             ./mvnw sonar:sonar \
-             -Dsonar.projectKey=astrapay_${{ github.event.repository.name }} \
-             -Dsonar.pullrequest.key=${{ github.event.number }} \
-             -Dsonar.pullrequest.branch=${{ github.head_ref }} \
-             -Dsonar.pullrequest.base=${{ github.base_ref }} \
-             -Dsonar.organization=astrapay-1 \
-             -Dsonar.host.url=https://sonarcloud.io \
-             -Dsonar.qualitygate.wait=true \
-             -Dsonar.junit.reportPaths=./target/surefire-reports
-           elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
-             ./mvnw sonar:sonar \
-             -Dsonar.projectKey=astrapay_${{ github.event.repository.name }} \
-             -Dsonar.branch.name=${{ github.head_ref }} \
-             -Dsonar.organization=astrapay-1 \
-             -Dsonar.host.url=https://sonarcloud.io \
-             -Dsonar.qualitygate.wait=true \
-             -Dsonar.junit.reportPaths=./target/surefire-reports
-           fi
-       env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Run SAST
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            ./mvnw sonar:sonar \
+            -Dsonar.projectKey=astrapay_${{ github.event.repository.name }} \
+            -Dsonar.pullrequest.key=${{ github.event.number }} \
+            -Dsonar.pullrequest.branch=${{ github.head_ref }} \
+            -Dsonar.pullrequest.base=${{ github.base_ref }} \
+            -Dsonar.organization=astrapay-1 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.qualitygate.wait=true \
+            -Dsonar.junit.reportPaths=./target/surefire-reports
+          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
+            ./mvnw sonar:sonar \
+            -Dsonar.projectKey=astrapay_${{ github.event.repository.name }} \
+            -Dsonar.branch.name=${{ github.head_ref }} \
+            -Dsonar.organization=astrapay-1 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.qualitygate.wait=true \
+            -Dsonar.junit.reportPaths=./target/surefire-reports
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   build-package:
     needs: [sast]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
@@ -228,7 +230,7 @@ jobs:
             ${{ runner.os }}-target-
 
   deploy-snapshot:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build-package
 
     steps:
@@ -270,7 +272,7 @@ jobs:
           retention-days: 1
 
   Release-Prepare:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment: 'PROD'
     needs: deploy-snapshot
 
@@ -342,7 +344,7 @@ jobs:
           retention-days: 1
 
   Release-Perform:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: Release-Prepare
 
     steps:
