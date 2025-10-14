@@ -1,5 +1,9 @@
 name: CD Spring Qris
 on:
+  workflow_dispatch:
+    branches:
+      - master
+      - testcd
   workflow_call:
     secrets:
       DEPLOYMENT_CREDENTIALS:
@@ -83,11 +87,7 @@ jobs:
       - name: Run Unit Tests
         run: |
           ./mvnw test verify jacoco:report \
-          -Dmaven.test.failure.ignore=false \
-          -Dgcs.bucket.name=${{ secrets.BUCKET_NAME }} \
-          -Dgcs.project-id=${{ secrets.PROJECT_ID }} \
-          -Dgcs.service-account.path=src/gcs-key.json \
-          -Dgcs.credential.path=src/gcs-key.json 
+          -Dmaven.test.failure.ignore=false 
 
       - name: Upload Unit Test Results
         if: always()
@@ -282,13 +282,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          name: id_rsa
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
-          if_key_exists: ignore
-
       - name: Set up JDK 17
         uses: actions/setup-java@v5
         with:
@@ -353,13 +346,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          name: id_rsa
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
-          if_key_exists: ignore
-
       - name: Set up JDK 17
         uses: actions/setup-java@v5
         with:
@@ -416,14 +402,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-
-      - name: SSH Auth
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          name: id_rsa
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
-          if_key_exists: ignore
 
       - name: Restore Maven Settings
         uses: actions/cache@v4.2.4
