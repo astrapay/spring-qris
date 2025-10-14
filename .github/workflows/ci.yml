@@ -1,6 +1,4 @@
-# .github/workflows/ci.yml
-name: CI Pipeline Spring Qris
-
+name: CD Spring Qris
 on:
   pull_request:
     types: [opened, reopened, synchronize] #untuk menentukan trigger dari pipeline
@@ -8,12 +6,176 @@ on:
       - 'dependabot**/**/*'
 
 jobs:
-  ci:
-    if: ${{ github.actor != 'dependabot[bot]' && !contains(github.event.pull_request.labels.*.name, 'dependencies') }}
-    uses: astrapay/github-workflows-backend/.github/workflows/build-test-java-17.yml@master
-    secrets:
-      deployment_credentials: ${{ secrets.DEPLOYMENT_CREDENTIALS }}
-      bucket_name: ${{ secrets.BUCKET_NAME }}
-      project_id: ${{ secrets.PROJECT_ID }}
-      sonar_token: ${{ secrets.SONAR_TOKEN }}
-      maven_settings: ${{ secrets.MAVEN_SETTINGS }}
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          overwrite-settings: false
+
+      - name: Set up Maven settings
+        run: |
+          echo "${{ secrets.MAVEN_SETTINGS }}" | base64 --decode > /home/docker/.m2/settings.xml
+          echo "${{ secrets.MAVEN_SETTINGS }}" | base64 --decode > $HOME/.m2/settings.xml
+
+      - name: Cache Maven settings
+        uses: actions/cache@v4.2.4
+        with:
+          path: ~/.m2/settings.xml
+          key: ${{ runner.os }}-maven-settings-${{ hashFiles('**/.m2/settings.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-settings-
+
+      - name: Build with Maven Wrapper
+        run: |
+          ./mvnw clean compile
+
+  unit-test:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          overwrite-settings: false
+
+      - name: Cache Maven settings
+        uses: actions/cache@v4.2.4
+        with:
+          path: ~/.m2/settings.xml
+          key: ${{ runner.os }}-maven-settings-${{ hashFiles('**/.m2/settings.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-settings-
+
+      - name: create-json
+        id: create-json
+        uses: jsdaniell/create-json@v1.2.3
+        with:
+          name: "gcs-key.json"
+          json: ${{ secrets.DEPLOYMENT_CREDENTIALS }}
+          dir: 'src/'
+
+      - name: Run Unit Tests
+        run: |
+          ./mvnw test verify jacoco:report \
+          -Dmaven.test.failure.ignore=false 
+
+      - name: Upload Unit Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results
+          path: target/surefire-reports/*.xml
+
+      - name: Publish Test Results
+        if: always()
+        uses: dorny/test-reporter@v2.1.1
+        with:
+          name: JUnit Tests
+          path: target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: false
+
+      - name: Cache Target Directory
+        uses: actions/cache@v4.2.4
+        with:
+          path: target
+          key: ${{ github.run_id }}-target-${{ hashFiles('**/target/**') }}
+
+
+  sca-test:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          overwrite-settings: false
+
+      - name: Cache Maven settings
+        uses: actions/cache@v4.2.4
+        with:
+          path: ~/.m2/settings.xml
+          key: ${{ runner.os }}-maven-settings-${{ hashFiles('**/.m2/settings.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-settings-
+
+      - name: Dependency Review
+        run: |
+          ./mvnw dependency-check:check -DfailBuildOnCVSS=20
+
+      - name: Upload SCA Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: SCA Report
+          path: target/dependency-check-report.html
+
+  sast:
+    runs-on: ubuntu-latest
+    needs: [unit-test, sca-test]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          overwrite-settings: false
+
+      - name: Restore Target Directory
+        uses: actions/cache@v4.2.4
+        with:
+          path: target
+          key: ${{ github.run_id }}-target-${{ hashFiles('**/target/**') }}
+          restore-keys: |
+            ${{ github.run_id }}-target-
+
+      - name: Run SAST
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            ./mvnw sonar:sonar \
+            -Dsonar.projectKey=astrapay_${{ github.event.repository.name }} \
+            -Dsonar.pullrequest.key=${{ github.event.number }} \
+            -Dsonar.pullrequest.branch=${{ github.head_ref }} \
+            -Dsonar.pullrequest.base=${{ github.base_ref }} \
+            -Dsonar.organization=astrapay-1 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.qualitygate.wait=true \
+            -Dsonar.junit.reportPaths=./target/surefire-reports
+          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
+            ./mvnw sonar:sonar \
+            -Dsonar.projectKey=astrapay_${{ github.event.repository.name }} \
+            -Dsonar.branch.name=${{ github.head_ref }} \
+            -Dsonar.organization=astrapay-1 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.qualitygate.wait=true \
+            -Dsonar.junit.reportPaths=./target/surefire-reports
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
