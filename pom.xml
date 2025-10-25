@@ -506,14 +506,14 @@
         <tag>spring-qris-1.34</tag>
     </scm>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <url>https://nexus.astrapay.com/repository/maven-snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>nexus-releases</id>
-            <url>https://nexus.astrapay.com/repository/maven-releases/</url>
-        </repository>
-    </distributionManagement>
+<!--    <distributionManagement>-->
+<!--        <snapshotRepository>-->
+<!--            <id>nexus-snapshots</id>-->
+<!--            <url>https://nexus.astrapay.com/repository/maven-snapshots/</url>-->
+<!--        </snapshotRepository>-->
+<!--        <repository>-->
+<!--            <id>nexus-releases</id>-->
+<!--            <url>https://nexus.astrapay.com/repository/maven-releases/</url>-->
+<!--        </repository>-->
+<!--    </distributionManagement>-->
 </project>
