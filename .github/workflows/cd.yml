@@ -4,6 +4,7 @@ on:
     branches:
       - master
       - testcd
+      - testcd2
   workflow_call:
     secrets:
       DEPLOYMENT_CREDENTIALS:
