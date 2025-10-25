@@ -44,16 +44,16 @@
 
 
 
-<!--    <distributionManagement>-->
-<!--        <snapshotRepository>-->
-<!--            <id>ossrh</id>-->
-<!--            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>-->
-<!--        </snapshotRepository>-->
-<!--        <repository>-->
-<!--            <id>ossrh</id>-->
-<!--            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
-<!--        </repository>-->
-<!--    </distributionManagement>-->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
@@ -492,12 +492,12 @@
         </profile>
     </profiles>
 
-    <repositories>
-        <repository>
-            <id>astrapay-nexus</id>
-            <url>https://nexus.astrapay.com/repository/astrapay-nexus/</url>
-        </repository>
-    </repositories>
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>astrapay-nexus</id>-->
+<!--            <url>https://nexus.astrapay.com/repository/astrapay-nexus/</url>-->
+<!--        </repository>-->
+<!--    </repositories>-->
 
     <scm>
         <connection>scm:git:git@github.com:astrapay/spring-qris.git</connection>
