@@ -232,6 +232,7 @@ jobs:
             ${{ runner.os }}-target-
 
   deploy-snapshot:
+    needs: build-package
     name: Snapshot Deploy
     runs-on: ubuntu-latest
     steps:
