@@ -55,6 +55,7 @@ public interface QrisNationalNumberingSystem {
         YOURPAY_ALTO(93600923, Switching.ALTO),
         BAYARIND_ALTO(93600809, Switching.ALTO),
         FELLO_ALTO(93600827, Switching.ALTO),
+        BANK_OF_INDIA_ALTO(93600146, Switching.ALTO),
 
         BNI(93600009, Switching.ARTAJASA),
         PERMATA(93600013, Switching.ARTAJASA),
