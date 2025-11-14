@@ -220,7 +220,8 @@ public interface QrisNationalNumberingSystem {
         NOBU_JALIN(93600503, Switching.JALIN),
         ZIPAY_JALIN(93600825, Switching.JALIN),
         M_BAYAR_JALIN(93600829,  Switching.JALIN),
-        MANDIRI_TASPEN(93600564, Switching.JALIN);
+        MANDIRI_TASPEN(93600564, Switching.JALIN),
+        BANK_SULTENG(93600134, Switching.JALIN);
 
         private Integer code;
         private Switching switching;
