@@ -166,8 +166,7 @@ public interface QrisNationalNumberingSystem {
         BANK_IBK_INDONESIA(93600945, Switching.RINTIS),
         BANK_VICTORIA_INTERNATIONAL(93600566, Switching.RINTIS),
         BANK_CTBC(93600949, Switching.RINTIS),
-        BANK_BPD_KALIMANTAN_TENGAH(93600125, Switching.RIN
-                TIS),
+        BANK_BPD_KALIMANTAN_TENGAH(93600125, Switching.RINTIS),
         PAPRIKA(93600823, Switching.RINTIS),
         EZEELINK(93600922, Switching.RINTIS),
         WOI(93600844, Switching.RINTIS),
@@ -228,7 +227,7 @@ public interface QrisNationalNumberingSystem {
         M_BAYAR_JALIN(93600829,  Switching.JALIN),
         MANDIRI_TASPEN(93600564, Switching.JALIN),
         BANK_SULTENG(93600134, Switching.JALIN),
-        PT_BANK_SYARIAH_NASIONAL_JALIN(93600405, Switching.RINTIS),;
+        PT_BANK_SYARIAH_NASIONAL_JALIN(93600405, Switching.RINTIS);
 
         private Integer code;
         private Switching switching;
