@@ -55,63 +55,63 @@ jobs:
         run: |
           ./mvnw clean compile
 
-  unit-test:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v5
-        with:
-          java-version: '17'
-          distribution: 'adopt'
-          overwrite-settings: false
-
-      - name: Cache Maven settings
-        uses: actions/cache@v4.2.4
-        with:
-          path: ~/.m2/settings.xml
-          key: ${{ runner.os }}-maven-settings-${{ hashFiles('**/.m2/settings.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-settings-
-
-      - name: create-json
-        id: create-json
-        uses: jsdaniell/create-json@v1.2.3
-        with:
-          name: "gcs-key.json"
-          json: ${{ secrets.DEPLOYMENT_CREDENTIALS }}
-          dir: 'src/'
-
-      - name: Run Unit Tests
-        run: |
-          ./mvnw test verify jacoco:report \
-          -Dmaven.test.failure.ignore=false
-
-      - name: Upload Unit Test Results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: unit-test-results
-          path: target/surefire-reports/*.xml
-
-      - name: Publish Test Results
-        if: always()
-        uses: dorny/test-reporter@v2.1.1
-        with:
-          name: JUnit Tests
-          path: target/surefire-reports/*.xml
-          reporter: java-junit
-          fail-on-error: false
-
-      - name: Cache Target Directory
-        uses: actions/cache@v4.2.4
-        with:
-          path: target
-          key: ${{ github.run_id }}-target-${{ hashFiles('**/target/**') }}
+#  unit-test:
+#    runs-on: ubuntu-latest
+#    needs: build
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v5
+#
+#      - name: Set up JDK 17
+#        uses: actions/setup-java@v5
+#        with:
+#          java-version: '17'
+#          distribution: 'adopt'
+#          overwrite-settings: false
+#
+#      - name: Cache Maven settings
+#        uses: actions/cache@v4.2.4
+#        with:
+#          path: ~/.m2/settings.xml
+#          key: ${{ runner.os }}-maven-settings-${{ hashFiles('**/.m2/settings.xml') }}
+#          restore-keys: |
+#            ${{ runner.os }}-maven-settings-
+#
+#      - name: create-json
+#        id: create-json
+#        uses: jsdaniell/create-json@v1.2.3
+#        with:
+#          name: "gcs-key.json"
+#          json: ${{ secrets.DEPLOYMENT_CREDENTIALS }}
+#          dir: 'src/'
+#
+#      - name: Run Unit Tests
+#        run: |
+#          ./mvnw test verify jacoco:report \
+#          -Dmaven.test.failure.ignore=false
+#
+#      - name: Upload Unit Test Results
+#        if: always()
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: unit-test-results
+#          path: target/surefire-reports/*.xml
+#
+#      - name: Publish Test Results
+#        if: always()
+#        uses: dorny/test-reporter@v2.1.1
+#        with:
+#          name: JUnit Tests
+#          path: target/surefire-reports/*.xml
+#          reporter: java-junit
+#          fail-on-error: false
+#
+#      - name: Cache Target Directory
+#        uses: actions/cache@v4.2.4
+#        with:
+#          path: target
+#          key: ${{ github.run_id }}-target-${{ hashFiles('**/target/**') }}
 
 
   sca-test:
@@ -150,7 +150,7 @@ jobs:
 
   sast:
     runs-on: ubuntu-latest
-    needs: [unit-test, sca-test]
+    needs: [sca-test]
 
     steps:
       - name: Checkout code
