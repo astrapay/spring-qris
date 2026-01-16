@@ -232,7 +232,7 @@ jobs:
             ${{ runner.os }}-target-
 
   deploy-snapshot:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: build-package
 
     steps:
@@ -343,6 +343,7 @@ jobs:
   Release-Perform:
     runs-on: ubuntu-latest
     needs: Release-Prepare
+    environment: PROD
 
     steps:
       - name: Checkout code
