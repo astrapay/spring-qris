@@ -175,25 +175,25 @@ jobs:
 
       - name: Run SAST
         run: |
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            ./mvnw sonar:sonar \
-            -Dsonar.projectKey=astrapay_${{ github.event.repository.name }} \
-            -Dsonar.pullrequest.key=${{ github.event.number }} \
-            -Dsonar.pullrequest.branch=${{ github.head_ref }} \
-            -Dsonar.pullrequest.base=${{ github.base_ref }} \
-            -Dsonar.organization=astrapay-1 \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.qualitygate.wait=true \
-            -Dsonar.junit.reportPaths=./target/surefire-reports
-          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
-            ./mvnw sonar:sonar \
-            -Dsonar.projectKey=astrapay_${{ github.event.repository.name }} \
-            -Dsonar.branch.name=${{ github.head_ref }} \
-            -Dsonar.organization=astrapay-1 \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.qualitygate.wait=true \
-            -Dsonar.junit.reportPaths=./target/surefire-reports
-          fi
+            if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+              ./mvnw sonar:sonar \
+              -Dsonar.projectKey=astrapay_${{ github.event.repository.name }} \
+              -Dsonar.pullrequest.key=${{ github.event.number }} \
+              -Dsonar.pullrequest.branch=${{ github.head_ref }} \
+              -Dsonar.pullrequest.base=${{ github.base_ref }} \
+              -Dsonar.organization=astrapay-1 \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.qualitygate.wait=true \
+              -Dsonar.junit.reportPaths=./target/surefire-reports
+            elif [[ ( "${{ github.event_name }}" == "push" || "${{ github.event_name }}" == "workflow_dispatch" ) && "${{ github.ref_name }}" == "master" ]]; then
+              ./mvnw sonar:sonar \
+              -Dsonar.projectKey=astrapay_${{ github.event.repository.name }} \
+              -Dsonar.branch.name=master \
+              -Dsonar.organization=astrapay-1 \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.qualitygate.wait=true \
+              -Dsonar.junit.reportPaths=./target/surefire-reports
+            fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
