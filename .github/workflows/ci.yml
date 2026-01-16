@@ -1,4 +1,4 @@
-name: CD Spring Qris
+name: CI Spring Qris
 on:
   pull_request:
     types: [opened, reopened, synchronize] #untuk menentukan trigger dari pipeline
