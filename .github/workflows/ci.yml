@@ -1,4 +1,4 @@
-name: CD Spring Qris
+name: CI Spring Qris
 on:
   pull_request:
     types: [opened, reopened, synchronize] #untuk menentukan trigger dari pipeline
@@ -22,7 +22,7 @@ jobs:
 
       - name: Set up Maven settings
         run: |
-          echo "${{ secrets.MAVEN_SETTINGS }}" | base64 --decode > /home/docker/.m2/settings.xml
+          mkdir -p $HOME/.m2
           echo "${{ secrets.MAVEN_SETTINGS }}" | base64 --decode > $HOME/.m2/settings.xml
 
       - name: Cache Maven settings
