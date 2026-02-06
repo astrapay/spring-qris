@@ -597,7 +597,7 @@ public class QrCpmMapperTest {
         payloadFormatIndicator.setValue("CPV01");
 
         QrCpmDataObject applicationTemplate = new QrCpmDataObject();
-        payloadFormatIndicator.setTag(TagIndicator.APPLICATION_TEMPLATE.getValue());
+        applicationTemplate.setTag(TagIndicator.APPLICATION_TEMPLATE.getValue());
         applicationTemplate.setTemplateMap(applicationTemplateMap);
 
 
@@ -612,14 +612,14 @@ public class QrCpmMapperTest {
         issuerPublicKeyCertificate.setTag(TagIndicator.ISSUER_PUBLIC_KEY_CERTIFICATE.getValue());
         issuerPublicKeyCertificate.setValue("Miiskjsaifsdf12312");
 
-        QrCpmDataObject issuerQrisDataEncypted = new QrCpmDataObject();
-        issuerQrisDataEncypted.setTag(TagIndicator.ISSUER_QRIS_DATA_ENCRYPTED.getValue());
-        issuerQrisDataEncypted.setValue("Ciiqrwqjr123153");
+        QrCpmDataObject issuerQrisDataEncrypted = new QrCpmDataObject();
+        issuerQrisDataEncrypted.setTag(TagIndicator.ISSUER_QRIS_DATA_ENCRYPTED.getValue());
+        issuerQrisDataEncrypted.setValue("Ciiqrwqjr123153");
 
 
         applicationSpecificTransparentTemplateMap.put(TagIndicator.ISSUER_QRIS_DATA.getValue(), issuerQrisData);
         applicationSpecificTransparentTemplateMap.put(TagIndicator.ISSUER_PUBLIC_KEY_CERTIFICATE.getValue(), issuerPublicKeyCertificate);
-        applicationSpecificTransparentTemplateMap.put(TagIndicator.ISSUER_QRIS_DATA_ENCRYPTED.getValue(), issuerQrisDataEncypted);
+        applicationSpecificTransparentTemplateMap.put(TagIndicator.ISSUER_QRIS_DATA_ENCRYPTED.getValue(), issuerQrisDataEncrypted);
 
         QrCpmDataObject applicationSpecificTransparentTemplate = new QrCpmDataObject();
         applicationSpecificTransparentTemplate.setTag(TagIndicator.APPLICATION_SPECIFIC_TRANSPARENT_TEMPLATE.getValue());
