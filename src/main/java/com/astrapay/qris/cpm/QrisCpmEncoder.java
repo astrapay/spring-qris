@@ -81,6 +81,12 @@ public class QrisCpmEncoder {
         byte[] issuerDataSubTag = Optional.ofNullable(applicationSpecificTransparentTemplate.getIssuerData()).map(this::getIssuerData).orElse(new byte[FIRST_INDEX]);
         ByteArrayOutputStream appSpecificTransparentTemplateStream = new ByteArrayOutputStream();
         appSpecificTransparentTemplateStream.write(issuerDataSubTag);
+        if(Objects.nonNull(applicationSpecificTransparentTemplate.getIssuerPublicKeyCertificate())) {
+            appSpecificTransparentTemplateStream.write(this.getIssuerPublicKeyCertificate(applicationSpecificTransparentTemplate.getIssuerPublicKeyCertificate()));
+        }
+        if(Objects.nonNull(applicationSpecificTransparentTemplate.getIssuerQrisDataEncrypted())) {
+            appSpecificTransparentTemplateStream.write(this.getIssuerQrisDataEncrypted(applicationSpecificTransparentTemplate.getIssuerQrisDataEncrypted()));
+        }
         if(Objects.nonNull(applicationSpecificTransparentTemplate.getApplicationCryptogram())) {
             appSpecificTransparentTemplateStream.write(this.getApplicationCryptogram(applicationSpecificTransparentTemplate.getApplicationCryptogram()));
         }
@@ -167,6 +173,14 @@ public class QrisCpmEncoder {
     private byte[] getIssuerData(String issuerData) {
         byte[] byteValue = qrisHexConverter.convertAlphaNumericToArrayByte(issuerData);
         return this.concatByteArrays(TagIndicator.ISSUER_QRIS_DATA.getByteTag(), this.getTagLength(byteValue), byteValue);
+    }
+    private byte[] getIssuerPublicKeyCertificate(String issuerData) {
+        byte[] byteValue = qrisHexConverter.convertAlphaNumericToArrayByte(issuerData);
+        return this.concatByteArrays(TagIndicator.ISSUER_PUBLIC_KEY_CERTIFICATE.getByteTag(), this.getTagLength(byteValue), byteValue);
+    }
+    private byte[] getIssuerQrisDataEncrypted(String issuerData) {
+        byte[] byteValue = qrisHexConverter.convertAlphaNumericToArrayByte(issuerData);
+        return this.concatByteArrays(TagIndicator.ISSUER_QRIS_DATA_ENCRYPTED.getByteTag(), this.getTagLength(byteValue), byteValue);
     }
     
     private byte[] getApplicationCryptogram(String appCryptogram) throws DecoderException {
