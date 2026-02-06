@@ -5,7 +5,6 @@ import com.astrapay.qris.cpm.object.ApplicationTemplate;
 import com.astrapay.qris.cpm.object.QrCpmDataObject;
 import com.astrapay.qris.cpm.object.QrisCpm;
 import com.astrapay.qris.mpm.object.ApplicationSpecificTransparentTemplate;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -97,6 +96,15 @@ public class QrCpmMapper {
 
         String issuerQrisData = applicationSpecificTransparentTemplateData.get(TagIndicator.ISSUER_QRIS_DATA.getValue()).getValue();
         applicationSpecificTransparentTemplate.setIssuerData(issuerQrisData);
+
+        if (applicationSpecificTransparentTemplateData.containsKey(TagIndicator.ISSUER_PUBLIC_KEY_CERTIFICATE.getValue())) {
+            var issuerPublicKeyCertificate = applicationSpecificTransparentTemplateData.get(TagIndicator.ISSUER_PUBLIC_KEY_CERTIFICATE.getValue()).getValue();
+            applicationSpecificTransparentTemplate.setIssuerPublicKeyCertificate(issuerPublicKeyCertificate);
+        }
+        if (applicationSpecificTransparentTemplateData.containsKey(TagIndicator.ISSUER_QRIS_DATA_ENCRYPTED.getValue())) {
+            var issuerQrisDataEncrypted = applicationSpecificTransparentTemplateData.get(TagIndicator.ISSUER_QRIS_DATA_ENCRYPTED.getValue()).getValue();
+            applicationSpecificTransparentTemplate.setIssuerQrisDataEncrypted(issuerQrisDataEncrypted);
+        }
 
         this.mapApplicationSpecificTransparentTemplateOptionalDataAdditionalTagXXXX(applicationSpecificTransparentTemplateData, applicationSpecificTransparentTemplate);
     }

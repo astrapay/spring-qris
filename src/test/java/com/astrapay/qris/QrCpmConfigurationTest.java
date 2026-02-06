@@ -45,9 +45,9 @@ class QrCpmConfigurationTest {
         List<String> applicationSpecificTransparentTemplateSubTag = (List<String>) context.getBean("applicationSpecificTransparentTemplateSubTag");
 
         assertNotNull(applicationSpecificTransparentTemplateSubTag);
-        assertEquals(7, applicationSpecificTransparentTemplateSubTag.size());
+        assertEquals(9, applicationSpecificTransparentTemplateSubTag.size());
         assertEquals(TagIndicator.ISSUER_QRIS_DATA.getValue(), applicationSpecificTransparentTemplateSubTag.get(0));
-        assertEquals(TagIndicator.APPLICATION_CRYPTOGRAM.getValue(), applicationSpecificTransparentTemplateSubTag.get(1));
+        assertEquals(TagIndicator.ISSUER_PUBLIC_KEY_CERTIFICATE.getValue(), applicationSpecificTransparentTemplateSubTag.get(1));
         // Continue assertions for the remaining values
 
         context.close();

@@ -563,4 +563,102 @@ public class QrCpmMapperTest {
             qrCpmMapper.map(payload);
         });
     }
+
+    @Test
+    void testMap_withTag9f7aAnd9f7b() {
+        Map<String, QrCpmDataObject> payload = new HashMap<>();
+        Map<String, QrCpmDataObject> applicationTemplateMap = new HashMap<>();
+        Map<String, QrCpmDataObject> applicationSpecificTransparentTemplateMap = new HashMap<>();
+
+        QrCpmDataObject adfName = new QrCpmDataObject();
+        adfName.setTag(TagIndicator.ADF_NAME.getValue());
+        adfName.setValue("A0000006022020");
+
+        QrCpmDataObject appLabel = new QrCpmDataObject();
+        appLabel.setTag(TagIndicator.APPLICATION_LABEL.getValue());
+        appLabel.setValue("QRISCPM");
+
+        QrCpmDataObject track2EquivalentData = new QrCpmDataObject();
+        track2EquivalentData.setTag(TagIndicator.TRACK_2_EQUIVALENT_DATA.getValue());
+        track2EquivalentData.setValue("9360001417451180859");
+
+        QrCpmDataObject applicationPan = new QrCpmDataObject();
+        applicationPan.setTag(TagIndicator.APP_PAN.getValue());
+        applicationPan.setValue("9360001417451180859");
+
+        applicationTemplateMap.put(TagIndicator.ADF_NAME.getValue(), adfName);
+        applicationTemplateMap.put(TagIndicator.APPLICATION_LABEL.getValue(), appLabel);
+        applicationTemplateMap.put(TagIndicator.TRACK_2_EQUIVALENT_DATA.getValue(), track2EquivalentData);
+        applicationTemplateMap.put(TagIndicator.APP_PAN.getValue(), applicationPan);
+
+
+        QrCpmDataObject payloadFormatIndicator = new QrCpmDataObject();
+        payloadFormatIndicator.setTag(TagIndicator.PAYLOAD_FORMAT_INDICATOR.getValue());
+        payloadFormatIndicator.setValue("CPV01");
+
+        QrCpmDataObject applicationTemplate = new QrCpmDataObject();
+        payloadFormatIndicator.setTag(TagIndicator.APPLICATION_TEMPLATE.getValue());
+        applicationTemplate.setTemplateMap(applicationTemplateMap);
+
+
+        payload.put(TagIndicator.PAYLOAD_FORMAT_INDICATOR.getValue(), payloadFormatIndicator);
+        payload.put(TagIndicator.APPLICATION_TEMPLATE.getValue(), applicationTemplate);
+
+        QrCpmDataObject issuerQrisData = new QrCpmDataObject();
+        issuerQrisData.setTag(TagIndicator.ISSUER_QRIS_DATA.getValue());
+        issuerQrisData.setValue("abcde12345");
+
+        QrCpmDataObject issuerPublicKeyCertificate = new QrCpmDataObject();
+        issuerPublicKeyCertificate.setTag(TagIndicator.ISSUER_PUBLIC_KEY_CERTIFICATE.getValue());
+        issuerPublicKeyCertificate.setValue("Miiskjsaifsdf12312");
+
+        QrCpmDataObject issuerQrisDataEncypted = new QrCpmDataObject();
+        issuerQrisDataEncypted.setTag(TagIndicator.ISSUER_QRIS_DATA_ENCRYPTED.getValue());
+        issuerQrisDataEncypted.setValue("Ciiqrwqjr123153");
+
+
+        applicationSpecificTransparentTemplateMap.put(TagIndicator.ISSUER_QRIS_DATA.getValue(), issuerQrisData);
+        applicationSpecificTransparentTemplateMap.put(TagIndicator.ISSUER_PUBLIC_KEY_CERTIFICATE.getValue(), issuerPublicKeyCertificate);
+        applicationSpecificTransparentTemplateMap.put(TagIndicator.ISSUER_QRIS_DATA_ENCRYPTED.getValue(), issuerQrisDataEncypted);
+
+        QrCpmDataObject applicationSpecificTransparentTemplate = new QrCpmDataObject();
+        applicationSpecificTransparentTemplate.setTag(TagIndicator.APPLICATION_SPECIFIC_TRANSPARENT_TEMPLATE.getValue());
+        applicationSpecificTransparentTemplate.setTemplateMap(applicationSpecificTransparentTemplateMap);
+
+        applicationTemplateMap.put(TagIndicator.APPLICATION_SPECIFIC_TRANSPARENT_TEMPLATE.getValue(), applicationSpecificTransparentTemplate);
+
+        var result = qrCpmMapper.map(payload);
+
+        String expectedPayloadFormatIndicator = "CPV01";
+        String expectedAdfName = "A0000006022020";
+        String expectedApplicationLabel = "QRISCPM";
+        String expectedTrack2EquivalentData = "9360001417451180859";
+        String expectedApplicationPan = "9360001417451180859";
+        String expectedIssuerData = "abcde12345";
+        String expectedIssuerPublicKeyCertificate = "Miiskjsaifsdf12312";
+        String expectedIssuerQrisDataEncryted= "Ciiqrwqjr123153";
+
+        Assertions.assertEquals(expectedPayloadFormatIndicator, result.getPayloadFormatIndicator());
+        Assertions.assertEquals(expectedAdfName, result.getApplicationTemplate().getAdfName());
+        Assertions.assertEquals(expectedApplicationLabel, result.getApplicationTemplate().getApplicationLabel());
+        Assertions.assertEquals(expectedTrack2EquivalentData, result.getApplicationTemplate().getTrack2EquivalentData());
+        Assertions.assertEquals(expectedApplicationPan, result.getApplicationTemplate().getApplicationPan());
+        Assertions.assertEquals(expectedIssuerData, result.getApplicationTemplate().getApplicationSpecificTransparentTemplate().getIssuerData());
+        Assertions.assertEquals(expectedIssuerPublicKeyCertificate, result.getApplicationTemplate().getApplicationSpecificTransparentTemplate().getIssuerPublicKeyCertificate());
+        Assertions.assertEquals(expectedIssuerQrisDataEncryted, result.getApplicationTemplate().getApplicationSpecificTransparentTemplate().getIssuerQrisDataEncrypted());
+
+        Assertions.assertNull(result.getApplicationTemplate().getCardholderName());
+        Assertions.assertNull(result.getApplicationTemplate().getLanguagePreference());
+        Assertions.assertNull(result.getApplicationTemplate().getIssuerUrl());
+        Assertions.assertNull(result.getApplicationTemplate().getApplicationVersionNumber());
+        Assertions.assertNull(result.getApplicationTemplate().getLast4DigitsPan());
+        Assertions.assertNull(result.getApplicationTemplate().getTokenRequestorId());
+        Assertions.assertNull(result.getApplicationTemplate().getPaymentAccountReference());
+        Assertions.assertNull(result.getApplicationTemplate().getApplicationSpecificTransparentTemplate().getApplicationCryptogram());
+        Assertions.assertNull(result.getApplicationTemplate().getApplicationSpecificTransparentTemplate().getCryptogramInformationData());
+        Assertions.assertNull(result.getApplicationTemplate().getApplicationSpecificTransparentTemplate().getIssuerApplicationData());
+        Assertions.assertNull(result.getApplicationTemplate().getApplicationSpecificTransparentTemplate().getApplicationTransactionCounter());
+        Assertions.assertNull(result.getApplicationTemplate().getApplicationSpecificTransparentTemplate().getApplicationInterchangeProfile());
+        Assertions.assertNull(result.getApplicationTemplate().getApplicationSpecificTransparentTemplate().getUnpredictableNumber());
+    }
 }

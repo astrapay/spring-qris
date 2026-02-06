@@ -146,10 +146,10 @@ public class QrCpmParser {
     private String getRealTagValue(String currentTag, String valueInHexString) throws DecoderException {
         DataType dataType = TagIndicator.getDataType(currentTag);
 
-        //no need to convert TAG 9F74 to string,decrypt in qris-service
-        if(!TagIndicator.ISSUER_QRIS_DATA.getValue().equals(currentTag) &&
-                (DataType.ALPHA_NUMERIC.equals(dataType) ||
-                        DataType.ALPHA_NUMERIC_SPECIAL.equals(dataType))){
+        //no need to convert TAG 9F74,9F7A,9F7B to string,decrypt in qris-service
+        if (!isHandledInOtherService(currentTag)
+                && (DataType.ALPHA_NUMERIC.equals(dataType)
+                || DataType.ALPHA_NUMERIC_SPECIAL.equals(dataType))) {
             return qrisHexConverter.convertAlphaNumericHexToString(valueInHexString);
         }
 
@@ -158,6 +158,12 @@ public class QrCpmParser {
         }
 
         return valueInHexString;
+    }
+
+    private boolean isHandledInOtherService(String tag) {
+        return TagIndicator.ISSUER_QRIS_DATA.getValue().equals(tag)
+                || TagIndicator.ISSUER_PUBLIC_KEY_CERTIFICATE.getValue().equals(tag)
+                || TagIndicator.ISSUER_QRIS_DATA_ENCRYPTED.getValue().equals(tag);
     }
 
     /***
