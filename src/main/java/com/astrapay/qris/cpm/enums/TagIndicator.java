@@ -28,7 +28,9 @@ public enum TagIndicator {
     CRYPTOGRAM_INFORMATION_DATA(new byte[]{(byte) 0x9f, (byte) 0x27}, "9F27", DataType.BYTE),
     ISSUER_APPLICATION_DATA(new byte[]{(byte) 0x9f, (byte) 0x10}, "9F10", DataType.BYTE),
     UNPREDICTABLE_NUMBER(new byte[]{(byte) 0x9f, (byte) 0x37}, "9F37", DataType.BYTE),
-    ISSUER_QRIS_DATA(new byte[]{(byte) 0x9f, (byte) 0x74}, "9F74", DataType.ALPHA_NUMERIC);
+    ISSUER_QRIS_DATA(new byte[]{(byte) 0x9f, (byte) 0x74}, "9F74", DataType.ALPHA_NUMERIC),
+    ISSUER_PUBLIC_KEY_CERTIFICATE(new byte[]{(byte) 0x9f, (byte) 0x7a}, "9F7A", DataType.ALPHA_NUMERIC),
+    ISSUER_QRIS_DATA_ENCRYPTED(new byte[]{(byte) 0x9f, (byte) 0x7b}, "9F7B", DataType.ALPHA_NUMERIC);
 
     final byte[] byteTag;
     final String value;

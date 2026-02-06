@@ -329,6 +329,7 @@
                 <artifactId>dependency-check-maven</artifactId>
                 <version>12.1.0</version>
                 <configuration>
+                    <suppressionFile>cve-suppressions.xml</suppressionFile>
                     <ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
                     <ossIndexWarnOnlyOnRemoteErrors>true</ossIndexWarnOnlyOnRemoteErrors>
                     <centralAnalyzerEnabled>true</centralAnalyzerEnabled>

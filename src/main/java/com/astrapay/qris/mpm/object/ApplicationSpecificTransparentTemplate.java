@@ -10,6 +10,10 @@ import lombok.*;
 public class ApplicationSpecificTransparentTemplate {
     // tag 9F74
     String issuerData;
+    // tag 9F7A
+    String issuerPublicKeyCertificate;
+    // tag 9F7B
+    String issuerQrisDataEncrypted;
     // tag 9F26
     String applicationCryptogram;
     // tag 9F27
