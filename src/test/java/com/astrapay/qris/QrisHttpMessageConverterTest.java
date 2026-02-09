@@ -2,6 +2,7 @@ package com.astrapay.qris;
 
 import com.astrapay.qris.mpm.QrisParser;
 import com.astrapay.qris.mpm.object.QrisPayload;
+import com.astrapay.qris.mpm.object.QrisMpmPaymentPayload;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,7 +57,7 @@ class QrisHttpMessageConverterTest {
         String mockPayload = "mockPayload";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(mockPayload.getBytes(StandardCharsets.UTF_8));
         when(inputMessage.getBody()).thenReturn(inputStream);
-        QrisPayload mockQrisPayload = new QrisPayload();
+        QrisPayload mockQrisPayload = new QrisMpmPaymentPayload();
         when(qrisParser.parse(mockPayload)).thenReturn(mockQrisPayload);
 
         QrisPayload result = converter.readInternal(QrisPayload.class, inputMessage);
@@ -67,7 +68,7 @@ class QrisHttpMessageConverterTest {
 
     @Test
     void testWriteInternal() throws IOException {
-        QrisPayload mockQrisPayload = new QrisPayload();
+        QrisPayload mockQrisPayload = new QrisMpmPaymentPayload();
         mockQrisPayload.setPayload("mockPayload");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         when(outputMessage.getBody()).thenReturn(outputStream);
