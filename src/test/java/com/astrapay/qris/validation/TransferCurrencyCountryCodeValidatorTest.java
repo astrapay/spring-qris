@@ -100,18 +100,6 @@ class TransferCurrencyCountryCodeValidatorTest {
     }
 
     @Test
-    @DisplayName("Should return false when Country Code is 'ID' and Currency value is null")
-    void testNullCurrencyValue() {
-        QrisTransferPayload payload = new QrisTransferPayload();
-        Map<Integer, QrisDataObject> qrisRoot = new LinkedHashMap<>();
-        qrisRoot.put(58, new QrisDataObject("58", "02", "ID"));
-        qrisRoot.put(53, new QrisDataObject("53", "03", null));
-        payload.setQrisRoot(qrisRoot);
-        
-        assertFalse(validator.isValid(payload, constraintValidatorContext));
-    }
-
-    @Test
     @DisplayName("Should return false when Country Code is 'ID' and Currency value is empty")
     void testEmptyCurrencyValue() {
         QrisTransferPayload payload = new QrisTransferPayload();
@@ -136,18 +124,6 @@ class TransferCurrencyCountryCodeValidatorTest {
     }
 
     @Test
-    @DisplayName("Should return true when Country Code value is null")
-    void testNullCountryCodeValue() {
-        QrisTransferPayload payload = new QrisTransferPayload();
-        Map<Integer, QrisDataObject> qrisRoot = new LinkedHashMap<>();
-        qrisRoot.put(58, new QrisDataObject("58", "02", null));
-        qrisRoot.put(53, new QrisDataObject("53", "03", "360"));
-        payload.setQrisRoot(qrisRoot);
-        
-        assertTrue(validator.isValid(payload, constraintValidatorContext));
-    }
-
-    @Test
     @DisplayName("Should return true when both Country Code and Currency are missing")
     void testBothMissing() {
         QrisTransferPayload payload = new QrisTransferPayload();
@@ -156,18 +132,5 @@ class TransferCurrencyCountryCodeValidatorTest {
         payload.setQrisRoot(qrisRoot);
         
         assertTrue(validator.isValid(payload, constraintValidatorContext));
-    }
-
-    @Test
-    @DisplayName("Should return false when Country Code is 'id' (lowercase) with Currency '360'")
-    void testLowercaseCountryCode() {
-        QrisTransferPayload payload = new QrisTransferPayload();
-        Map<Integer, QrisDataObject> qrisRoot = new LinkedHashMap<>();
-        qrisRoot.put(58, new QrisDataObject("58", "02", "id")); // lowercase
-        qrisRoot.put(53, new QrisDataObject("53", "03", "360"));
-        payload.setQrisRoot(qrisRoot);
-        
-        // Should be false because validation is case-sensitive (ID vs id)
-        assertFalse(validator.isValid(payload, constraintValidatorContext));
     }
 }

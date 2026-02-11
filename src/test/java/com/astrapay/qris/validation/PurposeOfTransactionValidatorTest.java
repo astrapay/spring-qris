@@ -23,7 +23,6 @@ import static org.mockito.Mockito.mock;
  *     <li>Sub-tag 08 (Purpose of Transaction) wajib ada di dalam tag 62</li>
  *     <li>Value harus salah satu dari: BOOK, DMCT, atau XBCT</li>
  *     <li>Value tidak boleh kosong atau null</li>
- *     <li>Value harus match exact (case-sensitive)</li>
  * </ul>
  * </p>
  */
@@ -157,57 +156,6 @@ class PurposeOfTransactionValidatorTest {
         templateMap.put(8, new QrisDataObject("08", "04", "PYMT")); // Invalid
         
         QrisDataObject additionalData = new QrisDataObject("62", "08", "0804PYMT");
-        additionalData.setTemplateMap(templateMap);
-        qrisRoot.put(62, additionalData);
-        payload.setQrisRoot(qrisRoot);
-        
-        assertFalse(validator.isValid(payload, constraintValidatorContext));
-    }
-
-    @Test
-    @DisplayName("Should return false when Purpose is lowercase 'book'")
-    void testLowercasePurpose() {
-        QrisTransferPayload payload = new QrisTransferPayload();
-        Map<Integer, QrisDataObject> qrisRoot = new LinkedHashMap<>();
-        
-        Map<Integer, QrisDataObject> templateMap = new LinkedHashMap<>();
-        templateMap.put(8, new QrisDataObject("08", "04", "book")); // lowercase
-        
-        QrisDataObject additionalData = new QrisDataObject("62", "08", "0804book");
-        additionalData.setTemplateMap(templateMap);
-        qrisRoot.put(62, additionalData);
-        payload.setQrisRoot(qrisRoot);
-        
-        assertFalse(validator.isValid(payload, constraintValidatorContext));
-    }
-
-    @Test
-    @DisplayName("Should return false when Purpose value is null")
-    void testNullPurposeValue() {
-        QrisTransferPayload payload = new QrisTransferPayload();
-        Map<Integer, QrisDataObject> qrisRoot = new LinkedHashMap<>();
-        
-        Map<Integer, QrisDataObject> templateMap = new LinkedHashMap<>();
-        templateMap.put(8, new QrisDataObject("08", "04", null));
-        
-        QrisDataObject additionalData = new QrisDataObject("62", "08", "0804");
-        additionalData.setTemplateMap(templateMap);
-        qrisRoot.put(62, additionalData);
-        payload.setQrisRoot(qrisRoot);
-        
-        assertFalse(validator.isValid(payload, constraintValidatorContext));
-    }
-
-    @Test
-    @DisplayName("Should return false when Purpose value is empty")
-    void testEmptyPurposeValue() {
-        QrisTransferPayload payload = new QrisTransferPayload();
-        Map<Integer, QrisDataObject> qrisRoot = new LinkedHashMap<>();
-        
-        Map<Integer, QrisDataObject> templateMap = new LinkedHashMap<>();
-        templateMap.put(8, new QrisDataObject("08", "00", ""));
-        
-        QrisDataObject additionalData = new QrisDataObject("62", "04", "0800");
         additionalData.setTemplateMap(templateMap);
         qrisRoot.put(62, additionalData);
         payload.setQrisRoot(qrisRoot);

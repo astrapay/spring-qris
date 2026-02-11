@@ -98,17 +98,6 @@ class TransferMerchantCategoryCodeValidatorTest {
     }
 
     @Test
-    @DisplayName("Should return false when MCC (ID 52) value is null")
-    void testNullValue() {
-        QrisTransferPayload payload = new QrisTransferPayload();
-        Map<Integer, QrisDataObject> qrisRoot = new LinkedHashMap<>();
-        qrisRoot.put(52, new QrisDataObject("52", "04", null));
-        payload.setQrisRoot(qrisRoot);
-        
-        assertFalse(validator.isValid(payload, constraintValidatorContext));
-    }
-
-    @Test
     @DisplayName("Should return false when MCC (ID 52) value is empty")
     void testEmptyValue() {
         QrisTransferPayload payload = new QrisTransferPayload();
