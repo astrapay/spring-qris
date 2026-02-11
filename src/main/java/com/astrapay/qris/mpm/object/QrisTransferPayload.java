@@ -12,6 +12,60 @@ import java.util.Map;
  * dengan validasi khusus yang sesuai dengan spesifikasi QRIS Transfer.
  * </p>
  * 
+ * <p><b>4.2 Verifikasi Data – QRIS MPM Transaksi Transfer:</b></p>
+ * <ol>
+ *     <li><b>Point of Initiation Method (ID "01")</b>
+ *         <ul>
+ *             <li>Wajib ada</li>
+ *             <li>Nilai WAJIB = "12" (Dynamic QR)</li>
+ *             <li>Jika nilai bukan "12", transaksi TIDAK BOLEH diteruskan</li>
+ *         </ul>
+ *     </li>
+ *     <li><b>Transfer Account Information (ID "40")</b>
+ *         <ul>
+ *             <li>PJP Pengirim meneruskan transaksi berdasarkan 8 digit pertama Customer PAN (ID "01") yang merupakan NNS</li>
+ *             <li>Jika NNS tidak dikenali, transaksi TIDAK BOLEH diteruskan</li>
+ *         </ul>
+ *     </li>
+ *     <li><b>Merchant Category Code (ID "52")</b>
+ *         <ul>
+ *             <li>Nilai MCC yang diperbolehkan untuk QRIS MPM Transfer: <b>4829</b> (Transfer)</li>
+ *             <li>Jika MCC selain nilai di atas, transaksi TIDAK DAPAT diproses</li>
+ *         </ul>
+ *     </li>
+ *     <li><b>Transaction Currency (ID "53") dan Country Code (ID "58")</b>
+ *         <ul>
+ *             <li>Jika Country Code (ID "58") = "ID": Transaction Currency (ID "53") WAJIB = "360"</li>
+ *             <li>Jika kondisi ini tidak terpenuhi, transaksi TIDAK BOLEH diteruskan</li>
+ *         </ul>
+ *     </li>
+ *     <li><b>Transaction Amount (ID "54")</b>
+ *         <ul>
+ *             <li>Jika ID "54" ADA: Nominal harus ditampilkan dan TIDAK BOLEH diubah oleh Pengirim dana</li>
+ *             <li>Jika ID "54" TIDAK ADA: Aplikasi mobile menampilkan field input nominal</li>
+ *             <li>Nilai Transaction Amount WAJIB ditampilkan pada halaman konfirmasi</li>
+ *         </ul>
+ *     </li>
+ *     <li><b>Beneficiary Name (ID "59")</b>
+ *         <ul>
+ *             <li>Harus ditampilkan saat proses scan QR</li>
+ *             <li>Wajib ditampilkan kembali pada halaman konfirmasi aplikasi mobile Pengirim dana</li>
+ *         </ul>
+ *     </li>
+ *     <li><b>Purpose of Transaction (ID "62") Sub-ID "08"</b>
+ *         <ul>
+ *             <li>Nilai WAJIB sesuai dengan Table 3.23 (BOOK, DMCT, XBCT)</li>
+ *             <li>Jika tidak sesuai, transaksi TIDAK BOLEH diteruskan</li>
+ *             <li>Jika nilai = "BOOK": PJP Pengirim WAJIB memverifikasi bahwa transaksi merupakan overbooking (on-us transfer)</li>
+ *         </ul>
+ *     </li>
+ *     <li><b>Unique per Generated (ID "62") Sub-ID "99"</b>
+ *         <ul>
+ *             <li>Jika PJP Pengirim menerima respon bahwa Unique per generated tidak valid, transaksi TIDAK BOLEH diteruskan</li>
+ *         </ul>
+ *     </li>
+ * </ol>
+ * 
  * <p><b>Karakteristik Transfer:</b></p>
  * <ul>
  *     <li>Wajib memiliki Transfer Account Information (ID 40) dengan sub-tags:
@@ -30,27 +84,35 @@ import java.util.Map;
  *             <li><b>XBCT</b> - Cross Border Credit Transfer</li>
  *         </ul>
  *     </li>
- *     <li>Transaction Currency (ID 53) mandatory - "360" untuk IDR</li>
+ *     <li>Transaction Currency (ID 53) mandatory - "360" untuk IDR jika Country Code "ID"</li>
  *     <li>Country Code (ID 58) mandatory - "ID" untuk Indonesia</li>
  *     <li>Beneficiary Name (ID 59) mandatory - maksimal 25 karakter</li>
  *     <li>Beneficiary City (ID 60) mandatory - maksimal 15 karakter</li>
  *     <li>Postal Code (ID 61) conditional - mandatory jika Country Code "ID"</li>
- *     <li>TIDAK memiliki Merchant Category Code (ID 52)</li>
+ *     <li>Point of Initiation Method (ID 01) mandatory - WAJIB "12" (Dynamic QR) untuk Transfer</li>
+ *     <li>Merchant Category Code (ID 52) jika ada WAJIB "4829" (Transfer)</li>
  * </ul>
  * 
- * <p><b>Referensi Spesifikasi (Tabel 3.20 - QRIS MPM Transfer):</b></p>
+ * <p><b>Referensi Spesifikasi:</b></p>
+ * <ul>
+ *     <li><b>4.2</b> - Verifikasi Data QRIS MPM Transaksi Transfer</li>
+ *     <li><b>Tabel 3.20</b> - QRIS MPM Transfer Data Structure</li>
+ *     <li><b>Tabel 3.23</b> - Purpose of Transaction Values</li>
+ * </ul>
+ * 
+ * <p><b>Data Objects Wajib untuk Transfer:</b></p>
  * <ul>
  *     <li>ID "00" - Payload Format Indicator (M) - value "01"</li>
- *     <li>ID "01" - Point of Initiation Method (M) - value "12" (dynamic)</li>
+ *     <li>ID "01" - Point of Initiation Method (M) - value "12" (Dynamic, WAJIB untuk Transfer)</li>
  *     <li>ID "40" - Transfer Account Information (M) - var up to 99</li>
- *     <li>ID "52" - Merchant Category Code - TIDAK ADA untuk Transfer</li>
- *     <li>ID "53" - Transaction Currency (M) - "360"</li>
+ *     <li>ID "52" - Merchant Category Code (C) - jika ada WAJIB "4829"</li>
+ *     <li>ID "53" - Transaction Currency (M) - "360" jika Country Code "ID"</li>
  *     <li>ID "54" - Transaction Amount (C) - var up to 13</li>
  *     <li>ID "58" - Country Code (M) - "ID"</li>
  *     <li>ID "59" - Beneficiary Name (M) - var up to 25</li>
  *     <li>ID "60" - Beneficiary City (M) - var up to 15</li>
  *     <li>ID "61" - Postal Code (C) - var up to 10</li>
- *     <li>ID "62" - Additional Data (M) dengan Purpose (tag 08)</li>
+ *     <li>ID "62" - Additional Data (M) dengan Purpose (tag 08: BOOK/DMCT/XBCT)</li>
  *     <li>ID "63" - CRC (M) - 4 chars</li>
  * </ul>
  * 
@@ -88,18 +150,23 @@ import java.util.Map;
  * - DMCT: Purpose of Transaction
  * </pre>
  * 
- * @author Arthur Purnama
  * @see QrisPayload
  * @see QrisType#TRANSFER
  */
 @NoArgsConstructor
 @CheckSum
+@TransferPointOfInitiationMethod  // Validasi ID 01 = "12"
+@TransferMerchantCategoryCode     // Validasi MCC = "4829" jika ada
+@TransferCurrencyCountryCode      // Validasi Currency "360" untuk Country "ID"
+@TransferAccountInformationValid  // Validasi struktur ID 40
+@PurposeOfTransactionValid        // Validasi Purpose: BOOK/DMCT/XBCT
 public class QrisTransferPayload extends QrisPayload {
     
     // Override qrisRoot field with Transfer specific validations
     @PayloadFormatIndicatorFirstPosition
     @CRCLastPosition
     @PayloadFormatIndicatorValue
+    @MandatoryField(id = 1)   // Point of Initiation Method (WAJIB untuk Transfer)
     @MandatoryField(id = 40)  // Transfer Account Information
     @MandatoryField(id = 53)  // Transaction Currency
     @MandatoryField(id = 58)  // Country Code
@@ -109,6 +176,7 @@ public class QrisTransferPayload extends QrisPayload {
     @MandatoryField(id = 63)  // CRC
     @CharLength(from=1, to=1, min=2, max=2)
     @CharLength(from=40, to=40, min=1, max=99)
+    @CharLength(from=52, to=52, min=4, max=4)  // MCC jika ada
     @CharLength(from=53, to=53, min=3, max=3)
     @CharLength(from=54, to=54, min=1, max=13)
     @CharLength(from=58, to=58, min=2, max=2)
@@ -124,8 +192,6 @@ public class QrisTransferPayload extends QrisPayload {
     @IdNotNull(id = 59)
     @IdNotNull(id = 60)
     @PostalCode
-    @TransferAccountInformationValid
-    @PurposeOfTransactionValid
     private Map<Integer, QrisDataObject> qrisRoot;
     
     /**

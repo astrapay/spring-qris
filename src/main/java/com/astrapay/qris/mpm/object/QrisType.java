@@ -15,7 +15,6 @@ package com.astrapay.qris.mpm.object;
  * </ul>
  * </p>
  * 
- * @author Arthur Purnama
  */
 public enum QrisType {
     
@@ -54,7 +53,7 @@ public enum QrisType {
      * </ul>
      * </p>
      */
-    TRANSFER("Transfer", "QRIS untuk transfer antar rekening"),
+    TRANSFER("Transfer", "QRIS untuk transfer"),
     
     /**
      * QRIS untuk penarikan tunai di ATM (future implementation).
@@ -66,7 +65,21 @@ public enum QrisType {
      * </ul>
      * </p>
      */
-    TUNTAS("Tuntas/Cash Withdrawal", "QRIS untuk penarikan tunai di ATM");
+    TUNTAS("Tuntas/Cash Withdrawal", "QRIS untuk penarikan tunai di ATM"),
+    
+    /**
+     * QRIS dengan tipe yang tidak dikenali atau invalid.
+     * <p>
+     * Karakteristik:
+     * <ul>
+     *     <li>Memiliki tag 62 (Additional Data) dengan sub-tag 08 (Purpose of Transaction)</li>
+     *     <li>Nilai Purpose of Transaction tidak sesuai dengan nilai yang valid (BOOK/DMCT/XBCT)</li>
+     *     <li>Tidak dapat diproses sebagai Transfer atau MPM Payment</li>
+     *     <li>Payload akan ditolak oleh validator</li>
+     * </ul>
+     * </p>
+     */
+    UNKNOWN("Unknown", "QRIS dengan tipe yang tidak dikenali");
     
     private final String displayName;
     private final String description;

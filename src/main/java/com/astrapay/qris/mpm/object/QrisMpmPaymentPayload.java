@@ -39,7 +39,6 @@ import java.util.Map;
  * 00020101021126...52044829530336054...5802ID5907ANTONIO6007JAKARTA61051031062386304CCEF
  * </pre>
  * 
- * @author Arthur Purnama
  * @see QrisPayload
  * @see QrisType#MPM_PAYMENT
  */
@@ -48,9 +47,6 @@ import java.util.Map;
 public class QrisMpmPaymentPayload extends QrisPayload {
     
     // Override qrisRoot field with MPM Payment specific validations
-    @PayloadFormatIndicatorFirstPosition
-    @CRCLastPosition
-    @PayloadFormatIndicatorValue
     @MandatoryField
     @MandatoryField(id = 52)  // Merchant Category Code
     @MandatoryField(id = 53)  // Transaction Currency
@@ -73,7 +69,10 @@ public class QrisMpmPaymentPayload extends QrisPayload {
     @CharLength(from=62, to=62, min=1, max=99)
     @CharLength(from=64, to=99, min=1, max=99)
     @MerchantAccountInformation2To45Exist
+    @PayloadFormatIndicatorFirstPosition
+    @CRCLastPosition
     @PointOfInitiationMethodValue
+    @PayloadFormatIndicatorValue
     @MerchantAccountInformationExist
     @TransactionCurrency
     @TransactionAmount(id = 54)

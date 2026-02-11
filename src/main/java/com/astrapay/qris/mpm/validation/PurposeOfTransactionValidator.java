@@ -9,6 +9,7 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Validator implementation untuk {@link PurposeOfTransactionValid} annotation.
@@ -24,14 +25,15 @@ import java.util.Map;
  *     <li>XBCT - Cross Border Credit Transfer</li>
  * </ul>
  * 
- * @author Arthur Purnama
- * @see PurposeOfTransactionValid
  */
 public class PurposeOfTransactionValidator implements ConstraintValidator<PurposeOfTransactionValid, QrisPayload> {
 
-    private static final List<String> VALID_PURPOSE_VALUES = Arrays.asList("BOOK", "DMCT", "XBCT");
     private static final int ADDITIONAL_DATA_ID = 62;
     private static final int PURPOSE_TAG_ID = 8;
+    private static final String PURPOSE_BOOK = "BOOK";
+    private static final String PURPOSE_DMCT = "DMCT";
+    private static final String PURPOSE_XBCT = "XBCT";
+    private static final List<String> VALID_PURPOSE_VALUES = Arrays.asList(PURPOSE_BOOK, PURPOSE_DMCT, PURPOSE_XBCT);
 
     @Override
     public void initialize(PurposeOfTransactionValid constraintAnnotation) {
@@ -40,7 +42,7 @@ public class PurposeOfTransactionValidator implements ConstraintValidator<Purpos
 
     @Override
     public boolean isValid(QrisPayload payload, ConstraintValidatorContext context) {
-        if (payload == null || payload.getQrisRoot() == null) {
+        if (Objects.isNull(payload) || Objects.isNull(payload.getQrisRoot())) {
             return true; // Let @MandatoryField handle null checks
         }
 
@@ -48,41 +50,25 @@ public class PurposeOfTransactionValidator implements ConstraintValidator<Purpos
         
         // Check if Additional Data Field Template (ID 62) exists
         QrisDataObject additionalData = qrisRoot.get(ADDITIONAL_DATA_ID);
-        if (additionalData == null) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
-                    "Additional Data Field Template (ID 62) is missing. Required for Transfer QRIS."
-            ).addConstraintViolation();
+        if (Objects.isNull(additionalData)) {
             return false;
         }
 
         // Check if templateMap is parsed
         Map<Integer, QrisDataObject> templateMap = additionalData.getTemplateMap();
-        if (templateMap == null || templateMap.isEmpty()) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
-                    "Additional Data Field Template (ID 62) is empty or not parsed"
-            ).addConstraintViolation();
+        if (Objects.isNull(templateMap) || templateMap.isEmpty()) {
             return false;
         }
 
         // Check if Purpose of Transaction (tag 08) exists
         QrisDataObject purposeOfTransaction = templateMap.get(PURPOSE_TAG_ID);
-        if (purposeOfTransaction == null || purposeOfTransaction.getValue() == null) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
-                    "Purpose of Transaction (tag 62->08) is missing. Required for Transfer QRIS."
-            ).addConstraintViolation();
+        if (Objects.isNull(purposeOfTransaction) || Objects.isNull(purposeOfTransaction.getValue())) {
             return false;
         }
 
         // Validate purpose value
         String purposeValue = purposeOfTransaction.getValue().trim();
         if (purposeValue.isEmpty()) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
-                    "Purpose of Transaction (tag 62->08) cannot be empty"
-            ).addConstraintViolation();
             return false;
         }
 
@@ -91,13 +77,6 @@ public class PurposeOfTransactionValidator implements ConstraintValidator<Purpos
                 .anyMatch(validValue -> purposeValue.toUpperCase().contains(validValue));
 
         if (!isValidPurpose) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
-                    String.format(
-                            "Purpose of Transaction (tag 62->08) has invalid value: '%s'. Must contain one of: %s",
-                            purposeValue, String.join(", ", VALID_PURPOSE_VALUES)
-                    )
-            ).addConstraintViolation();
             return false;
         }
 
