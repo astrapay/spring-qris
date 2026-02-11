@@ -42,6 +42,8 @@ public class QrCpmConfiguration {
     public List<String> applicationSpecificTransparentTemplateSubTag() {
         List<String> applicationSpecificTransparentTemplateSubTag = new ArrayList<>();
         applicationSpecificTransparentTemplateSubTag.add(TagIndicator.ISSUER_QRIS_DATA.getValue());
+        applicationSpecificTransparentTemplateSubTag.add(TagIndicator.ISSUER_PUBLIC_KEY_CERTIFICATE.getValue());
+        applicationSpecificTransparentTemplateSubTag.add(TagIndicator.ISSUER_QRIS_DATA_ENCRYPTED.getValue());
         applicationSpecificTransparentTemplateSubTag.add(TagIndicator.APPLICATION_CRYPTOGRAM.getValue());
         applicationSpecificTransparentTemplateSubTag.add(TagIndicator.CRYPTOGRAM_INFORMATION_DATA.getValue());
         applicationSpecificTransparentTemplateSubTag.add(TagIndicator.ISSUER_APPLICATION_DATA.getValue());
