@@ -40,6 +40,30 @@ import java.util.Map;
  */
 public class QrisParser {
 
+    // Tag IDs
+    private static final int TAG_ID_ADDITIONAL_DATA = 62;
+    private static final int TAG_ID_PURPOSE_OF_TRANSACTION = 8;
+    private static final int TAG_ID_TRANSFER_ACCOUNT_INFO = 40;
+    private static final int TAG_ID_MERCHANT_DOMESTIC_REPO = 51;
+    private static final int TAG_ID_MERCHANT_INFO_LANGUAGE = 64;
+    private static final int TAG_ID_PROPRIETARY_DATA = 99;
+    private static final int TAG_ID_MERCHANT_ACCOUNT_START = 26;
+    private static final int TAG_ID_MERCHANT_ACCOUNT_END = 45;
+    
+    // Purpose of Transaction Values
+    private static final String PURPOSE_BOOK = "BOOK";
+    private static final String PURPOSE_DMCT = "DMCT";
+    private static final String PURPOSE_XBCT = "XBCT";
+    
+    // Parser constants
+    private static final int ID_LENGTH = 2;
+    private static final int ID_PLUS_LENGTH = 4;
+    
+    // Error messages
+    private static final String ERROR_DUPLICATE_KEY = "Duplicate key '%d'.";
+    private static final String ERROR_TUNTAS_NOT_IMPLEMENTED = "QRIS Tuntas belum diimplementasikan";
+    private static final String ERROR_UNKNOWN_TYPE = "QRIS dengan tipe UNKNOWN tidak dapat diproses";
+
     /**
      * Parse QR text string menjadi QrisPayload dengan automatic type detection.
      * <p>
@@ -83,12 +107,13 @@ public class QrisParser {
      * <ul>
      *     <li>Parse tag 62 (Additional Data) untuk mencari tag 08 (Purpose of Transaction)</li>
      *     <li>Jika tag 08 berisi "BOOK", "DMCT", atau "XBCT" → TRANSFER</li>
-     *     <li>Jika tidak ditemukan → MPM_PAYMENT (default)</li>
+     *     <li>Jika tag 08 ada tapi nilai tidak sesuai → UNKNOWN</li>
+     *     <li>Jika tidak ditemukan tag 08 → MPM_PAYMENT (default)</li>
      * </ul>
      * </p>
      * 
      * @param qris QR text string
-     * @return QrisType (TRANSFER atau MPM_PAYMENT)
+     * @return QrisType (TRANSFER, UNKNOWN, atau MPM_PAYMENT)
      */
     private QrisType detectQrisType(String qris) {
         try {
@@ -97,23 +122,27 @@ public class QrisParser {
             parseRoot(qris, tempMap);
             
             // Check if tag 62 (Additional Data) exists
-            if (tempMap.containsKey(62)) {
-                QrisDataObject additionalData = tempMap.get(62);
+            if (tempMap.containsKey(TAG_ID_ADDITIONAL_DATA)) {
+                QrisDataObject additionalData = tempMap.get(TAG_ID_ADDITIONAL_DATA);
                 
                 // Parse sub-tags of tag 62
                 Map<Integer, QrisDataObject> tag62Map = new LinkedHashMap<>();
                 parser(additionalData.getValue(), tag62Map);
                 
                 // Check if tag 08 (Purpose of Transaction) exists
-                if (tag62Map.containsKey(8)) {
-                    String purposeValue = tag62Map.get(8).getValue();
+                if (tag62Map.containsKey(TAG_ID_PURPOSE_OF_TRANSACTION)) {
+                    String purposeValue = tag62Map.get(TAG_ID_PURPOSE_OF_TRANSACTION).getValue();
                     
                     // Check if purpose contains BOOK, DMCT, or XBCT
-                    if (purposeValue != null && 
-                        (purposeValue.contains("BOOK") || 
-                         purposeValue.contains("DMCT") || 
-                         purposeValue.contains("XBCT"))) {
-                        return QrisType.TRANSFER;
+                    if (purposeValue != null) {
+                        if (purposeValue.contains(PURPOSE_BOOK) || 
+                            purposeValue.contains(PURPOSE_DMCT) || 
+                            purposeValue.contains(PURPOSE_XBCT)) {
+                            return QrisType.TRANSFER;
+                        } else {
+                            // Tag 08 exists but value is invalid
+                            return QrisType.UNKNOWN;
+                        }
                     }
                 }
             }
@@ -128,8 +157,9 @@ public class QrisParser {
     /**
      * Create payload instance berdasarkan tipe QRIS.
      * 
-     * @param type Tipe QRIS (TRANSFER, MPM_PAYMENT, atau TUNTAS)
+     * @param type Tipe QRIS (TRANSFER, MPM_PAYMENT, TUNTAS, atau UNKNOWN)
      * @return Instance QrisPayload yang sesuai
+     * @throws UnsupportedOperationException jika tipe TUNTAS atau UNKNOWN
      */
     private QrisPayload createPayloadByType(QrisType type) {
         switch (type) {
@@ -139,7 +169,10 @@ public class QrisParser {
                 return new QrisMpmPaymentPayload();
             case TUNTAS:
                 // Future implementation
-                throw new UnsupportedOperationException("QRIS Tuntas belum diimplementasikan");
+                throw new UnsupportedOperationException(ERROR_TUNTAS_NOT_IMPLEMENTED);
+            case UNKNOWN:
+                // Cannot process QRIS with unknown type
+                throw new UnsupportedOperationException(ERROR_UNKNOWN_TYPE);
             default:
                 return new QrisMpmPaymentPayload();
         }
@@ -172,8 +205,8 @@ public class QrisParser {
         parseMerchantDomesticRepository(qrisMap);
         parseAdditionalDataFieldTemplate(qrisMap);
         parseMerchantInformationLanguageTemplate(qrisMap);
-        if(qrisMap.containsKey(62)){
-            parseProprietaryDataTemplate(qrisMap.get(62).getTemplateMap());
+        if(qrisMap.containsKey(TAG_ID_ADDITIONAL_DATA)){
+            parseProprietaryDataTemplate(qrisMap.get(TAG_ID_ADDITIONAL_DATA).getTemplateMap());
         }
         payload.setQrisRoot(qrisMap);
     }
@@ -183,7 +216,7 @@ public class QrisParser {
      * <p>Digunakan untuk MPM Payment QRIS.</p>
      */
     private void parseMerchantAccountInformationTemplate(Map<Integer, QrisDataObject> qrisMap) {
-        for (int i = 26; i <= 45; i++) {
+        for (int i = TAG_ID_MERCHANT_ACCOUNT_START; i <= TAG_ID_MERCHANT_ACCOUNT_END; i++) {
             parseTemplate(qrisMap, i);
         }
     }
@@ -201,7 +234,7 @@ public class QrisParser {
      * </p>
      */
     private void parseTransferAccountInformation(Map<Integer, QrisDataObject> qrisMap) {
-        parseTemplate(qrisMap, 40);
+        parseTemplate(qrisMap, TAG_ID_TRANSFER_ACCOUNT_INFO);
     }
 
     /**
@@ -209,7 +242,7 @@ public class QrisParser {
      * <p>Digunakan untuk MPM Payment QRIS static (Point of Initiation Method "11").</p>
      */
     private void parseMerchantDomesticRepository(Map<Integer, QrisDataObject> qrisMap) {
-        parseTemplate(qrisMap, 51);
+        parseTemplate(qrisMap, TAG_ID_MERCHANT_DOMESTIC_REPO);
     }
 
     /**
@@ -225,15 +258,15 @@ public class QrisParser {
      * </p>
      */
     private void parseAdditionalDataFieldTemplate(Map<Integer, QrisDataObject> qrisMap) {
-        parseTemplate(qrisMap, 62);
+        parseTemplate(qrisMap, TAG_ID_ADDITIONAL_DATA);
     }
 
     private void parseMerchantInformationLanguageTemplate(Map<Integer, QrisDataObject> qrisMap) {
-        parseTemplate(qrisMap, 64);
+        parseTemplate(qrisMap, TAG_ID_MERCHANT_INFO_LANGUAGE);
     }
 
     private void parseProprietaryDataTemplate(Map<Integer, QrisDataObject> qrisMap) {
-        parseTemplate(qrisMap, 99);
+        parseTemplate(qrisMap, TAG_ID_PROPRIETARY_DATA);
     }
 
     private void parseTemplate(Map<Integer, QrisDataObject> qrisMap, int i) {
@@ -255,13 +288,13 @@ public class QrisParser {
      */
     private void parser(String qris, Map<Integer, QrisDataObject> qrisMap) {
         String length;//6238 0115220121 0026830150 715ASTRAPA Y2100176
-        for (int i = 0 ; i < qris.length(); i = i + 4 + Integer.parseInt(length)) {
-            String id = qris.substring(i, i + 2);
-            length = qris.substring(i + 2, i + 4);
-            String value = qris.substring(i + 4, i + 4 + Integer.parseInt(length));
+        for (int i = 0 ; i < qris.length(); i = i + ID_PLUS_LENGTH + Integer.parseInt(length)) {
+            String id = qris.substring(i, i + ID_LENGTH);
+            length = qris.substring(i + ID_LENGTH, i + ID_PLUS_LENGTH);
+            String value = qris.substring(i + ID_PLUS_LENGTH, i + ID_PLUS_LENGTH + Integer.parseInt(length));
             QrisDataObject qrisDataObject = new QrisDataObject(id, length, value);
             qrisMap.merge(qrisDataObject.getIntId(), qrisDataObject, (v1, v2) -> {
-                throw new IllegalArgumentException("Duplicate key '" + qrisDataObject.getIntId() + "'.");
+                throw new IllegalArgumentException(String.format(ERROR_DUPLICATE_KEY, qrisDataObject.getIntId()));
             });
         }
     }
