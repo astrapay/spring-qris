@@ -50,7 +50,7 @@ public class QrisParser {
     private static final int TAG_ID_MERCHANT_ACCOUNT_START = 26;
     private static final int TAG_ID_MERCHANT_ACCOUNT_END = 45;
     
-    // Purpose of Transaction Values
+    // Purpose of Transaction Values TRANSFER
     private static final String PURPOSE_BOOK = "BOOK";
     private static final String PURPOSE_DMCT = "DMCT";
     private static final String PURPOSE_XBCT = "XBCT";
@@ -117,6 +117,7 @@ public class QrisParser {
      */
     private QrisType detectQrisType(String qris) {
         try {
+            // check parse tag for Transfer detection
             // Parse root to get tag 62
             Map<Integer, QrisDataObject> tempMap = new LinkedHashMap<>();
             parseRoot(qris, tempMap);
