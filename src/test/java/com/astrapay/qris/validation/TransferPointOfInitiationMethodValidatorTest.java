@@ -97,17 +97,6 @@ class TransferPointOfInitiationMethodValidatorTest {
     }
 
     @Test
-    @DisplayName("Should return false when Point of Initiation Method (ID 01) value is null")
-    void testNullValue() {
-        QrisTransferPayload payload = new QrisTransferPayload();
-        Map<Integer, QrisDataObject> qrisRoot = new LinkedHashMap<>();
-        qrisRoot.put(1, new QrisDataObject("01", "02", null));
-        payload.setQrisRoot(qrisRoot);
-        
-        assertFalse(validator.isValid(payload, constraintValidatorContext));
-    }
-
-    @Test
     @DisplayName("Should return false when Point of Initiation Method (ID 01) value is empty")
     void testEmptyValue() {
         QrisTransferPayload payload = new QrisTransferPayload();

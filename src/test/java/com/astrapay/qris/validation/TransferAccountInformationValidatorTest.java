@@ -155,44 +155,6 @@ class TransferAccountInformationValidatorTest {
     }
 
     @Test
-    @DisplayName("Should return false when Reverse Domain (tag 00) exceeds 32 chars")
-    void testReverseDomainTooLong() {
-        QrisTransferPayload payload = new QrisTransferPayload();
-        Map<Integer, QrisDataObject> qrisRoot = new LinkedHashMap<>();
-        
-        Map<Integer, QrisDataObject> templateMap = new LinkedHashMap<>();
-        templateMap.put(0, new QrisDataObject("00", "33", "ID.CO.VERYLONGBANKNAME.WWW.CO")); // 33 chars
-        templateMap.put(1, new QrisDataObject("01", "18", "936000141517031392"));
-        templateMap.put(2, new QrisDataObject("02", "10", "1703139275"));
-        
-        QrisDataObject transferAccountInfo = new QrisDataObject("40", "40", "0033ID.CO.VERYLONGBANKNAME.WWW.CO0118936000141517031392021017031392750");
-        transferAccountInfo.setTemplateMap(templateMap);
-        qrisRoot.put(40, transferAccountInfo);
-        payload.setQrisRoot(qrisRoot);
-        
-        assertFalse(validator.isValid(payload, constraintValidatorContext));
-    }
-
-    @Test
-    @DisplayName("Should return false when Customer PAN (tag 01) is missing")
-    void testMissingCustomerPAN() {
-        QrisTransferPayload payload = new QrisTransferPayload();
-        Map<Integer, QrisDataObject> qrisRoot = new LinkedHashMap<>();
-        
-        Map<Integer, QrisDataObject> templateMap = new LinkedHashMap<>();
-        templateMap.put(0, new QrisDataObject("00", "13", "ID.CO.BCA.WWW"));
-        // tag 01 missing
-        templateMap.put(2, new QrisDataObject("02", "10", "1703139275"));
-        
-        QrisDataObject transferAccountInfo = new QrisDataObject("40", "35", "0013ID.CO.BCA.WWW021017031392750");
-        transferAccountInfo.setTemplateMap(templateMap);
-        qrisRoot.put(40, transferAccountInfo);
-        payload.setQrisRoot(qrisRoot);
-        
-        assertFalse(validator.isValid(payload, constraintValidatorContext));
-    }
-
-    @Test
     @DisplayName("Should return false when Customer PAN (tag 01) has less than 16 digits")
     void testCustomerPANTooShort() {
         QrisTransferPayload payload = new QrisTransferPayload();

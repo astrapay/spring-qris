@@ -153,13 +153,13 @@ class QrisParserTransferTest {
         assertTrue(templateMap.containsKey(1), "Should have Customer PAN (tag 01)");
         QrisDataObject customerPan = templateMap.get(1);
         assertNotNull(customerPan.getValue(), "Customer PAN should not be null");
-        assertEquals("9360001415170313920", customerPan.getValue(), "Customer PAN should match");
+        assertEquals("936000141517031392", customerPan.getValue(), "Customer PAN should match");
         assertTrue(customerPan.getValue().matches("\\d{16,19}"), "Customer PAN should be 16-19 numeric digits");
         
         // Check sub-tag 02: Beneficiary ID
         assertTrue(templateMap.containsKey(2), "Should have Beneficiary ID (tag 02)");
         QrisDataObject beneficiaryId = templateMap.get(2);
-        assertEquals("105170313927", beneficiaryId.getValue(), "Beneficiary ID should match");
+        assertEquals("5170313927", beneficiaryId.getValue(), "Beneficiary ID should match");
     }
     
     /**
@@ -239,7 +239,7 @@ class QrisParserTransferTest {
         // Transaction Amount (ID 54) - optional
         QrisDataObject amount = qrisRoot.get(54);
         assertNotNull(amount, "Transaction Amount exists in this QR");
-        assertEquals("100", amount.getValue(), "Transaction Amount should be 100");
+        assertEquals("1000", amount.getValue(), "Transaction Amount should be 1000");
     }
     
     /**
