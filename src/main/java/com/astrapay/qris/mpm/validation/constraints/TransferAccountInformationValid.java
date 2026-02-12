@@ -59,8 +59,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *     <li>ISO 8583 - DE 103 (Beneficiary ID)</li>
  *     <li>ISO 8583 - DE 48 Tag BC (Bank Identifier Code)</li>
  * </ul>
- * 
- * @author Arthur Purnama
+ *
  * @see QrisTransferPayload
  * @see TransferAccountInformationValidator
  */
