@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -419,5 +420,45 @@ class QrisParserMpmPaymentTest {
             "Should NOT be TRANSFER type");
         assertEquals(QrisType.MPM_PAYMENT, payload.getQrisType(), 
             "Should be MPM_PAYMENT type");
+    }
+    
+    @Test
+    @DisplayName("Should get and set qrisRoot correctly")
+    void testGetSetQrisRoot() {
+        // Create payload
+        QrisMpmPaymentPayload payload = new QrisMpmPaymentPayload();
+        
+        // Create test qrisRoot
+        Map<Integer, QrisDataObject> qrisRoot = new LinkedHashMap<>();
+        qrisRoot.put(0, new QrisDataObject("00", "02", "01"));
+        qrisRoot.put(1, new QrisDataObject("01", "02", "11"));
+        qrisRoot.put(52, new QrisDataObject("52", "04", "5812"));
+        
+        // Test setQrisRoot
+        payload.setQrisRoot(qrisRoot);
+        
+        // Test getQrisRoot
+        Map<Integer, QrisDataObject> retrievedRoot = payload.getQrisRoot();
+        
+        assertNotNull(retrievedRoot, "Retrieved qrisRoot should not be null");
+        assertEquals(3, retrievedRoot.size(), "Should have 3 entries");
+        assertTrue(retrievedRoot.containsKey(0), "Should contain key 0");
+        assertTrue(retrievedRoot.containsKey(1), "Should contain key 1");
+        assertTrue(retrievedRoot.containsKey(52), "Should contain key 52");
+        assertEquals("01", retrievedRoot.get(0).getValue(), "ID 0 value should be '01'");
+        assertEquals("11", retrievedRoot.get(1).getValue(), "ID 1 value should be '11'");
+        assertEquals("5812", retrievedRoot.get(52).getValue(), "ID 52 value should be '5812'");
+    }
+    
+    @Test
+    @DisplayName("Should create payload with constructor")
+    void testConstructorWithPayload() {
+        String testPayload = "test-qr-string";
+        
+        QrisMpmPaymentPayload payload = new QrisMpmPaymentPayload(testPayload);
+        
+        assertNotNull(payload, "Payload should not be null");
+        assertEquals(testPayload, payload.getPayload(), "Payload string should match");
+        assertEquals(QrisType.MPM_PAYMENT, payload.getQrisType(), "Should be MPM_PAYMENT type");
     }
 }

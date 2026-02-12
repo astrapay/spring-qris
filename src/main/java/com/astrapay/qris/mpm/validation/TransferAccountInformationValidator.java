@@ -111,7 +111,7 @@ public class TransferAccountInformationValidator implements ConstraintValidator<
     private boolean isCustomerPanValid(Map<Integer, QrisDataObject> accountInfo) {
         String pan = getFieldValue(accountInfo, CUSTOMER_PAN_TAG);
         
-        if (pan == null) {
+        if (Objects.isNull(pan)) {
             return false;
         }
 
