@@ -63,7 +63,7 @@ public class TransferAccountInformationValidator implements ConstraintValidator<
 
         // Get Transfer Account Information template
         Map<Integer, QrisDataObject> accountInfo = extractTransferAccountInfo(payload.getQrisRoot());
-        if (accountInfo == null) {
+        if (Objects.isNull(accountInfo)) {
             return false;
         }
 
