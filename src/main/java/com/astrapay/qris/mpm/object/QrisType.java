@@ -49,7 +49,7 @@ public enum QrisType {
      *         yang berisi "BOOK" (booking/transfer), "DMCT" (debit merchant credit transfer), 
      *         atau "XBCT" (cross border credit transfer)</li>
      *     <li>Beneficiary Name (ID 59) dan Beneficiary City (ID 60) mandatory</li>
-     *     <li>Tidak memiliki Merchant Category Code (ID 52)</li>
+     *     <li>Memiliki Merchant Category Code (ID 52) dengan value 4829</li>
      * </ul>
      * </p>
      */

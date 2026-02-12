@@ -44,10 +44,6 @@ public class TransferPointOfInitiationMethodValidator implements ConstraintValid
         String value = pointOfInitiation.getValue();
         
         // Nilai wajib "12" (Dynamic QR)
-        if (!DYNAMIC_QR_VALUE.equals(value)) {
-            return false;
-        }
-
-        return true;
+        return DYNAMIC_QR_VALUE.equals(value);
     }
 }

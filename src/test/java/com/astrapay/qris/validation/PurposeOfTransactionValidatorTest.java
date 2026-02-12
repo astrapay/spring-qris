@@ -6,6 +6,8 @@ import com.astrapay.qris.mpm.validation.PurposeOfTransactionValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import javax.validation.ConstraintValidatorContext;
 import java.util.LinkedHashMap;
@@ -95,55 +97,23 @@ class PurposeOfTransactionValidatorTest {
         assertFalse(validator.isValid(payload, constraintValidatorContext));
     }
 
-    @Test
-    @DisplayName("Should return true when Purpose is 'BOOK'")
-    void testValidPurposeBOOK() {
+    @ParameterizedTest
+    @ValueSource(strings = {"BOOK", "DMCT", "XBCT"})
+    @DisplayName("Should return true when Purpose is valid")
+    void testValidPurpose(String purpose) {
         QrisTransferPayload payload = new QrisTransferPayload();
         Map<Integer, QrisDataObject> qrisRoot = new LinkedHashMap<>();
         
         Map<Integer, QrisDataObject> templateMap = new LinkedHashMap<>();
-        templateMap.put(8, new QrisDataObject("08", "04", "BOOK"));
+        templateMap.put(8, new QrisDataObject("08", "04", purpose));
         
-        QrisDataObject additionalData = new QrisDataObject("62", "08", "0804BOOK");
+        QrisDataObject additionalData = new QrisDataObject("62", "08", "0804" + purpose);
         additionalData.setTemplateMap(templateMap);
         qrisRoot.put(62, additionalData);
         payload.setQrisRoot(qrisRoot);
         
-        assertTrue(validator.isValid(payload, constraintValidatorContext));
-    }
-
-    @Test
-    @DisplayName("Should return true when Purpose is 'DMCT'")
-    void testValidPurposeDMCT() {
-        QrisTransferPayload payload = new QrisTransferPayload();
-        Map<Integer, QrisDataObject> qrisRoot = new LinkedHashMap<>();
-        
-        Map<Integer, QrisDataObject> templateMap = new LinkedHashMap<>();
-        templateMap.put(8, new QrisDataObject("08", "04", "DMCT"));
-        
-        QrisDataObject additionalData = new QrisDataObject("62", "08", "0804DMCT");
-        additionalData.setTemplateMap(templateMap);
-        qrisRoot.put(62, additionalData);
-        payload.setQrisRoot(qrisRoot);
-        
-        assertTrue(validator.isValid(payload, constraintValidatorContext));
-    }
-
-    @Test
-    @DisplayName("Should return true when Purpose is 'XBCT'")
-    void testValidPurposeXBCT() {
-        QrisTransferPayload payload = new QrisTransferPayload();
-        Map<Integer, QrisDataObject> qrisRoot = new LinkedHashMap<>();
-        
-        Map<Integer, QrisDataObject> templateMap = new LinkedHashMap<>();
-        templateMap.put(8, new QrisDataObject("08", "04", "XBCT"));
-        
-        QrisDataObject additionalData = new QrisDataObject("62", "08", "0804XBCT");
-        additionalData.setTemplateMap(templateMap);
-        qrisRoot.put(62, additionalData);
-        payload.setQrisRoot(qrisRoot);
-        
-        assertTrue(validator.isValid(payload, constraintValidatorContext));
+        assertTrue(validator.isValid(payload, constraintValidatorContext),
+            "Purpose '" + purpose + "' should be valid");
     }
 
     @Test
