@@ -10,16 +10,12 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Validator untuk {@link TransferCurrencyCountryCode}.
+ * Validator untuk Country Code dan Transaction Currency pada QRIS Transfer.
  * <p>
- * Memvalidasi kesesuaian Transaction Currency dan Country Code:
- * <ul>
- *     <li>Country Code (ID 58) = "ID" → Transaction Currency (ID 53) wajib "360"</li>
- * </ul>
+ * Validasi: Country Code (ID 58) = "ID" → Transaction Currency (ID 53) wajib "360"
  * </p>
  * 
  * <p><b>Referensi:</b> Spesifikasi 4.2 - Verifikasi Data QRIS MPM Transaksi Transfer, Poin 4</p>
- * 
  */
 public class TransferCurrencyCountryCodeValidator implements ConstraintValidator<TransferCurrencyCountryCode, QrisPayload> {
 
@@ -30,33 +26,43 @@ public class TransferCurrencyCountryCodeValidator implements ConstraintValidator
 
     @Override
     public boolean isValid(QrisPayload payload, ConstraintValidatorContext context) {
-        if (Objects.isNull(payload) || Objects.isNull(payload.getQrisRoot())) {
-            return true; // Handled by other validators
-        }
-
-        Map<Integer, QrisDataObject> qrisRoot = payload.getQrisRoot();
-        QrisDataObject countryCode = qrisRoot.get(COUNTRY_CODE_ID);
-        QrisDataObject currency = qrisRoot.get(TRANSACTION_CURRENCY_ID);
-
-        // Jika Country Code tidak ada, skip validasi ini
-        if (Objects.isNull(countryCode) || Objects.isNull(countryCode.getValue())) {
+        if (isNullPayload(payload)) {
             return true;
         }
 
-        String countryValue = countryCode.getValue();
-
-        // Jika Country Code = "ID", Transaction Currency wajib "360"
-        if (INDONESIA_COUNTRY_CODE.equalsIgnoreCase(countryValue)) {
-            if (Objects.isNull(currency) || Objects.isNull(currency.getValue())) {
-                return false;
-            }
-
-            String currencyValue = currency.getValue();
-            if (!INDONESIA_CURRENCY_CODE.equals(currencyValue)) {
-                return false;
-            }
+        String countryCode = getCountryCode(payload.getQrisRoot());
+        
+        // Jika Country Code tidak ada atau bukan "ID", skip validasi
+        if (!isIndonesia(countryCode)) {
+            return true;
         }
 
-        return true;
+        // Country Code = "ID" → Transaction Currency wajib "360"
+        String currency = getCurrency(payload.getQrisRoot());
+        return isIndonesiaCurrency(currency);
+    }
+
+    private boolean isNullPayload(QrisPayload payload) {
+        return Objects.isNull(payload) || Objects.isNull(payload.getQrisRoot());
+    }
+
+    private String getCountryCode(Map<Integer, QrisDataObject> qrisRoot) {
+        QrisDataObject countryCode = qrisRoot.get(COUNTRY_CODE_ID);
+        return Objects.isNull(countryCode) ? null : countryCode.getValue();
+    }
+
+    private String getCurrency(Map<Integer, QrisDataObject> qrisRoot) {
+        QrisDataObject currency = qrisRoot.get(TRANSACTION_CURRENCY_ID);
+        return Objects.isNull(currency) ? null : currency.getValue();
+    }
+
+    private boolean isIndonesia(String countryCode) {
+        return Objects.nonNull(countryCode) && 
+               INDONESIA_COUNTRY_CODE.equalsIgnoreCase(countryCode);
+    }
+
+    private boolean isIndonesiaCurrency(String currency) {
+        return Objects.nonNull(currency) && 
+               INDONESIA_CURRENCY_CODE.equals(currency);
     }
 }

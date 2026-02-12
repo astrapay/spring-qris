@@ -7,7 +7,6 @@ import com.astrapay.qris.mpm.validation.constraints.TransferAccountInformationVa
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Objects;
 
@@ -31,18 +30,24 @@ import java.util.Objects;
  */
 public class TransferAccountInformationValidator implements ConstraintValidator<TransferAccountInformationValid, QrisPayload> {
 
+    // Tag IDs
     private static final int TRANSFER_ACCOUNT_INFO_ID = 40;
     private static final int REVERSE_DOMAIN_TAG = 0;
     private static final int CUSTOMER_PAN_TAG = 1;
     private static final int BENEFICIARY_ID_TAG = 2;
     private static final int BIC_TAG = 4;
 
+    // Validation Rules
     private static final int REVERSE_DOMAIN_MAX_LENGTH = 32;
     private static final int BENEFICIARY_ID_MAX_LENGTH = 15;
-    private static final int INT_EIGHT = 8;
-    private static final int INT_ELEVEN = 11;
-    private static final int INT_ZERO = 0;
-    private static final String CUSTOMER_PAN_PATTERN = "\\d{16,19}";
+    private static final int BIC_MIN_LENGTH = 8;
+    private static final int BIC_MAX_LENGTH = 11;
+    private static final int PAN_MIN_LENGTH = 16;
+    private static final int PAN_MAX_LENGTH = 19;
+    private static final int NNS_START_LENGTH = 0;
+    private static final int NNS_END_LENGTH = 8;  // National Numbering System code is 8 digits
+    
+    private static final String NUMERIC_PATTERN = "\\d+";
 
     @Override
     public void initialize(TransferAccountInformationValid constraintAnnotation) {
@@ -51,70 +56,123 @@ public class TransferAccountInformationValidator implements ConstraintValidator<
 
     @Override
     public boolean isValid(QrisPayload payload, ConstraintValidatorContext context) {
-        if (Objects.isNull(payload) || Objects.isNull(payload.getQrisRoot())) {
-            return true; // Let @MandatoryField handle null checks
+        // Skip validation jika payload null (handled by other validators)
+        if (isNullPayload(payload)) {
+            return true;
         }
 
-        Map<Integer, QrisDataObject> qrisRoot = payload.getQrisRoot();
-
-        // Check if Transfer Account Information (ID 40) exists
-        QrisDataObject transferAccountInfo = qrisRoot.get(TRANSFER_ACCOUNT_INFO_ID);
-        if (Objects.isNull(transferAccountInfo)) {
+        // Get Transfer Account Information template
+        Map<Integer, QrisDataObject> accountInfo = extractTransferAccountInfo(payload.getQrisRoot());
+        if (accountInfo == null) {
             return false;
         }
 
-        // Check if templateMap is parsed
-        Map<Integer, QrisDataObject> templateMap = transferAccountInfo.getTemplateMap();
+        // Validate semua mandatory fields
+        return isReverseDomainValid(accountInfo) &&
+               isCustomerPanValid(accountInfo) &&
+               isBeneficiaryIdValid(accountInfo) &&
+               isBicValid(accountInfo);
+    }
+
+    private boolean isNullPayload(QrisPayload payload) {
+        return Objects.isNull(payload) || Objects.isNull(payload.getQrisRoot());
+    }
+
+    private Map<Integer, QrisDataObject> extractTransferAccountInfo(Map<Integer, QrisDataObject> qrisRoot) {
+        QrisDataObject transferAccount = qrisRoot.get(TRANSFER_ACCOUNT_INFO_ID);
+        
+        if (Objects.isNull(transferAccount)) {
+            return null;
+        }
+
+        Map<Integer, QrisDataObject> templateMap = transferAccount.getTemplateMap();
+        
         if (Objects.isNull(templateMap) || templateMap.isEmpty()) {
+            return null;
+        }
+
+        return templateMap;
+    }
+
+    // ===== Reverse Domain Validation =====
+    
+    private boolean isReverseDomainValid(Map<Integer, QrisDataObject> accountInfo) {
+        String reverseDomain = getFieldValue(accountInfo, REVERSE_DOMAIN_TAG);
+        
+        if (reverseDomain == null) {
             return false;
         }
 
-        boolean isValid = true;
+        return !reverseDomain.isEmpty() && reverseDomain.length() <= REVERSE_DOMAIN_MAX_LENGTH;
+    }
 
-        // Validate sub-tag 00: Reverse Domain (Mandatory, max 32 chars)
-        QrisDataObject reverseDomain = templateMap.get(REVERSE_DOMAIN_TAG);
-        if (Objects.isNull(reverseDomain) || Objects.isNull(reverseDomain.getValue()) ||
-            reverseDomain.getValue().trim().isEmpty() || reverseDomain.getValue().length() > REVERSE_DOMAIN_MAX_LENGTH) {
-            isValid = false;
+    // ===== Customer PAN Validation =====
+    
+    private boolean isCustomerPanValid(Map<Integer, QrisDataObject> accountInfo) {
+        String pan = getFieldValue(accountInfo, CUSTOMER_PAN_TAG);
+        
+        if (pan == null) {
+            return false;
         }
 
-        // Validate sub-tag 01: Customer PAN (Mandatory)
-        QrisDataObject customerPan = templateMap.get(CUSTOMER_PAN_TAG);
-        if (Objects.isNull(customerPan) || Objects.isNull(customerPan.getValue()) || customerPan.getValue().trim().isEmpty()) {
-            isValid = false;
+        return isPanFormatValid(pan) && isPanNnsValid(pan);
+    }
+
+    private boolean isPanFormatValid(String pan) {
+        if (pan.isEmpty() || !pan.matches(NUMERIC_PATTERN)) {
+            return false;
         }
 
-        // Validate Customer PAN format(16-19 numeric digits)
-        String panValue = customerPan.getValue();
-        if (!panValue.matches(CUSTOMER_PAN_PATTERN)) {
-            isValid = false;
-        }
+        int length = pan.length();
+        return length >= PAN_MIN_LENGTH && length <= PAN_MAX_LENGTH;
+    }
 
-        // validate sub-tag 01: check NNS if exists
-        String panNns = customerPan.getValue().substring(INT_ZERO, INT_EIGHT);
+    private boolean isPanNnsValid(String pan) {
         try {
-            Integer nnsCode = Integer.parseInt(panNns);
-            Pjsp.valueOf(nnsCode);
-        } catch (IllegalArgumentException e) {
+            String nnsCode = pan.substring(NNS_START_LENGTH, NNS_END_LENGTH);
+            int nns = Integer.parseInt(nnsCode);
+            Pjsp.valueOf(nns); // Throws IllegalArgumentException if invalid
+            return true;
+        } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
+            return false;
+        }
+    }
+
+    // ===== Beneficiary ID Validation =====
+    
+    private boolean isBeneficiaryIdValid(Map<Integer, QrisDataObject> accountInfo) {
+        String beneficiaryId = getFieldValue(accountInfo, BENEFICIARY_ID_TAG);
+        
+        if (beneficiaryId == null) {
             return false;
         }
 
-        // Validate sub-tag 02: Beneficiary ID (Mandatory, max 15 chars)
-        QrisDataObject beneficiaryId = templateMap.get(BENEFICIARY_ID_TAG);
-        if (Objects.isNull(beneficiaryId) || Objects.isNull(beneficiaryId.getValue()) || 
-            beneficiaryId.getValue().trim().isEmpty() || beneficiaryId.getValue().length() > BENEFICIARY_ID_MAX_LENGTH) {
-            isValid = false;
+        return !beneficiaryId.isEmpty() && beneficiaryId.length() <= BENEFICIARY_ID_MAX_LENGTH;
+    }
+
+    // ===== BIC Validation (Optional) =====
+    
+    private boolean isBicValid(Map<Integer, QrisDataObject> accountInfo) {
+        String bic = getFieldValue(accountInfo, BIC_TAG);
+        
+        // BIC optional, jika tidak ada return true
+        if (bic == null) {
+            return true;
         }
 
-        // Validate sub-tag 04: Bank Identifier Code (Optional, 8-11 chars if present)
-        QrisDataObject bic = templateMap.get(BIC_TAG);
-        if (!Objects.isNull(bic) && !Objects.isNull(bic.getValue())) {
-            int bicLength = bic.getValue().length();
-            if (bicLength < INT_EIGHT || bicLength > INT_ELEVEN) {
-                isValid = false;
-            }
+        int length = bic.length();
+        return length >= BIC_MIN_LENGTH && length <= BIC_MAX_LENGTH;
+    }
+
+    // ===== Helper Methods =====
+    
+    private String getFieldValue(Map<Integer, QrisDataObject> accountInfo, int tag) {
+        QrisDataObject field = accountInfo.get(tag);
+        
+        if (Objects.isNull(field) || Objects.isNull(field.getValue())) {
+            return null;
         }
 
-        return isValid;
+        return field.getValue().trim();
     }
 }

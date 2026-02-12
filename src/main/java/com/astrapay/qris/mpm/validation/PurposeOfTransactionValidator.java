@@ -76,10 +76,6 @@ public class PurposeOfTransactionValidator implements ConstraintValidator<Purpos
         boolean isValidPurpose = VALID_PURPOSE_VALUES.stream()
                 .anyMatch(validValue -> purposeValue.toUpperCase().contains(validValue));
 
-        if (!isValidPurpose) {
-            return false;
-        }
-
-        return true;
+        return isValidPurpose;
     }
 }
