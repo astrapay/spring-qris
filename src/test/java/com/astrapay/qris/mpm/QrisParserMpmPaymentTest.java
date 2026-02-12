@@ -8,12 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Map;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -333,11 +331,7 @@ class QrisParserMpmPaymentTest {
         // Verify payload parsed correctly
         assertNotNull(payload, "Payload should not be null");
         assertEquals(QrisType.MPM_PAYMENT, payload.getQrisType(), "Should be MPM_PAYMENT type");
-        
-        // Note: Skipping full validation check as anonymized test data may not pass all business validations
-        // In production, use real QR codes that conform to all business rules.
-        // Set<ConstraintViolation<QrisPayload>> violations = validator.validate(payload);
-        // assertTrue(violations.isEmpty(), "Valid MPM Payment QR should have no constraint violations");
+
     }
     
     @Test

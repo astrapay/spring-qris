@@ -7,12 +7,10 @@ import com.astrapay.qris.mpm.object.QrisType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Map;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -268,10 +266,7 @@ class QrisParserTransferTest {
         // Verify payload parsed correctly
         assertNotNull(payload, "Payload should not be null");
         assertEquals(QrisType.TRANSFER, payload.getQrisType(), "Should be TRANSFER type");
-        
-        // Note: Skipping full validation check as anonymized test data may not pass all business validations
-        // Set<ConstraintViolation<QrisPayload>> violations = validator.validate(payload);
-        // assertTrue(violations.isEmpty(), "Valid Transfer QR should have no constraint violations");
+
     }
     
     /**
