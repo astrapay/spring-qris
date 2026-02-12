@@ -87,8 +87,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *     <li>Section 5 - Data Mapping ISO8583</li>
  *     <li>DE 57-tag 08 - Purpose of Transaction</li>
  * </ul>
- * 
- * @author Arthur Purnama
+ *
  * @see QrisTransferPayload
  * @see PurposeOfTransactionValidator
  * @see QrisType#TRANSFER
