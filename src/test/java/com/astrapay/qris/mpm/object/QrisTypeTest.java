@@ -30,26 +30,38 @@ class QrisTypeTest {
 
     @Test
     void testTransferDisplayName() {
-        assertEquals("Transfer", QrisType.TRANSFER.getDisplayName(),
-            "TRANSFER display name should be 'Transfer'");
+        assertEquals("TTS Transfer", QrisType.MPM_TRANSFER.getDisplayName(),
+            "MPM_TRANSFER display name should be 'TTS Transfer'");
     }
 
     @Test
     void testTransferDescription() {
-        assertEquals("QRIS untuk transfer", QrisType.TRANSFER.getDescription(),
+        assertEquals("QRIS untuk transfer", QrisType.MPM_TRANSFER.getDescription(),
             "TRANSFER description should match");
     }
 
     @Test
-    void testTuntasDisplayName() {
-        assertEquals("Tuntas/Cash Withdrawal", QrisType.TUNTAS.getDisplayName(),
-            "TUNTAS display name should be 'Tuntas/Cash Withdrawal'");
+    void testCashInDisplayName() {
+        assertEquals("TTS Cash In", QrisType.MPM_CASH_IN.getDisplayName(),
+            "MPM_CASH_IN display name should be 'TTS Cash In'");
     }
 
     @Test
-    void testTuntasDescription() {
-        assertEquals("QRIS untuk penarikan tunai di ATM", QrisType.TUNTAS.getDescription(),
-            "TUNTAS description should match");
+    void testCashInDescription() {
+        assertEquals("QRIS untuk setor tunai di ATM", QrisType.MPM_CASH_IN.getDescription(),
+            "MPM_CASH_IN description should match");
+    }
+
+    @Test
+    void testCashOutDisplayName() {
+        assertEquals("TTS Cash Out", QrisType.MPM_CASH_OUT.getDisplayName(),
+            "MPM_CASH_OUT display name should be 'TTS Cash Out'");
+    }
+
+    @Test
+    void testCashOutDescription() {
+        assertEquals("QRIS untuk tarik tunai di ATM", QrisType.MPM_CASH_OUT.getDescription(),
+            "MPM_CASH_OUT description should match");
     }
 
     @Test
@@ -68,12 +80,13 @@ class QrisTypeTest {
     void testAllEnumValues() {
         QrisType[] values = QrisType.values();
         
-        assertEquals(4, values.length, "Should have 4 enum values");
+        assertEquals(5, values.length, "Should have 5 enum values");
         
         // Verify all enum constants exist
         assertNotNull(QrisType.MPM_PAYMENT, "MPM_PAYMENT should exist");
-        assertNotNull(QrisType.TRANSFER, "TRANSFER should exist");
-        assertNotNull(QrisType.TUNTAS, "TUNTAS should exist");
+        assertNotNull(QrisType.MPM_TRANSFER, "MPM_TRANSFER should exist");
+        assertNotNull(QrisType.MPM_CASH_IN, "MPM_CASH_IN should exist");
+        assertNotNull(QrisType.MPM_CASH_OUT, "MPM_CASH_OUT should exist");
         assertNotNull(QrisType.UNKNOWN, "UNKNOWN should exist");
     }
 

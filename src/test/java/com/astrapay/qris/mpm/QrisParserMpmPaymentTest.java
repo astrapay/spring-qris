@@ -416,7 +416,7 @@ class QrisParserMpmPaymentTest {
     void testNotTransferType() {
         QrisPayload payload = parser.parse(MPM_PAYMENT_QR);
         
-        assertNotEquals(QrisType.TRANSFER, payload.getQrisType(), 
+        assertNotEquals(QrisType.MPM_TRANSFER, payload.getQrisType(),
             "Should NOT be TRANSFER type");
         assertEquals(QrisType.MPM_PAYMENT, payload.getQrisType(), 
             "Should be MPM_PAYMENT type");
