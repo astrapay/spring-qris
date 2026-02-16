@@ -3,12 +3,11 @@ package com.astrapay.qris.mpm.validation;
 import com.astrapay.qris.mpm.object.PurposeOfTransaction;
 import com.astrapay.qris.mpm.object.QrisDataObject;
 import com.astrapay.qris.mpm.object.QrisPayload;
+import com.astrapay.qris.mpm.object.PurposeOfTransaction;
 import com.astrapay.qris.mpm.validation.constraints.PurposeOfTransactionValid;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
