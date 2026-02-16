@@ -5,6 +5,7 @@ import com.astrapay.qris.mpm.object.QrisPayload;
 import com.astrapay.qris.mpm.object.QrisMpmPaymentPayload;
 import com.astrapay.qris.mpm.object.QrisTransferPayload;
 import com.astrapay.qris.mpm.object.QrisType;
+import com.astrapay.qris.mpm.object.PurposeOfTransaction;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -49,11 +50,6 @@ public class QrisParser {
     private static final int TAG_ID_PROPRIETARY_DATA = 99;
     private static final int TAG_ID_MERCHANT_ACCOUNT_START = 26;
     private static final int TAG_ID_MERCHANT_ACCOUNT_END = 45;
-    
-    // Purpose of Transaction Values TRANSFER
-    private static final String PURPOSE_BOOK = "BOOK";
-    private static final String PURPOSE_DMCT = "DMCT";
-    private static final String PURPOSE_XBCT = "XBCT";
     
     // Parser constants
     private static final int ID_LENGTH = 2;
@@ -134,12 +130,10 @@ public class QrisParser {
                 if (tag62Map.containsKey(TAG_ID_PURPOSE_OF_TRANSACTION)) {
                     String purposeValue = tag62Map.get(TAG_ID_PURPOSE_OF_TRANSACTION).getValue();
                     
-                    // Check if purpose contains BOOK, DMCT, or XBCT
+                    // Check if purpose is valid (BOOK, DMCT, or XBCT)
                     if (purposeValue != null) {
-                        if (purposeValue.contains(PURPOSE_BOOK) || 
-                            purposeValue.contains(PURPOSE_DMCT) || 
-                            purposeValue.contains(PURPOSE_XBCT)) {
-                            return QrisType.TRANSFER;
+                        if (PurposeOfTransaction.isValid(purposeValue)) {
+                            return QrisType.MPM_TRANSFER;
                         } else {
                             // Tag 08 exists but value is invalid
                             return QrisType.UNKNOWN;
@@ -164,11 +158,11 @@ public class QrisParser {
      */
     private QrisPayload createPayloadByType(QrisType type) {
         switch (type) {
-            case TRANSFER:
+            case MPM_TRANSFER:
                 return new QrisTransferPayload();
             case MPM_PAYMENT:
                 return new QrisMpmPaymentPayload();
-            case TUNTAS:
+            case MPM_CASH_IN:
                 // Future implementation
                 throw new UnsupportedOperationException(ERROR_TUNTAS_NOT_IMPLEMENTED);
             case UNKNOWN:

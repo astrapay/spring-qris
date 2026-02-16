@@ -2,12 +2,11 @@ package com.astrapay.qris.mpm.validation;
 
 import com.astrapay.qris.mpm.object.QrisDataObject;
 import com.astrapay.qris.mpm.object.QrisPayload;
+import com.astrapay.qris.mpm.object.PurposeOfTransaction;
 import com.astrapay.qris.mpm.validation.constraints.PurposeOfTransactionValid;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -30,10 +29,6 @@ public class PurposeOfTransactionValidator implements ConstraintValidator<Purpos
 
     private static final int ADDITIONAL_DATA_ID = 62;
     private static final int PURPOSE_TAG_ID = 8;
-    private static final String PURPOSE_BOOK = "BOOK";
-    private static final String PURPOSE_DMCT = "DMCT";
-    private static final String PURPOSE_XBCT = "XBCT";
-    private static final List<String> VALID_PURPOSE_VALUES = Arrays.asList(PURPOSE_BOOK, PURPOSE_DMCT, PURPOSE_XBCT);
 
     @Override
     public void initialize(PurposeOfTransactionValid constraintAnnotation) {
@@ -66,15 +61,14 @@ public class PurposeOfTransactionValidator implements ConstraintValidator<Purpos
             return false;
         }
 
-        // Validate purpose value
+        // Validate purpose value using enum
         String purposeValue = purposeOfTransaction.getValue().trim();
         if (purposeValue.isEmpty()) {
             return false;
         }
 
-        // Check if purpose value contains any of the valid values (case-insensitive but recommend exact match)
-        return VALID_PURPOSE_VALUES.stream()
-                .anyMatch(validValue -> purposeValue.toUpperCase().contains(validValue));
+        // Check if purpose value is valid using PurposeOfTransaction enum
+        return PurposeOfTransaction.isValid(purposeValue);
 
     }
 }

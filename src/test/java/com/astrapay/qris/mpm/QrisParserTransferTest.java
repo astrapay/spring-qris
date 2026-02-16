@@ -60,7 +60,7 @@ class QrisParserTransferTest {
         // Then - Verify instance type
         assertNotNull(payload, "Payload should not be null");
         assertInstanceOf(QrisTransferPayload.class, payload, "Should be QrisTransferPayload instance");
-        assertEquals(QrisType.TRANSFER, payload.getQrisType(), "QRIS type should be TRANSFER");
+        assertEquals(QrisType.MPM_TRANSFER, payload.getQrisType(), "QRIS type should be TRANSFER");
         
         // Verify payload string
         assertEquals(TRANSFER_QR_DMCT, payload.getPayload(), "Payload string should match");
@@ -266,7 +266,7 @@ class QrisParserTransferTest {
         
         // Verify payload parsed correctly
         assertNotNull(payload, "Payload should not be null");
-        assertEquals(QrisType.TRANSFER, payload.getQrisType(), "Should be TRANSFER type");
+        assertEquals(QrisType.MPM_TRANSFER, payload.getQrisType(), "Should be TRANSFER type");
 
     }
     
@@ -280,7 +280,7 @@ class QrisParserTransferTest {
         
         // Verify all major components
         assertNotNull(payload.getQrisRoot());
-        assertEquals(QrisType.TRANSFER, payload.getQrisType());
+        assertEquals(QrisType.MPM_TRANSFER, payload.getQrisType());
         
         // Check QrisRoot has expected number of tags
         Map<Integer, QrisDataObject> qrisRoot = payload.getQrisRoot();
@@ -330,7 +330,7 @@ class QrisParserTransferTest {
         
         assertNotNull(payload, "Payload should not be null");
         assertEquals(testPayload, payload.getPayload(), "Payload string should match");
-        assertEquals(QrisType.TRANSFER, payload.getQrisType(), "Should be TRANSFER type");
+        assertEquals(QrisType.MPM_TRANSFER, payload.getQrisType(), "Should be TRANSFER type");
     }
     
     @Test

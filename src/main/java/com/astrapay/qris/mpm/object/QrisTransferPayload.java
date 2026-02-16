@@ -151,7 +151,7 @@ import java.util.Map;
  * </pre>
  * 
  * @see QrisPayload
- * @see QrisType#TRANSFER
+ * @see QrisType#MPM_TRANSFER
  */
 @NoArgsConstructor
 @CheckSum
@@ -206,11 +206,11 @@ public class QrisTransferPayload extends QrisPayload {
     /**
      * {@inheritDoc}
      * 
-     * @return {@link QrisType#TRANSFER}
+     * @return {@link QrisType#MPM_TRANSFER}
      */
     @Override
     public QrisType getQrisType() {
-        return QrisType.TRANSFER;
+        return QrisType.MPM_TRANSFER;
     }
     
     @Override

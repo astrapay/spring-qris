@@ -53,10 +53,10 @@ public enum QrisType {
      * </ul>
      * </p>
      */
-    TRANSFER("Transfer", "QRIS untuk transfer"),
+    MPM_TRANSFER("TTS Transfer", "QRIS untuk transfer"),
     
     /**
-     * QRIS untuk penarikan tunai di ATM (future implementation).
+     * QRIS untuk setor tunai di ATM (future implementation).
      * <p>
      * Karakteristik:
      * <ul>
@@ -65,7 +65,20 @@ public enum QrisType {
      * </ul>
      * </p>
      */
-    TUNTAS("Tuntas/Cash Withdrawal", "QRIS untuk penarikan tunai di ATM"),
+    MPM_CASH_IN("TTS Cash In", "QRIS untuk setor tunai di ATM"),
+    
+    /**
+     * QRIS untuk tarik tunai di ATM (future implementation).
+     * <p>
+     * Karakteristik:
+     * <ul>
+     *     <li>QR Code akan di-generate untuk di-scan pada mesin ATM</li>
+     *     <li>Digunakan untuk melakukan penarikan tunai</li>
+     *     <li>Spesifikasi dan validasi akan ditentukan kemudian</li>
+     * </ul>
+     * </p>
+     */
+    MPM_CASH_OUT("TTS Cash Out", "QRIS untuk tarik tunai di ATM"),
     
     /**
      * QRIS dengan tipe yang tidak dikenali atau invalid.
