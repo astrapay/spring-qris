@@ -59,6 +59,7 @@ public interface QrisNationalNumberingSystem {
         QRIS_HASAMITRA_ALTO(93600692,Switching.ALTO),
         DTK(93600838,Switching.ALTO),
         I_FORTE_PAY(93600888, Switching.ALTO),
+        MANJO(93600858, Switching.ALTO),
 
         BNI(93600009, Switching.ARTAJASA),
         PERMATA(93600013, Switching.ARTAJASA),
