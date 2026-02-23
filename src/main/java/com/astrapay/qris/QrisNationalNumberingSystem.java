@@ -192,8 +192,7 @@ public interface QrisNationalNumberingSystem {
         DIPAY_RINTIS(93600826,Switching.RINTIS),
         BANK_BTN_SYARIAH(936002004,Switching.RINTIS),
         PT_BANK_SBI_INDONESIA(93600498,Switching.RINTIS),
-        PT_BANK_SYARIAH_NASIONAL_RINTIS(93600405, Switching.RINTIS),
-        BANK_SULTENG_RINTIS(93600134, Switching.RINTIS),
+        SEABANK_RINTIS(93600535, Switching.RINTIS),
 
 
         BANK_ACEH_SYARIAH(93600116,Switching.JALIN),
