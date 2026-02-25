@@ -58,6 +58,8 @@ public interface QrisNationalNumberingSystem {
         BANK_OF_INDIA_ALTO(93600146, Switching.ALTO),
         QRIS_HASAMITRA_ALTO(93600692,Switching.ALTO),
         DTK(93600838,Switching.ALTO),
+        I_FORTE_PAY(93600888, Switching.ALTO),
+        MANJO(93600858, Switching.ALTO),
 
         BNI(93600009, Switching.ARTAJASA),
         PERMATA(93600013, Switching.ARTAJASA),
@@ -193,6 +195,7 @@ public interface QrisNationalNumberingSystem {
         BANK_BTN_SYARIAH(936002004,Switching.RINTIS),
         PT_BANK_SBI_INDONESIA(93600498,Switching.RINTIS),
         SEABANK_RINTIS(93600535, Switching.RINTIS),
+        PERMATA_RINTIS(93600013, Switching.RINTIS),
         PT_BANK_SYARIAH_NASIONAL_RINTIS(93600405, Switching.RINTIS),
         BANK_SULTENG_RINTIS(93600134, Switching.RINTIS),
 
