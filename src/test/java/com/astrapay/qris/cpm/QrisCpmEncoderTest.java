@@ -91,6 +91,28 @@ public class QrisCpmEncoderTest {
         var expectedOutput = "hQVDUFYwMWGCAQxPB6AAAAYCICBQB1FSSVNDUE1XEBI0VniQEjRSPUkRIBEjRWdaCpNgCRUxYkCUdj9fIAVHcmFjZV8tBGlkZW5fUDA2ZDYxNjk2Yzc0NmYzYTY1Nzg2MTZkNzA2YzY1NDA2NTZkNzY2MzZmMmU2MzZmNmSfCAIAEJ8lAkdjnxkGCZkBI0VnnyQ6MzkzOTM5MzkzMTMyMzMzNDQxNDI0MzQ0NDU0NjQ3NDg0OTRhNGI0YzRkNGU0ZjUwNTE1MjUzNTQ1NWNIn3QTMjgxMDEyMDI5NTYwMzg1MDQzNJ8mCAECAwQFBgcInycBgJ8QEAABAgMEBQYHCAkKCwwNDg+fNgIAAYICWYCfNwQBAgME";
         Assertions.assertEquals(expectedOutput, qrisCpmEncoder.encode(qrisCpm));
     }
+
+    @Test
+    void testEncodeToBase64_4() throws IOException {
+        ApplicationSpecificTransparentTemplate applicationSpecificTransparentTemplate = ApplicationSpecificTransparentTemplate.builder()
+                .issuerData("123456789012345678901234567890123456789012345678901234567890")
+                .issuerPublicKeyCertificate("Mitesting09877890654456321123")
+                .issuerQrisDataEncrypted("Ciitesting123321456654789987890098")
+                .build();
+        ApplicationTemplate applicationTemplate = ApplicationTemplate.builder()
+                .applicationPan("9360123411234567899")
+                .cardholderName("Riki Derian")
+                .issuerUrl("riki.derian@qriscpm.com")
+                .last4DigitsPan("7899")
+                .applicationSpecificTransparentTemplate(applicationSpecificTransparentTemplate)
+                .build();
+        QrisCpm qrisCpm = QrisCpm.builder()
+                .applicationTemplate(applicationTemplate)
+                .build();
+
+        var expectedOutput = "hQVDUFYwMWGB2U8HoAAABgIgIFAHUVJJU0NQTVoKk2ASNBEjRWeJn18gC1Jpa2kgRGVyaWFuXy0EaWRlbl9QF3Jpa2kuZGVyaWFuQHFyaXNjcG0uY29tnyUCeJljgYSfdDwxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTCfeh1NaXRlc3RpbmcwOTg3Nzg5MDY1NDQ1NjMyMTEyM597IkNpaXRlc3RpbmcxMjMzMjE0NTY2NTQ3ODk5ODc4OTAwOTg=";
+        Assertions.assertEquals(expectedOutput, qrisCpmEncoder.encode(qrisCpm));
+    }
     
     @Test
     void testEncodeToBase64_exception() throws DecoderException {

@@ -1,6 +1,5 @@
 package com.astrapay.qris.mpm.object;
 
-import com.astrapay.qris.mpm.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,14 +10,38 @@ import javax.validation.constraints.Size;
 import java.util.Map;
 
 /**
+ * Abstract base class untuk semua tipe QRIS payload.
+ * <p>
+ * Class ini berisi field dan validasi yang common untuk semua tipe QRIS (MPM Payment, Transfer, Tuntas).
+ * Setiap concrete implementation harus mengimplementasikan method {@link #getQrisType()} untuk 
+ * mengidentifikasi tipe QRIS-nya.
+ * </p>
+ * 
+ * <p><b>Common Validations (berlaku untuk semua tipe QRIS):</b></p>
+ * <ul>
+ *     <li>CheckSum - Validasi CRC</li>
+ *     <li>PayloadFormatIndicatorFirstPosition - ID "00" harus di posisi pertama</li>
+ *     <li>CRCLastPosition - ID "63" harus di posisi terakhir</li>
+ *     <li>PayloadFormatIndicatorValue - ID "00" harus memiliki value "01"</li>
+ *     <li>CharLength - Validasi panjang karakter untuk ID dan CRC</li>
+ * </ul>
+ * 
+ * <p><b>Type-Specific Validations:</b></p>
+ * <ul>
+ *     <li>{@link QrisMpmPaymentPayload} - Validasi khusus untuk MPM Payment (Merchant Category Code, dll)</li>
+ *     <li>{@link QrisTransferPayload} - Validasi khusus untuk Transfer (Transfer Account Information, Purpose, dll)</li>
+ * </ul>
+ * 
  * @author Arthur Purnama
+ * @see QrisMpmPaymentPayload
+ * @see QrisTransferPayload
+ * @see QrisType
  */
-@CheckSum
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class QrisPayload {
+public abstract class QrisPayload {
 
     /**
      * <b>4.1 Payload</b>
@@ -77,47 +100,18 @@ public class QrisPayload {
      * <b>4.7.14</b> Merchant City (ID "60")<br />
      * <b>4.7.14.1</b> Merchant City wajib ditampilkan untuk mengindikasikan kota lokasi toko atau merchant beroperasi.<br />
      */
-    @MandatoryField
-    @MandatoryField(id = 52)
-    @MandatoryField(id = 53)
-    @MandatoryField(id = 58)
-    @MandatoryField(id = 59)
-    @MandatoryField(id = 60)
-    @MandatoryField(id = 60)
-    @MandatoryField(id = 63)
-    @CharLength(min=2, max=2)
-    @CharLength(from=1, to=1, min=2, max=2)
-    @CharLength(from=2, to=51, min=1, max=99)
-    @CharLength(from=52, to=52, min=4, max=4)
-    @CharLength(from=53, to=53, min=3, max=3)
-    @CharLength(from=54, to=54, min=1, max=13)
-    @CharLength(from=55, to=55, min=2, max=2)
-    @CharLength(from=56, to=56, min=1, max=13)
-    @CharLength(from=57, to=57, min=1, max=5)
-    @CharLength(from=58, to=58, min=2, max=2)
-    @CharLength(from=59, to=59, min=1, max=25)
-    @CharLength(from=60, to=60, min=1, max=15)
-    @CharLength(from=61, to=61, min=1, max=10)
-    @CharLength(from=62, to=62, min=1, max=99)
-    @CharLength(from=63, to=63, min=4, max=4)
-    @CharLength(from=64, to=99, min=1, max=99)
-    @MerchantAccountInformation2To45Exist
-    @PayloadFormatIndicatorFirstPosition
-    @CRCLastPosition
-    @PointOfInitiationMethodValue
-    @PayloadFormatIndicatorValue
-    @MerchantAccountInformationExist
-//    @MerchantAccountInformation51Exist
-//    @MerchantCategoryCode
-    @TransactionCurrency
-    @TransactionAmount(id = 54)
-    @TipValueIndicator
-    @TransactionAmount(id = 57)
-    @TipValuePercentage
-    @CountryCode
-    @IdNotNull(id = 59)
-    @IdNotNull(id = 60)
-    @PostalCode
     @Valid
     private Map<Integer, QrisDataObject> qrisRoot;
+    
+    /**
+     * Mendapatkan tipe QRIS dari payload ini.
+     * <p>
+     * Method ini harus diimplementasikan oleh setiap concrete class untuk mengidentifikasi
+     * tipe QRIS yang direpresentasikan (MPM_PAYMENT, TRANSFER, atau TUNTAS).
+     * </p>
+     * 
+     * @return Tipe QRIS dari payload ini
+     * @see QrisType
+     */
+    public abstract QrisType getQrisType();
 }
