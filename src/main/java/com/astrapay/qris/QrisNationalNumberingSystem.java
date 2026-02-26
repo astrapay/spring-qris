@@ -198,8 +198,8 @@ public interface QrisNationalNumberingSystem {
         PERMATA_RINTIS(93600013, Switching.RINTIS),
         PT_BANK_SYARIAH_NASIONAL_RINTIS(93600405, Switching.RINTIS),
         BANK_SULTENG_RINTIS(93600134, Switching.RINTIS),
-
-
+        MANJO_RINTIS(93600858, Switching.RINTIS),
+        I_FORTE_PAY_RINTIS(93600888, Switching.RINTIS),
         BANK_ACEH_SYARIAH(93600116,Switching.JALIN),
         BPD_NTT_JALIN(93600130,Switching.JALIN),
         BRI(93600002, Switching.JALIN),
