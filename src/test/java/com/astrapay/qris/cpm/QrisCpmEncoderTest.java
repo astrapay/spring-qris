@@ -95,10 +95,10 @@ public class QrisCpmEncoderTest {
     @Test
     void testEncodeToBase64_4() throws IOException {
         ApplicationSpecificTransparentTemplate applicationSpecificTransparentTemplate = ApplicationSpecificTransparentTemplate.builder()
-                .issuerData("123456789012345678901234567890123456789012345678901234567890")
-                .issuerPublicKeyCertificate("Mitesting09877890654456321123")
-                .issuerQrisDataEncrypted("Ciitesting123321456654789987890098")
-                .build();
+                        .issuerData("123456789012345678901234567890123456789012345678901234567890")
+                        .issuerPublicKeyCertificate("A1B2C3D4E5F6A1B2C3D4")
+                        .issuerQrisDataEncrypted("11223344556677889900AABBCCDDEE")
+                        .build();
         ApplicationTemplate applicationTemplate = ApplicationTemplate.builder()
                 .applicationPan("9360123411234567899")
                 .cardholderName("Riki Derian")
@@ -110,7 +110,7 @@ public class QrisCpmEncoderTest {
                 .applicationTemplate(applicationTemplate)
                 .build();
 
-        var expectedOutput = "hQVDUFYwMWGB2U8HoAAABgIgIFAHUVJJU0NQTVoKk2ASNBEjRWeJn18gC1Jpa2kgRGVyaWFuXy0EaWRlbl9QF3Jpa2kuZGVyaWFuQHFyaXNjcG0uY29tnyUCeJljgYSfdDwxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTCfeh1NaXRlc3RpbmcwOTg3Nzg5MDY1NDQ1NjMyMTEyM597IkNpaXRlc3RpbmcxMjMzMjE0NTY2NTQ3ODk5ODc4OTAwOTg=";
+        var expectedOutput = "hQVDUFYwMWGBwU8HoAAABgIgIFAHUVJJU0NQTVoKk2ASNBEjRWeJn18gC1Jpa2kgRGVyaWFuXy0EaWRlbl9QF3Jpa2kuZGVyaWFuQHFyaXNjcG0uY29tnyUCeJljbZ90PDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MJ96CqGyw9Tl9qGyw9Sfex4xMTIyMzM0NDU1NjY3Nzg4OTkwMEFBQkJDQ0RERUU=";
         Assertions.assertEquals(expectedOutput, qrisCpmEncoder.encode(qrisCpm));
     }
     
