@@ -175,7 +175,7 @@ public class QrisCpmEncoder {
         return this.concatByteArrays(TagIndicator.ISSUER_QRIS_DATA.getByteTag(), this.getTagLength(byteValue), byteValue);
     }
     private byte[] getIssuerPublicKeyCertificate(String issuerPublicKeyCertificate) {
-        byte[] byteValue = qrisHexConverter.convertAlphaNumericToArrayByte(issuerPublicKeyCertificate);
+        byte[] byteValue = qrisHexConverter.hexStringToByteArray(issuerPublicKeyCertificate);
         return this.concatByteArrays(TagIndicator.ISSUER_PUBLIC_KEY_CERTIFICATE.getByteTag(), this.getTagLength(byteValue), byteValue);
     }
     private byte[] getIssuerQrisDataEncrypted(String issuerQrisDataEncrypted) {
