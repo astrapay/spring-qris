@@ -110,7 +110,7 @@ public class QrisCpmEncoderTest {
                 .applicationTemplate(applicationTemplate)
                 .build();
 
-        var expectedOutput = "hQVDUFYwMWGBwU8HoAAABgIgIFAHUVJJU0NQTVoKk2ASNBEjRWeJn18gC1Jpa2kgRGVyaWFuXy0EaWRlbl9QF3Jpa2kuZGVyaWFuQHFyaXNjcG0uY29tnyUCeJljbZ90PDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MJ96CqGyw9Tl9qGyw9Sfex4xMTIyMzM0NDU1NjY3Nzg4OTkwMEFBQkJDQ0RERUU=";
+        var expectedOutput = "hQVDUFYwMWGBsk8HoAAABgIgIFAHUVJJU0NQTVoKk2ASNBEjRWeJn18gC1Jpa2kgRGVyaWFuXy0EaWRlbl9QF3Jpa2kuZGVyaWFuQHFyaXNjcG0uY29tnyUCeJljXp90PDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MJ96CqGyw9Tl9qGyw9Sfew8RIjNEVWZ3iJkAqrvM3e4=";
         Assertions.assertEquals(expectedOutput, qrisCpmEncoder.encode(qrisCpm));
     }
     
