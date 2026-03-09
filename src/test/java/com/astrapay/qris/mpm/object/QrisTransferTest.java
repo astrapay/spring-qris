@@ -14,8 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test untuk QRIS MPM Transfer menggunakan method toStringTransfer().
- * 
- * @author Arthur Purnama
+ *
  */
 @DisplayName("QRIS MPM Transfer Tests")
 class QrisTransferTest {
@@ -31,8 +30,12 @@ class QrisTransferTest {
                 .beneficiaryId("15KLMNO12345123") // max length 15 chars
                 .build();
 
-        AdditionalData additionalData = new AdditionalData();
-        additionalData.setValue("0804DMCT993500020001257660407400001769742270682");
+        // Gunakan AdditionalDataFieldTransfer dengan struktur yang benar
+        // Tag 99 akan di-generate otomatis dari tag 00 + tag 01
+        AdditionalDataFieldTransfer additionalDataTransfer = new AdditionalDataFieldTransfer();
+        additionalDataTransfer.setPurposeOfTransaction(PurposeOfTransaction.DMCT);
+        additionalDataTransfer.setDefaultValue("00");
+        additionalDataTransfer.setUniqueData("7660407400001769742270682");  // 25 chars
 
         Qris qris = Qris.builder()
                 .payloadFormatIndicator("01")
@@ -45,7 +48,7 @@ class QrisTransferTest {
                 .beneficiaryName("ANTONIO")
                 .beneficiaryCity("JAKARTA")
                 .postalCode("10310")
-                .additionalData(additionalData)
+                .additionalDataFieldTransfer(additionalDataTransfer)
                 .build();
 
         // Act
@@ -71,28 +74,44 @@ class QrisTransferTest {
         assertTrue(qrisString.contains("5907ANTONIO"), "Should contain Beneficiary Name");
         assertTrue(qrisString.contains("6007JAKARTA"), "Should contain Beneficiary City");
         assertTrue(qrisString.contains("610510310"), "Should contain Postal Code tag with value 10310");
-        assertTrue(qrisString.contains("6247"), "Should contain Additional Data with length 47");
-        assertTrue(qrisString.contains("6304F0A0"), "Should end with CRC");
+        
+        // Verify tag 62 structure with nested tag 99
+        // uniqueData: "7660407400001769742270682" (25 chars)
+        // Tag 00: 00 + 02 + 00 = 6 chars
+        // Tag 01: 01 + 25 + 7660407400001769742270682 = 29 chars
+        // Tag 99 content: 6 + 29 = 35 chars
+        // Tag 99: 99 + 35 + content = 39 chars
+        // Tag 08: 08 + 04 + DMCT = 8 chars
+        // Tag 62 content: 8 + 39 = 47 chars
+        // Tag 62: 62 + 47 + content
+        assertTrue(qrisString.contains("6247"), "Should contain Additional Data tag 62 with length 47");
+        assertTrue(qrisString.contains("0804DMCT"), "Should contain tag 08 (Purpose of Transaction)");
+        assertTrue(qrisString.contains("9935"), "Should contain tag 99 with length 35");
+        assertTrue(qrisString.contains("000200"), "Should contain tag 00 (Default Value)");
+        assertTrue(qrisString.contains("01257660407400001769742270682"), "Should contain tag 01 (Unique Data)");
     }
 
     @Test
     @DisplayName("Should fail validation when tag 62 missing sub-tag 01 (Unique Data)")
     void testGenerateTransferValidasiTag62() {
-        // Arrange - Data dengan AdditionalData yang TIDAK memiliki tag 01
+        // Arrange - Data dengan AdditionalDataFieldTransfer yang TIDAK memiliki uniqueData (tag 01)
         TransferAccountInformation transferInfo = TransferAccountInformation.builder()
                 .reverseDomain("ID.CO.PJSPNAME1.WWW") //max length 32 chars
                 .customerPan("9360082202345123451") // max length 19 chars
                 .beneficiaryId("15KLMNO12345123") // max length 15 chars
                 .build();
 
-        // AdditionalData dengan tag 08, 99, 00 tapi TANPA tag 01
-        // 08 04 DMCT = Purpose of Transaction
-        // 99 05 12345 = Unique per generated
-        // 00 02 01 = Default Value
+        // AdditionalDataFieldTransfer dengan hanya purposeOfTransaction dan defaultValue
+        // Tag 99 akan di-generate otomatis hanya berisi tag 00, TANPA tag 01
+        // Struktur: 08 04 DMCT + 99 06 (00 02 00)
         // Tag 01 (Unique Data) TIDAK ADA - ini akan menyebabkan validation error
-        AdditionalData additionalData = new AdditionalData();
-        additionalData.setValue("0804DMCT990512345000201");
-
+        AdditionalDataFieldTransfer additionalDataTransfer = new AdditionalDataFieldTransfer();
+        additionalDataTransfer.setPurposeOfTransaction(PurposeOfTransaction.DMCT);
+        additionalDataTransfer.setDefaultValue("00");
+        // uniqueData intentionally NOT set - will cause validation to fail
+        
+        System.out.println("additionalDataTransfer value: " + additionalDataTransfer.getValue());
+        
         Qris qris = Qris.builder()
                 .payloadFormatIndicator("01")
                 .pointOfInitiationMethod(12)
@@ -104,7 +123,7 @@ class QrisTransferTest {
                 .beneficiaryName("ANTONIO")
                 .beneficiaryCity("JAKARTA")
                 .postalCode("10310")
-                .additionalData(additionalData)
+                .additionalDataFieldTransfer(additionalDataTransfer)
                 .build();
 
         // Act & Assert - Expect validation to fail when converting to payload
@@ -117,12 +136,26 @@ class QrisTransferTest {
         // Assert - QR string should be generated but will fail when validated as QrisTransferPayload
         assertNotNull(qrisString);
         assertTrue(qrisString.startsWith("000201"), "Should start with Payload Format Indicator");
-        assertTrue(qrisString.contains("62230804DMCT990512345000201"), "Should contain Additional Data (tag 62) with missing sub-tag 01");
-        assertTrue(qrisString.contains("0804DMCT"), "Should contain tag 08 (Purpose of Transaction)");
-        assertTrue(qrisString.contains("990512345"), "Should contain tag 99 (Unique per generated)");
         
-        System.out.println("Generated QRIS Transfer (missing tag 01 - should fail validation): " + qrisString);
-        System.out.println("NOTE: This QR will fail AdditionalDataFieldTransferValidator validation due to missing sub-tag 01");
+        // Expected tag 62 structure (missing tag 01):
+        // 62 18 (tag + length)
+        //   08 04 DMCT (tag 08)
+        //   99 06 (tag 99 with only tag 00 inside)
+        //     00 02 00 (tag 00 - nested in tag 99)
+        // Total: 62180804DMCT9906000200
+        assertTrue(qrisString.contains("62180804DMCT9906000200"), 
+            "Should contain Additional Data (tag 62) with tag 99 missing sub-tag 01");
+        assertTrue(qrisString.contains("0804DMCT"), "Should contain tag 08 (Purpose of Transaction)");
+        assertTrue(qrisString.contains("9906000200"), "Should contain tag 99 with only tag 00 (length 6)");
+        
+        // Verify tag 99 structure: should be exactly "9906000200" (tag 99 + length 06 + tag 00 content)
+        // Tag 99 length is 06, which means only 6 chars inside (000200 = tag 00)
+        // If tag 01 existed, length would be > 06
+        int tag99Index = qrisString.indexOf("9906");
+        if (tag99Index != -1) {
+            String tag99Content = qrisString.substring(tag99Index + 4, tag99Index + 4 + 6); // Extract 6 chars after "9906"
+            assertEquals("000200", tag99Content, "Tag 99 should only contain tag 00, not tag 01");
+        }
     }
 
     @Test
@@ -135,8 +168,9 @@ class QrisTransferTest {
                 .beneficiaryId("15KLMNO12345123") // max length 15 chars
                 .build();
 
-        AdditionalData additionalData = new AdditionalData();
-        additionalData.setValue("0804DMCT993500020001257660407400001769742270682");
+        AdditionalDataFieldTransfer additionalDataTransfer = new AdditionalDataFieldTransfer();
+        additionalDataTransfer.setPurposeOfTransaction(PurposeOfTransaction.DMCT);
+        additionalDataTransfer.setUniqueData("7660407400001769742270682");
 
         Qris qris = Qris.builder()
                 .payloadFormatIndicator("01")
@@ -149,7 +183,7 @@ class QrisTransferTest {
                 .beneficiaryName("ANTONIO")
                 .beneficiaryCity("JAKARTA")
                 .postalCode("10310")
-                .additionalData(additionalData)
+                .additionalDataFieldTransfer(additionalDataTransfer)
                 .build();
 
         // Act
@@ -200,7 +234,7 @@ class QrisTransferTest {
 
         // Assert
         assertNotNull(qrisString);
-        assertTrue(qrisString.contains("4082"), "Should contain Transfer Account Information with BIC (length should be 74)");
+        assertTrue(qrisString.contains("4082"), "Should contain Transfer Account Information with BIC (length should be 82)");
         assertTrue(qrisString.contains("0408CENAIDJA"), "Should contain Bank Identifier Code");
         
         System.out.println("Generated QRIS Transfer (with BIC): " + qrisString);

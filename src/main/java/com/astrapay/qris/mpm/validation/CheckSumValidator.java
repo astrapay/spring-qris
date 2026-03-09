@@ -6,9 +6,7 @@ import com.astrapay.qris.mpm.validation.constraints.CheckSum;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.nio.charset.StandardCharsets;
 
-import static com.astrapay.qris.QrisCommon.generateChecksum;
 
 /**
  * <b>4.7.16</b> CRC (ID "63")<br/>
