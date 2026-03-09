@@ -3,10 +3,7 @@ package com.astrapay.qris.mpm.object;
 import lombok.*;
 
 import java.text.DecimalFormat;
-import java.util.Currency;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author Arthur Purnama
@@ -234,28 +231,28 @@ public class Qris {
             StringBuilder content = new StringBuilder();
 
             // Sub-tag 00: Reverse Domain (Mandatory)
-            if (transfer.getReverseDomain() != null) {
+            if (Objects.nonNull(transfer.getReverseDomain())) {
                 String tagReverseDomain = "00";
                 String lengthReverseDomain = String.format("%02d", transfer.getReverseDomain().length());
                 content.append(tagReverseDomain).append(lengthReverseDomain).append(transfer.getReverseDomain());
             }
 
             // Sub-tag 01: Customer PAN (Mandatory)
-            if (transfer.getCustomerPan() != null) {
+            if (Objects.nonNull(transfer.getCustomerPan())) {
                 String tagPan = "01";
                 String lengthPan = String.format("%02d", transfer.getCustomerPan().length());
                 content.append(tagPan).append(lengthPan).append(transfer.getCustomerPan());
             }
 
             // Sub-tag 02: Beneficiary ID (Mandatory)
-            if (transfer.getBeneficiaryId() != null) {
+            if (Objects.nonNull(transfer.getBeneficiaryId())) {
                 String tagBeneficiaryId = "02";
                 String lengthBeneficiaryId = String.format("%02d", transfer.getBeneficiaryId().length());
                 content.append(tagBeneficiaryId).append(lengthBeneficiaryId).append(transfer.getBeneficiaryId());
             }
 
             // Sub-tag 04: Bank Identifier Code (Optional)
-            if (transfer.getBankIdentifierCode() != null) {
+            if (Objects.nonNull(transfer.getBankIdentifierCode())) {
                 String tagBic = "04";
                 String lengthBic = String.format("%02d", transfer.getBankIdentifierCode().length());
                 content.append(tagBic).append(lengthBic).append(transfer.getBankIdentifierCode());

@@ -19,16 +19,6 @@ public class CheckSumValidator implements ConstraintValidator<CheckSum, QrisPayl
 
     @Override
     public boolean isValid(QrisPayload value, ConstraintValidatorContext context) {
-        // Allow null/empty payload (not yet generated)
-        if (value == null || value.getPayload() == null || value.getPayload().isEmpty()) {
-            return true;
-        }
-        
-        // Check if CRC exists
-        if (value.getQrisRoot() == null || value.getQrisRoot().get(63) == null) {
-            return true;  // Let other validators handle missing CRC
-        }
-        
         String crcCheckSum = QrisCommon.generateChecksum(value.getPayload().substring(0, value.getPayload().length()-4));
         return crcCheckSum.equals(value.getQrisRoot().get(63).getValue());
     }
