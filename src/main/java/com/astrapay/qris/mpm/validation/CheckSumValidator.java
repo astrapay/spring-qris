@@ -1,11 +1,14 @@
 package com.astrapay.qris.mpm.validation;
 
+import com.astrapay.qris.QrisCommon;
 import com.astrapay.qris.mpm.object.QrisPayload;
 import com.astrapay.qris.mpm.validation.constraints.CheckSum;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.nio.charset.StandardCharsets;
+
+import static com.astrapay.qris.QrisCommon.generateChecksum;
 
 /**
  * <b>4.7.16</b> CRC (ID "63")<br/>
@@ -16,26 +19,18 @@ public class CheckSumValidator implements ConstraintValidator<CheckSum, QrisPayl
 
     @Override
     public boolean isValid(QrisPayload value, ConstraintValidatorContext context) {
-        String crcCheckSum = generateChecksum(value.getPayload().substring(0, value.getPayload().length()-4));
+        // Allow null/empty payload (not yet generated)
+        if (value == null || value.getPayload() == null || value.getPayload().isEmpty()) {
+            return true;
+        }
+        
+        // Check if CRC exists
+        if (value.getQrisRoot() == null || value.getQrisRoot().get(63) == null) {
+            return true;  // Let other validators handle missing CRC
+        }
+        
+        String crcCheckSum = QrisCommon.generateChecksum(value.getPayload().substring(0, value.getPayload().length()-4));
         return crcCheckSum.equals(value.getQrisRoot().get(63).getValue());
     }
 
-
-    private String generateChecksum(String payload) {
-        int checksum = 0xffff;
-        int polynomial = 0x1021;
-        byte[] data = payload.getBytes(StandardCharsets.UTF_8);
-        for (byte b : data) {
-            for (int i = 0; i < 8; i++) {
-                boolean bit = ((b >> (7 - i) & 1) == 1);
-                boolean c15 = ((checksum >> 15 & 1) == 1);
-                checksum <<= 1;
-                if (c15 ^ bit) {
-                    checksum ^= polynomial;
-                }
-            }
-        }
-        checksum &= 0xffff;
-        return String.format("%04X", checksum);
-    }
 }
