@@ -155,6 +155,7 @@ import java.util.Map;
  */
 @NoArgsConstructor
 @CheckSum
+@AdditionalDataFieldTransferChildIsExist  // Validasi child tags 08, 99, 00, 01 untuk Transfer
 @TransferPointOfInitiationMethod  // Validasi ID 01 = "12"
 @TransferMerchantCategoryCode     // Validasi MCC = "4829" jika ada
 @TransferCurrencyCountryCode      // Validasi Currency "360" untuk Country "ID"
