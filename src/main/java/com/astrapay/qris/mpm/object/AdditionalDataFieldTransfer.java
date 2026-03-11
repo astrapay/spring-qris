@@ -67,7 +67,6 @@ public class AdditionalDataFieldTransfer {
      *   <li><b>BOOK</b>: Booking/Overbooking (On-Us Transfer) - transfer dalam satu bank</li>
      *   <li><b>DMCT</b>: Debit Merchant Credit Transfer - transfer antar bank</li>
      *   <li><b>XBCT</b>: Cross Border Credit Transfer - transfer lintas negara</li>
-     *   <li><b>CT</b>: Credit Transfer - transfer umum</li>
      * </ul>
      * </p>
      * Panjang: 4 karakter (fixed)
