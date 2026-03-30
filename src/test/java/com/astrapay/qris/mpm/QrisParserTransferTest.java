@@ -1,6 +1,7 @@
 package com.astrapay.qris.mpm;
 
 import com.astrapay.qris.mpm.object.QrisDataObject;
+import com.astrapay.qris.mpm.object.QrisMpmPaymentPayload;
 import com.astrapay.qris.mpm.object.QrisPayload;
 import com.astrapay.qris.mpm.object.QrisTransferPayload;
 import com.astrapay.qris.mpm.object.QrisType;
@@ -35,6 +36,14 @@ class QrisParserTransferTest {
     // Anonymized Transfer QR for testing (synthetic data, not production)
     private static final String TRANSFER_QR_DMCT = 
         "00020101021240530013ID.CO.BCA.WWW011893600014151703139202105170313927520448295303360540410005802ID5916TEST BENEFICIARY6013Jakarta Pusat61051031062470804DMCT99350002000125517031392700177070866830263041376";
+
+    // QR with CWDL purpose (Cash Withdrawal - tarik tunai) → MPM_CASH_OUT
+    private static final String TRANSFER_QR_CWDL =
+        "00020101021240530013ID.CO.BCA.WWW011893600014151703139202105170313927520448295303360540410005802ID5916TEST BENEFICIARY6013Jakarta Pusat61051031062470804CWDL99350002000125517031392700177070866830263041376";
+
+    // QR with CDPT purpose (Cash Deposit/Top-up - setor tunai) → MPM_CASH_IN
+    private static final String TRANSFER_QR_CDPT =
+        "00020101021240530013ID.CO.BCA.WWW011893600014151703139202105170313927520448295303360540410005802ID5916TEST BENEFICIARY6013Jakarta Pusat61051031062470804CDPT99350002000125517031392700177070866830263041376";
     
     @BeforeEach
     void setUp() {
@@ -335,33 +344,43 @@ class QrisParserTransferTest {
     
     @Test
     void testParseUnknownQrisType() {
-        // Create QR with invalid Purpose value (not BOOK/DMCT/XBCT)
-        // Using "PYMT" as invalid Purpose - valid Transfer QR must have BOOK/DMCT/XBCT
-        String unknownQR = 
+        // Create QR with unrecognized Purpose value (not any known enum value)
+        // Using "PYMT" as unrecognized Purpose → defaults to MPM_PAYMENT (no exception)
+        String unknownQR =
             "00020101021240530013ID.CO.BCA.WWW011893600014151703139202105170313927520448295303360540410005802ID5916TEST BENEFICIARY6013Jakarta Pusat61051031062470804PYMT99350002000125517031392700177070866830263049ACE";
-        
-        // Should throw UnsupportedOperationException for UNKNOWN type
+
+        // Unknown purpose defaults to MPM_PAYMENT - no exception expected
+        QrisPayload payload = parser.parse(unknownQR);
+        assertNotNull(payload, "Payload should not be null");
+        assertInstanceOf(QrisMpmPaymentPayload.class, payload, "Unknown purpose should result in MPM_PAYMENT payload");
+        assertEquals(QrisType.MPM_PAYMENT, payload.getQrisType(), "Unknown purpose should default to MPM_PAYMENT");
+    }
+
+    /**
+     * Test bahwa CWDL (tarik tunai) terdeteksi sebagai MPM_CASH_OUT dan melempar UnsupportedOperationException.
+     */
+    @Test
+    void testParseCashWithdrawalQrisType() {
         UnsupportedOperationException exception = assertThrows(
             UnsupportedOperationException.class,
-            () -> parser.parse(unknownQR),
-            "Should throw UnsupportedOperationException for UNKNOWN type"
+            () -> parser.parse(TRANSFER_QR_CWDL),
+            "CWDL (Cash Withdrawal) should throw UnsupportedOperationException"
         );
-        
-        assertEquals("QRIS dengan tipe UNKNOWN tidak dapat diproses", exception.getMessage(),
-            "Exception message should match");
+        assertEquals("QRIS Tuntas belum diimplementasikan", exception.getMessage(),
+            "Exception message should indicate not yet implemented");
     }
-    
+
+    /**
+     * Test bahwa CDPT (setor tunai / top-up) terdeteksi sebagai MPM_CASH_IN dan melempar UnsupportedOperationException.
+     */
     @Test
-    void testParseTuntasQrisType() {
-        // Note: Currently TUNTAS detection logic is not implemented in detectQrisType
-        // This test serves as a placeholder for when TUNTAS detection is added
-        // For now, we test the createPayloadByType directly by checking the error message exists
-        
-        // When TUNTAS is implemented, the QR should be detected and throw this exception
-        String errorMessage = "QRIS Tuntas belum diimplementasikan";
-        
-        // Verify the error message is defined (indirect test until TUNTAS detection is implemented)
-        assertNotNull(errorMessage, "TUNTAS error message should be defined");
-        assertTrue(errorMessage.contains("Tuntas"), "Error message should mention Tuntas");
+    void testParseCashDepositQrisType() {
+        UnsupportedOperationException exception = assertThrows(
+            UnsupportedOperationException.class,
+            () -> parser.parse(TRANSFER_QR_CDPT),
+            "CDPT (Cash Deposit/Top-up) should throw UnsupportedOperationException"
+        );
+        assertEquals("QRIS Tuntas belum diimplementasikan", exception.getMessage(),
+            "Exception message should indicate not yet implemented");
     }
 }

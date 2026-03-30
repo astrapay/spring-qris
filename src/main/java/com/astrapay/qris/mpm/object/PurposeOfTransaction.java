@@ -12,9 +12,17 @@ package com.astrapay.qris.mpm.object;
  * @author Arthur Purnama
  */
 public enum PurposeOfTransaction {
-    
+
     /**
-     * BOOK - Booking/Overbooking (On-Us Transfer).
+     * POSP - Payment Credit QRIS.
+     * <p>
+     * Transaksi pembayaran kredit melalui QRIS (pembayaran merchant biasa).
+     * </p>
+     */
+    POSP("POSP", "Payment Credit QRIS", "Pembayaran kredit QRIS"),
+
+    /**
+     * BOOK - Internal Book Transfer QRIS.
      * <p>
      * Transaksi transfer antar rekening dalam satu bank yang sama (internal transfer).
      * PJP Pengirim WAJIB memverifikasi bahwa transaksi merupakan overbooking.
@@ -22,10 +30,10 @@ public enum PurposeOfTransaction {
      * 
      * <p><b>Use Case:</b> Transfer dari rekening BCA ke rekening BCA lainnya</p>
      */
-    BOOK("BOOK", "Booking/Overbooking", "Transfer internal dalam satu bank"),
+    BOOK("BOOK", "Internal Book Transfer QRIS", "Transfer internal dalam satu bank"),
     
     /**
-     * DMCT - Debit Merchant Credit Transfer.
+     * DMCT - Domestic Credit Transfer QRIS.
      * <p>
      * Transaksi transfer antar rekening di bank yang berbeda melalui switching/jaringan ATM Bersama.
      * Debit dilakukan pada rekening pengirim dan credit pada rekening penerima.
@@ -33,10 +41,10 @@ public enum PurposeOfTransaction {
      * 
      * <p><b>Use Case:</b> Transfer dari rekening BCA ke rekening Mandiri</p>
      */
-    DMCT("DMCT", "Debit Merchant Credit Transfer", "Transfer antar bank melalui switching"),
+    DMCT("DMCT", "Domestic Credit Transfer QRIS", "Transfer antar bank melalui switching"),
     
     /**
-     * XBCT - Cross Border Credit Transfer.
+     * XBCT - Cross Border Credit Transfer QRIS.
      * <p>
      * Transaksi transfer lintas negara/internasional.
      * Digunakan untuk transfer ke rekening di negara lain.
@@ -44,7 +52,31 @@ public enum PurposeOfTransaction {
      * 
      * <p><b>Use Case:</b> Transfer dari rekening Indonesia ke rekening di luar negeri</p>
      */
-    XBCT("XBCT", "Cross Border Credit Transfer", "Transfer lintas negara");
+    XBCT("XBCT", "Cross Border Credit Transfer QRIS", "Transfer lintas negara"),
+
+    /**
+     * CWDL - Cash Withdrawal QRIS.
+     * <p>
+     * Transaksi tarik tunai melalui QRIS.
+     * </p>
+     */
+    CWDL("CWDL", "Cash Withdrawal QRIS", "Tarik tunai melalui QRIS"),
+
+    /**
+     * CDPT - Cash Deposit/Top-up QRIS.
+     * <p>
+     * Transaksi setor tunai atau top-up melalui QRIS.
+     * </p>
+     */
+    CDPT("CDPT", "Cash Deposit/Top-up QRIS", "Setor tunai atau top-up melalui QRIS"),
+
+    /**
+     * BILL - Billing Payment.
+     * <p>
+     * Transaksi pembayaran tagihan.
+     * </p>
+     */
+    BILL("BILL", "Billing Payment", "Pembayaran tagihan");
     
     private final String code;
     private final String displayName;

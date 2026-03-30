@@ -129,14 +129,22 @@ public class QrisParser {
                 // Check if tag 08 (Purpose of Transaction) exists
                 if (tag62Map.containsKey(TAG_ID_PURPOSE_OF_TRANSACTION)) {
                     String purposeValue = tag62Map.get(TAG_ID_PURPOSE_OF_TRANSACTION).getValue();
-                    
-                    // Check if purpose is valid (BOOK, DMCT, or XBCT)
+
                     if (purposeValue != null) {
-                        if (PurposeOfTransaction.isValid(purposeValue)) {
-                            return QrisType.MPM_TRANSFER;
-                        } else {
-                            // Tag 08 exists but value is invalid
-                            return QrisType.UNKNOWN;
+                        PurposeOfTransaction purpose = PurposeOfTransaction.fromCode(purposeValue);
+                        if (purpose != null) {
+                            switch (purpose) {
+                                case BOOK:
+                                case DMCT:
+                                case XBCT:
+                                    return QrisType.MPM_TRANSFER;
+                                case CDPT:
+                                    return QrisType.MPM_CASH_IN;
+                                case CWDL:
+                                    return QrisType.MPM_CASH_OUT;
+                                default:
+                                    return QrisType.MPM_PAYMENT;
+                            }
                         }
                     }
                 }
@@ -163,6 +171,7 @@ public class QrisParser {
             case MPM_PAYMENT:
                 return new QrisMpmPaymentPayload();
             case MPM_CASH_IN:
+            case MPM_CASH_OUT:
                 // Future implementation
                 throw new UnsupportedOperationException(ERROR_TUNTAS_NOT_IMPLEMENTED);
             case UNKNOWN:
