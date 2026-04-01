@@ -11,7 +11,7 @@ import java.util.Map;
  * Class ini merepresentasikan QRIS yang digunakan untuk transfer antar rekening atau pembayaran tuntas,
  * dengan validasi khusus yang sesuai dengan spesifikasi QRIS Transfer.
  * </p>
- * 
+ *
  * <p><b>4.2 Verifikasi Data – QRIS MPM Transaksi Transfer:</b></p>
  * <ol>
  *     <li><b>Point of Initiation Method (ID "01")</b>
@@ -65,7 +65,7 @@ import java.util.Map;
  *         </ul>
  *     </li>
  * </ol>
- * 
+ *
  * <p><b>Karakteristik Transfer:</b></p>
  * <ul>
  *     <li>Wajib memiliki Transfer Account Information (ID 40) dengan sub-tags:
@@ -92,14 +92,14 @@ import java.util.Map;
  *     <li>Point of Initiation Method (ID 01) mandatory - WAJIB "12" (Dynamic QR) untuk Transfer</li>
  *     <li>Merchant Category Code (ID 52) jika ada WAJIB "4829" (Transfer)</li>
  * </ul>
- * 
+ *
  * <p><b>Referensi Spesifikasi:</b></p>
  * <ul>
  *     <li><b>4.2</b> - Verifikasi Data QRIS MPM Transaksi Transfer</li>
  *     <li><b>Tabel 3.20</b> - QRIS MPM Transfer Data Structure</li>
  *     <li><b>Tabel 3.23</b> - Purpose of Transaction Values</li>
  * </ul>
- * 
+ *
  * <p><b>Data Objects Wajib untuk Transfer:</b></p>
  * <ul>
  *     <li>ID "00" - Payload Format Indicator (M) - value "01"</li>
@@ -115,7 +115,7 @@ import java.util.Map;
  *     <li>ID "62" - Additional Data (M) dengan Purpose (tag 08: BOOK/DMCT/XBCT)</li>
  *     <li>ID "63" - CRC (M) - 4 chars</li>
  * </ul>
- * 
+ *
  * <p><b>Data Mapping ISO8583:</b></p>
  * <ul>
  *     <li>Customer PAN (tag 40->01) → DE 02 (Primary Account Number)</li>
@@ -130,12 +130,12 @@ import java.util.Map;
  *     <li>Postal Code (ID 61) → DE 57</li>
  *     <li>Purpose of Transaction (tag 62->08) → DE 57-tag 08</li>
  * </ul>
- * 
+ *
  * <p><b>Contoh QR Text Transfer:</b></p>
  * <pre>
  * 00020101024064...0118936023451234567890...5303360540850000.005802ID5907ANTONIO6007JAKARTA
  * 61051031062380804DMCT990496266304CCEF
- * 
+ *
  * Breakdown:
  * - 0002: ID "00", length 02
  * - 01: value "01" (Payload Format)
@@ -149,19 +149,20 @@ import java.util.Map;
  * - 0804: tag "08", length 04
  * - DMCT: Purpose of Transaction
  * </pre>
- * 
+ *
  * @see QrisPayload
  * @see QrisType#MPM_TRANSFER
  */
 @NoArgsConstructor
 @CheckSum
+@AdditionalDataFieldTransferChildIsExist  // Validasi child tags 08, 99, 00, 01 untuk Transfer
 @TransferPointOfInitiationMethod  // Validasi ID 01 = "12"
 @TransferMerchantCategoryCode     // Validasi MCC = "4829" jika ada
 @TransferCurrencyCountryCode      // Validasi Currency "360" untuk Country "ID"
 @TransferAccountInformationValid  // Validasi struktur ID 40
 @PurposeOfTransactionValid        // Validasi Purpose: BOOK/DMCT/XBCT
 public class QrisTransferPayload extends QrisPayload {
-    
+
     // Override qrisRoot field with Transfer specific validations
     @PayloadFormatIndicatorFirstPosition
     @CRCLastPosition
@@ -193,31 +194,31 @@ public class QrisTransferPayload extends QrisPayload {
     @IdNotNull(id = 60)
     @PostalCode
     private Map<Integer, QrisDataObject> qrisRoot;
-    
+
     /**
      * Constructor dengan payload string.
-     * 
+     *
      * @param payload Raw QR text string yang akan di-parse
      */
     public QrisTransferPayload(String payload) {
         this.setPayload(payload);
     }
-    
+
     /**
      * {@inheritDoc}
-     * 
+     *
      * @return {@link QrisType#MPM_TRANSFER}
      */
     @Override
     public QrisType getQrisType() {
         return QrisType.MPM_TRANSFER;
     }
-    
+
     @Override
     public Map<Integer, QrisDataObject> getQrisRoot() {
         return qrisRoot;
     }
-    
+
     @Override
     public void setQrisRoot(Map<Integer, QrisDataObject> qrisRoot) {
         this.qrisRoot = qrisRoot;
