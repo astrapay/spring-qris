@@ -1,8 +1,8 @@
 package com.astrapay.qris.mpm.validation;
 
+import com.astrapay.qris.mpm.object.PurposeOfTransaction;
 import com.astrapay.qris.mpm.object.QrisDataObject;
 import com.astrapay.qris.mpm.object.QrisPayload;
-import com.astrapay.qris.mpm.object.PurposeOfTransaction;
 import com.astrapay.qris.mpm.validation.constraints.PurposeOfTransactionValid;
 
 import javax.validation.ConstraintValidator;
@@ -16,15 +16,21 @@ import java.util.Objects;
  * Validator ini memvalidasi bahwa Purpose of Transaction pada Additional Data Field Template
  * memiliki value yang valid untuk QRIS Transfer.
  * </p>
- * 
+ *
  * <p><b>Valid Purpose Values:</b></p>
  * <ul>
  *     <li>BOOK - Transfer/Booking</li>
  *     <li>DMCT - Debit Merchant Credit Transfer</li>
  *     <li>XBCT - Cross Border Credit Transfer</li>
  * </ul>
- * 
+ *
+ * @see PurposeOfTransactionValid
  */
+/*
+    hanya digunakan untuk validasi Purpose of Transaction pada QRIS Transfer, tidak digunakan untuk MPM Payment
+        karena MPM Payment memiliki tag 08 di dalam tag 62 tapi optional, sehingga validasi ini hanya relevan untuk payload yang terdeteksi sebagai Transfer berdasarkan keberadaan tag 08 dengan value yang valid.
+ */
+
 public class PurposeOfTransactionValidator implements ConstraintValidator<PurposeOfTransactionValid, QrisPayload> {
 
     private static final int ADDITIONAL_DATA_ID = 62;
@@ -42,7 +48,7 @@ public class PurposeOfTransactionValidator implements ConstraintValidator<Purpos
         }
 
         Map<Integer, QrisDataObject> qrisRoot = payload.getQrisRoot();
-        
+
         // Check if Additional Data Field Template (ID 62) exists
         QrisDataObject additionalData = qrisRoot.get(ADDITIONAL_DATA_ID);
         if (Objects.isNull(additionalData)) {
