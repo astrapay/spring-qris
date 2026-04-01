@@ -3,7 +3,6 @@ package com.astrapay.qris.mpm.validation;
 import com.astrapay.qris.mpm.object.PurposeOfTransaction;
 import com.astrapay.qris.mpm.object.QrisDataObject;
 import com.astrapay.qris.mpm.object.QrisPayload;
-import com.astrapay.qris.mpm.object.PurposeOfTransaction;
 import com.astrapay.qris.mpm.validation.constraints.PurposeOfTransactionValid;
 
 import javax.validation.ConstraintValidator;
@@ -34,7 +33,6 @@ import java.util.Objects;
 
 public class PurposeOfTransactionValidator implements ConstraintValidator<PurposeOfTransactionValid, QrisPayload> {
 
-    private static final List<String> VALID_PURPOSE_VALUES = Arrays.asList("BOOK", "DMCT", "XBCT");
     private static final int ADDITIONAL_DATA_ID = 62;
     private static final int PURPOSE_TAG_ID = 8;
 
