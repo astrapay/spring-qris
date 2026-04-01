@@ -56,14 +56,14 @@ public class Qris {
     }
 
     private String getPointOfInitiationMethodAsString(){
-        return Optional.ofNullable(this.pointOfInitiationMethod).map(data-> {
-            DecimalFormat df = new DecimalFormat();
-            df.setMaximumFractionDigits(2);
-            String defaultTag = "01";
-            return defaultTag +
-                    String.format("%02d", this.pointOfInitiationMethod.toString().length()) +
-                    this.pointOfInitiationMethod;
-        }).orElse("");
+       return Optional.ofNullable(this.pointOfInitiationMethod).map(data-> {
+           DecimalFormat df = new DecimalFormat();
+           df.setMaximumFractionDigits(2);
+           String defaultTag = "01";
+           return defaultTag +
+                   String.format("%02d", this.pointOfInitiationMethod.toString().length()) +
+                   this.pointOfInitiationMethod;
+       }).orElse("");
     }
 
     private  String getMerchantAccountInformationAsStringAsString(MerchantAccountInformation merchantAccountInformation, String tag){
@@ -128,8 +128,8 @@ public class Qris {
         return Optional.ofNullable(this.transactionAmount).map(data-> {
             if(data>0){
                 String tagTransactionAmount = "54";
-                String tagTransactionAmountLength = String.format("%02d",(String.valueOf(this.transactionAmount.intValue()).length()));
-                return tagTransactionAmount + tagTransactionAmountLength + this.transactionAmount.intValue();
+                    String tagTransactionAmountLength = String.format("%02d",(String.valueOf(this.transactionAmount.intValue()).length()));
+                    return tagTransactionAmount + tagTransactionAmountLength + this.transactionAmount.intValue();
             }else {
                 return "";
             }
@@ -160,11 +160,11 @@ public class Qris {
     }
 
     private String getCountryCodeAsString(){
-        return Optional.ofNullable(this.countryCode).map(data-> {
-            String tagCountryCode = "58";
-            String tagLengthCountryCodeLength = String.format("%02d",(data.getCountry().length()));
-            return tagCountryCode + tagLengthCountryCodeLength + data.getCountry();
-        }).orElse("");
+     return Optional.ofNullable(this.countryCode).map(data-> {
+         String tagCountryCode = "58";
+         String tagLengthCountryCodeLength = String.format("%02d",(data.getCountry().length()));
+         return tagCountryCode + tagLengthCountryCodeLength + data.getCountry();
+     }).orElse("");
     }
 
     private String getMerchantNameAsString(){
@@ -188,7 +188,7 @@ public class Qris {
     private String getPostalCodeAsString(){
         return Optional.ofNullable(this.postalCode).map(data-> {
             String tagCurrencyCode = "61";
-            String tagLengthCurrencyCode = String.format("%02d",(this.postalCode.length()));
+            String tagLengthCurrencyCode = String.format("%02d",(this.postalCode.toString().length()));
             return tagCurrencyCode + tagLengthCurrencyCode + this.postalCode;
         }).orElse("");
     }
@@ -213,11 +213,11 @@ public class Qris {
     }
 
     private String getCrcAsString(){
-        return Optional.ofNullable(this.crc).map(data-> {
-            String tagCrc = "63";
-            String tagCrcLength = String.format("%02d",(this.crc.length()));
-            return tagCrc + tagCrcLength + this.crc;
-        }).orElse("");
+      return Optional.ofNullable(this.crc).map(data-> {
+          String tagCrc = "63";
+          String tagCrcLength = String.format("%02d",(this.crc.length()));
+          return tagCrc + tagCrcLength + this.crc;
+      }).orElse("");
     }
 
     // Transfer-specific helper methods

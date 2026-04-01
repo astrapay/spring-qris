@@ -1,11 +1,11 @@
 package com.astrapay.qris.mpm.validation;
 
+import com.astrapay.qris.QrisCommon;
 import com.astrapay.qris.mpm.object.QrisPayload;
 import com.astrapay.qris.mpm.validation.constraints.CheckSum;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import com.astrapay.qris.QrisCommon;
 
 /**
  * <b>4.7.16</b> CRC (ID "63")<br/>

@@ -144,7 +144,7 @@ class QrisTransferTest {
         //     00 02 00 (tag 00 - nested in tag 99)
         // Total: 62180804DMCT9906000200
         assertTrue(qrisString.contains("62180804DMCT9906000200"),
-                "Should contain Additional Data (tag 62) with tag 99 missing sub-tag 01");
+            "Should contain Additional Data (tag 62) with tag 99 missing sub-tag 01");
         assertTrue(qrisString.contains("0804DMCT"), "Should contain tag 08 (Purpose of Transaction)");
         assertTrue(qrisString.contains("9906000200"), "Should contain tag 99 with only tag 00 (length 6)");
 

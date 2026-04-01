@@ -50,11 +50,11 @@ public class QrisParser {
     private static final int TAG_ID_PROPRIETARY_DATA = 99;
     private static final int TAG_ID_MERCHANT_ACCOUNT_START = 26;
     private static final int TAG_ID_MERCHANT_ACCOUNT_END = 45;
-
+    
     // Parser constants
     private static final int ID_LENGTH = 2;
     private static final int ID_PLUS_LENGTH = 4;
-
+    
     // Error messages
     private static final String ERROR_DUPLICATE_KEY = "Duplicate key '%d'.";
     private static final String ERROR_TUNTAS_NOT_IMPLEMENTED = "QRIS Tuntas belum diimplementasikan";
@@ -71,13 +71,13 @@ public class QrisParser {
      *     <li>Return payload dengan validasi yang sesuai dengan tipe-nya</li>
      * </ol>
      * </p>
-     *
+     * 
      * <p><b>Type Detection:</b></p>
      * <p>
      * Parser akan memeriksa tag 62 (Additional Data) → tag 08 (Purpose of Transaction).
      * Jika berisi "BOOK", "DMCT", atau "XBCT" maka akan di-treat sebagai Transfer QRIS.
      * </p>
-     *
+     * 
      * @param qris QR text string yang akan di-parse (max 512 chars)
      * @return QrisPayload (QrisMpmPaymentPayload atau QrisTransferPayload) tergantung type detection
      * @throws IllegalArgumentException jika QR text invalid atau duplicate ID ditemukan
@@ -85,17 +85,17 @@ public class QrisParser {
     public QrisPayload parse(String qris) {
         // Detect QRIS type first
         QrisType qrisType = detectQrisType(qris);
-
+        
         // Create appropriate payload instance based on type
         QrisPayload qrisPayload = createPayloadByType(qrisType);
         qrisPayload.setPayload(qris);
-
+        
         // Parse the payload
         parse(qrisPayload);
-
+        
         return qrisPayload;
     }
-
+    
     /**
      * Detect tipe QRIS dari QR text string.
      * <p>
@@ -107,12 +107,14 @@ public class QrisParser {
      *     <li>Jika tidak ditemukan tag 08 → MPM_PAYMENT (default)</li>
      * </ul>
      * </p>
-     *
+     * 
      * @param qris QR text string
      * @return QrisType (TRANSFER, UNKNOWN, atau MPM_PAYMENT)
      */
     private QrisType detectQrisType(String qris) {
         try {
+            // check parse tag for Transfer detection
+            // Parse root to get tag 62
             Map<Integer, QrisDataObject> tempMap = new LinkedHashMap<>();
             parseRoot(qris, tempMap);
             String purposeValue = parsePurposeValue(tempMap);
@@ -154,10 +156,10 @@ public class QrisParser {
                 return QrisType.MPM_PAYMENT;
         }
     }
-
+    
     /**
      * Create payload instance berdasarkan tipe QRIS.
-     *
+     * 
      * @param type Tipe QRIS (TRANSFER, MPM_PAYMENT, TUNTAS, atau UNKNOWN)
      * @return Instance QrisPayload yang sesuai
      * @throws UnsupportedOperationException jika tipe TUNTAS atau UNKNOWN
@@ -186,7 +188,7 @@ public class QrisParser {
      * Method ini melakukan parsing terhadap QrisPayload yang sudah ada,
      * mengisi qrisRoot map dengan data objects yang ter-parse.
      * </p>
-     *
+     * 
      * <p><b>Parsing Steps:</b></p>
      * <ol>
      *     <li>Parse root data objects dari payload string</li>
@@ -196,7 +198,7 @@ public class QrisParser {
      *     <li>Parse Merchant Information Language Template (ID 64)</li>
      *     <li>Parse Proprietary Data Template (tag 99 dalam ID 62) jika ada</li>
      * </ol>
-     *
+     * 
      * @param payload QrisPayload object yang akan di-parse (harus sudah memiliki payload string)
      */
     public void parse(QrisPayload payload) {

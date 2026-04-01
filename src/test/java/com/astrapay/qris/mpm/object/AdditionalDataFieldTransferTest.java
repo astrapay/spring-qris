@@ -45,7 +45,7 @@ class AdditionalDataFieldTransferTest {
         // Verify nested structure: tag 99 content should be "000200" + "0106ABC123"
         String expected99Content = "000200" + "0106ABC123";
         assertTrue(result.contains("9916" + expected99Content),
-                "Tag 99 should contain nested structure: tag00 + tag01");
+            "Tag 99 should contain nested structure: tag00 + tag01");
 
         // Calculate expected tag 62 length
         String tag08Content = "0804DMCT"; // 8 chars
@@ -85,7 +85,7 @@ class AdditionalDataFieldTransferTest {
         // Verify tag 00 and 01 are inside tag 99
         String expected99Content = "000200" + "0116a1d64af7470ce64d";
         assertTrue(result.contains(expected99Content),
-                "Tag 99 should contain all nested elements in correct order");
+            "Tag 99 should contain all nested elements in correct order");
 
         // Complete expected: 62380804BOOK99260002000116a1d64af7470ce64d
         String expectedResult = "62380804BOOK99260002000116a1d64af7470ce64d";

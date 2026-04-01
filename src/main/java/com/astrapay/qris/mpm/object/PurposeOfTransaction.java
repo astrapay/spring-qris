@@ -6,9 +6,9 @@ package com.astrapay.qris.mpm.object;
  * Purpose of Transaction adalah nilai yang terdapat pada tag 08 di dalam 
  * Additional Data Field Template (tag 62). Nilai ini menentukan jenis transaksi transfer.
  * </p>
- *
+ * 
  * <p><b>Referensi:</b> QRIS Spesifikasi 4.2 - Transfer Account Information</p>
- *
+ * 
  * @author Arthur Purnama
  */
 public enum PurposeOfTransaction {
@@ -27,29 +27,29 @@ public enum PurposeOfTransaction {
      * Transaksi transfer antar rekening dalam satu bank yang sama (internal transfer).
      * PJP Pengirim WAJIB memverifikasi bahwa transaksi merupakan overbooking.
      * </p>
-     *
+     * 
      * <p><b>Use Case:</b> Transfer dari rekening BCA ke rekening BCA lainnya</p>
      */
     BOOK("BOOK", "Internal Book Transfer QRIS", "Transfer internal dalam satu bank"),
-
+    
     /**
      * DMCT - Domestic Credit Transfer QRIS.
      * <p>
      * Transaksi transfer antar rekening di bank yang berbeda melalui switching/jaringan ATM Bersama.
      * Debit dilakukan pada rekening pengirim dan credit pada rekening penerima.
      * </p>
-     *
+     * 
      * <p><b>Use Case:</b> Transfer dari rekening BCA ke rekening Mandiri</p>
      */
     DMCT("DMCT", "Domestic Credit Transfer QRIS", "Transfer antar bank melalui switching"),
-
+    
     /**
      * XBCT - Cross Border Credit Transfer QRIS.
      * <p>
      * Transaksi transfer lintas negara/internasional.
      * Digunakan untuk transfer ke rekening di negara lain.
      * </p>
-     *
+     * 
      * <p><b>Use Case:</b> Transfer dari rekening Indonesia ke rekening di luar negeri</p>
      */
     XBCT("XBCT", "Cross Border Credit Transfer QRIS", "Transfer lintas negara"),
@@ -77,47 +77,47 @@ public enum PurposeOfTransaction {
      * </p>
      */
     BILL("BILL", "Billing Payment", "Pembayaran tagihan");
-
+    
     private final String code;
     private final String displayName;
     private final String description;
-
+    
     PurposeOfTransaction(String code, String displayName, String description) {
         this.code = code;
         this.displayName = displayName;
         this.description = description;
     }
-
+    
     /**
      * Mendapatkan kode Purpose of Transaction (BOOK/DMCT/XBCT).
-     *
+     * 
      * @return Kode purpose yang digunakan di QR text
      */
     public String getCode() {
         return code;
     }
-
+    
     /**
      * Mendapatkan display name dari Purpose of Transaction.
-     *
+     * 
      * @return Display name untuk purpose
      */
     public String getDisplayName() {
         return displayName;
     }
-
+    
     /**
      * Mendapatkan deskripsi dari Purpose of Transaction.
-     *
+     * 
      * @return Deskripsi purpose
      */
     public String getDescription() {
         return description;
     }
-
+    
     /**
      * Parse string code menjadi enum PurposeOfTransaction.
-     *
+     * 
      * @param code Kode purpose (BOOK/DMCT/XBCT)
      * @return PurposeOfTransaction enum, atau null jika tidak ditemukan
      */
@@ -125,19 +125,19 @@ public enum PurposeOfTransaction {
         if (code == null) {
             return null;
         }
-
+        
         for (PurposeOfTransaction purpose : values()) {
             if (purpose.code.equals(code)) {
                 return purpose;
             }
         }
-
+        
         return null;
     }
-
+    
     /**
      * Validasi apakah code adalah purpose yang valid.
-     *
+     * 
      * @param code Kode yang akan divalidasi
      * @return true jika code adalah BOOK/DMCT/XBCT, false jika tidak
      */
