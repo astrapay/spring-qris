@@ -7,10 +7,6 @@ import com.astrapay.qris.mpm.object.QrisTransferPayload;
 import com.astrapay.qris.mpm.object.QrisType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -31,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class QrisParserTransferTest {
 
     private QrisParser parser;
-    private Validator validator;
     
     // Anonymized Transfer QR for testing (synthetic data, not production)
     private static final String TRANSFER_QR_DMCT = 
@@ -48,8 +43,6 @@ class QrisParserTransferTest {
     @BeforeEach
     void setUp() {
         parser = new QrisParser();
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
     }
     
     /**

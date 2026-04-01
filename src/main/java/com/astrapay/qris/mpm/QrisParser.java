@@ -113,48 +113,46 @@ public class QrisParser {
      */
     private QrisType detectQrisType(String qris) {
         try {
-            // check parse tag for Transfer detection
-            // Parse root to get tag 62
             Map<Integer, QrisDataObject> tempMap = new LinkedHashMap<>();
             parseRoot(qris, tempMap);
-            
-            // Check if tag 62 (Additional Data) exists
-            if (tempMap.containsKey(TAG_ID_ADDITIONAL_DATA)) {
-                QrisDataObject additionalData = tempMap.get(TAG_ID_ADDITIONAL_DATA);
-                
-                // Parse sub-tags of tag 62
-                Map<Integer, QrisDataObject> tag62Map = new LinkedHashMap<>();
-                parser(additionalData.getValue(), tag62Map);
-                
-                // Check if tag 08 (Purpose of Transaction) exists
-                if (tag62Map.containsKey(TAG_ID_PURPOSE_OF_TRANSACTION)) {
-                    String purposeValue = tag62Map.get(TAG_ID_PURPOSE_OF_TRANSACTION).getValue();
-
-                    if (purposeValue != null) {
-                        PurposeOfTransaction purpose = PurposeOfTransaction.fromCode(purposeValue);
-                        if (purpose != null) {
-                            switch (purpose) {
-                                case BOOK:
-                                case DMCT:
-                                case XBCT:
-                                    return QrisType.MPM_TRANSFER;
-                                case CDPT:
-                                    return QrisType.MPM_CASH_IN;
-                                case CWDL:
-                                    return QrisType.MPM_CASH_OUT;
-                                default:
-                                    return QrisType.MPM_PAYMENT;
-                            }
-                        }
-                    }
-                }
+            String purposeValue = parsePurposeValue(tempMap);
+            if (purposeValue != null) {
+                return purposeToQrisType(purposeValue);
             }
         } catch (Exception e) {
             // If parsing fails during detection, default to MPM_PAYMENT
-            // The actual parse() will handle the validation errors
         }
-        
-        return QrisType.MPM_PAYMENT; // Default
+        return QrisType.MPM_PAYMENT;
+    }
+
+    private String parsePurposeValue(Map<Integer, QrisDataObject> rootMap) {
+        QrisDataObject additionalData = rootMap.get(TAG_ID_ADDITIONAL_DATA);
+        if (additionalData == null) {
+            return null;
+        }
+        Map<Integer, QrisDataObject> tag62Map = new LinkedHashMap<>();
+        parser(additionalData.getValue(), tag62Map);
+        QrisDataObject purposeTag = tag62Map.get(TAG_ID_PURPOSE_OF_TRANSACTION);
+        return purposeTag != null ? purposeTag.getValue() : null;
+    }
+
+    private QrisType purposeToQrisType(String purposeValue) {
+        PurposeOfTransaction purpose = PurposeOfTransaction.fromCode(purposeValue);
+        if (purpose == null) {
+            return QrisType.MPM_PAYMENT;
+        }
+        switch (purpose) {
+            case BOOK:
+            case DMCT:
+            case XBCT:
+                return QrisType.MPM_TRANSFER;
+            case CDPT:
+                return QrisType.MPM_CASH_IN;
+            case CWDL:
+                return QrisType.MPM_CASH_OUT;
+            default:
+                return QrisType.MPM_PAYMENT;
+        }
     }
     
     /**
