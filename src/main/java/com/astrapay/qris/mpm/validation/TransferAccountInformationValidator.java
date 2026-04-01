@@ -16,7 +16,7 @@ import java.util.Objects;
  * Validator ini memvalidasi struktur dan isi dari Transfer Account Information (ID "40")
  * pada QRIS Transfer payload.
  * </p>
- *
+ * 
  * <p><b>Validasi yang dilakukan:</b></p>
  * <ul>
  *     <li>Tag 40 harus exist dalam qrisRoot</li>

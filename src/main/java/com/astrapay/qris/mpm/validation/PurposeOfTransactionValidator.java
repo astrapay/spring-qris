@@ -35,6 +35,7 @@ import java.util.Objects;
 
 public class PurposeOfTransactionValidator implements ConstraintValidator<PurposeOfTransactionValid, QrisPayload> {
 
+    private static final List<String> VALID_PURPOSE_VALUES = Arrays.asList("BOOK", "DMCT", "XBCT");
     private static final int ADDITIONAL_DATA_ID = 62;
     private static final int PURPOSE_TAG_ID = 8;
 
