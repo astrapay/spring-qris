@@ -11,7 +11,7 @@ import java.util.Map;
  * Class ini merepresentasikan QRIS yang digunakan untuk pembayaran ke merchant, 
  * dengan validasi khusus yang sesuai dengan spesifikasi QRIS MPM Payment.
  * </p>
- * 
+ *
  * <p><b>Karakteristik MPM Payment:</b></p>
  * <ul>
  *     <li>Wajib memiliki Merchant Category Code (ID 52) - 4 digit ISO 18245</li>
@@ -24,7 +24,7 @@ import java.util.Map;
  *     <li>Transaction Amount (ID 54) conditional - tergantung static/dynamic QR</li>
  *     <li>Point of Initiation Method (ID 01) optional - "11" static / "12" dynamic</li>
  * </ul>
- * 
+ *
  * <p><b>Referensi Spesifikasi:</b></p>
  * <ul>
  *     <li><b>4.7.3.1</b> - Setidaknya satu Merchant Account Information dari "02"-"51" harus ditampilkan</li>
@@ -33,19 +33,19 @@ import java.util.Map;
  *     <li><b>4.7.13.1</b> - Merchant Name wajib untuk identifikasi merchant</li>
  *     <li><b>4.7.14.1</b> - Merchant City wajib untuk lokasi merchant</li>
  * </ul>
- * 
+ *
  * <p><b>Contoh QR Text MPM Payment:</b></p>
  * <pre>
  * 00020101021126...52044829530336054...5802ID5907ANTONIO6007JAKARTA61051031062386304CCEF
  * </pre>
- * 
+ *
  * @see QrisPayload
  * @see QrisType#MPM_PAYMENT
  */
 @NoArgsConstructor
 @CheckSum
 public class QrisMpmPaymentPayload extends QrisPayload {
-    
+
     // Override qrisRoot field with MPM Payment specific validations
     @MandatoryField
     @MandatoryField(id = 52)  // Merchant Category Code
@@ -84,31 +84,31 @@ public class QrisMpmPaymentPayload extends QrisPayload {
     @IdNotNull(id = 60)
     @PostalCode
     private Map<Integer, QrisDataObject> qrisRoot;
-    
+
     /**
      * Constructor dengan payload string.
-     * 
+     *
      * @param payload Raw QR text string yang akan di-parse
      */
     public QrisMpmPaymentPayload(String payload) {
         this.setPayload(payload);
     }
-    
+
     /**
      * {@inheritDoc}
-     * 
+     *
      * @return {@link QrisType#MPM_PAYMENT}
      */
     @Override
     public QrisType getQrisType() {
         return QrisType.MPM_PAYMENT;
     }
-    
+
     @Override
     public Map<Integer, QrisDataObject> getQrisRoot() {
         return qrisRoot;
     }
-    
+
     @Override
     public void setQrisRoot(Map<Integer, QrisDataObject> qrisRoot) {
         this.qrisRoot = qrisRoot;

@@ -3,10 +3,7 @@ package com.astrapay.qris.mpm.object;
 import lombok.*;
 
 import java.text.DecimalFormat;
-import java.util.Currency;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author Arthur Purnama
@@ -18,22 +15,31 @@ import java.util.Optional;
 @Builder
 public class Qris {
 
+    // Common fields for both MPM Payment and MPM Transfer
     private String payloadFormatIndicator;
     private Integer pointOfInitiationMethod;
-    private Map<Integer, MerchantAccountInformation> merchantAccountInformationDomestics;
-    private MerchantAccountInformation domesticCentralRepository;
     private Integer merchantCategoryCode;
     private Currency transactionCurrency;
     @Builder.Default
     private Double transactionAmount = 0.0;
     private Tip tip;
     private Locale countryCode;
-    private String merchantName;
-    private String merchantCity;
     private String postalCode;
-    private AdditionalData additionalData;
     private MerchantInformationLanguage merchantInformationLanguage;
     private String crc;
+
+    // MPM Payment specific fields (ID 26, 51, 59, 60, 62)
+    private Map<Integer, MerchantAccountInformation> merchantAccountInformationDomestics;
+    private MerchantAccountInformation domesticCentralRepository;
+    private String merchantName;
+    private String merchantCity;
+    private AdditionalData additionalData;
+
+    // MPM Transfer specific fields (ID 40, 59, 60, 62 for beneficiary)
+    private TransferAccountInformation transferAccountInformation;
+    private String beneficiaryName;
+    private String beneficiaryCity;
+    private AdditionalDataFieldTransfer additionalDataFieldTransfer;
 
 
 
@@ -50,14 +56,14 @@ public class Qris {
     }
 
     private String getPointOfInitiationMethodAsString(){
-       return Optional.ofNullable(this.pointOfInitiationMethod).map(data-> {
-           DecimalFormat df = new DecimalFormat();
-           df.setMaximumFractionDigits(2);
-           String defaultTag = "01";
-           return defaultTag +
-                   String.format("%02d", this.pointOfInitiationMethod.toString().length()) +
-                   this.pointOfInitiationMethod;
-       }).orElse("");
+        return Optional.ofNullable(this.pointOfInitiationMethod).map(data-> {
+            DecimalFormat df = new DecimalFormat();
+            df.setMaximumFractionDigits(2);
+            String defaultTag = "01";
+            return defaultTag +
+                    String.format("%02d", this.pointOfInitiationMethod.toString().length()) +
+                    this.pointOfInitiationMethod;
+        }).orElse("");
     }
 
     private  String getMerchantAccountInformationAsStringAsString(MerchantAccountInformation merchantAccountInformation, String tag){
@@ -122,8 +128,8 @@ public class Qris {
         return Optional.ofNullable(this.transactionAmount).map(data-> {
             if(data>0){
                 String tagTransactionAmount = "54";
-                    String tagTransactionAmountLength = String.format("%02d",(String.valueOf(this.transactionAmount.intValue()).length()));
-                    return tagTransactionAmount + tagTransactionAmountLength + this.transactionAmount.intValue();
+                String tagTransactionAmountLength = String.format("%02d",(String.valueOf(this.transactionAmount.intValue()).length()));
+                return tagTransactionAmount + tagTransactionAmountLength + this.transactionAmount.intValue();
             }else {
                 return "";
             }
@@ -154,11 +160,11 @@ public class Qris {
     }
 
     private String getCountryCodeAsString(){
-     return Optional.ofNullable(this.countryCode).map(data-> {
-         String tagCountryCode = "58";
-         String tagLengthCountryCodeLength = String.format("%02d",(data.getCountry().length()));
-         return tagCountryCode + tagLengthCountryCodeLength + data.getCountry();
-     }).orElse("");
+        return Optional.ofNullable(this.countryCode).map(data-> {
+            String tagCountryCode = "58";
+            String tagLengthCountryCodeLength = String.format("%02d",(data.getCountry().length()));
+            return tagCountryCode + tagLengthCountryCodeLength + data.getCountry();
+        }).orElse("");
     }
 
     private String getMerchantNameAsString(){
@@ -182,7 +188,7 @@ public class Qris {
     private String getPostalCodeAsString(){
         return Optional.ofNullable(this.postalCode).map(data-> {
             String tagCurrencyCode = "61";
-            String tagLengthCurrencyCode = String.format("%02d",(this.postalCode.toString().length()));
+            String tagLengthCurrencyCode = String.format("%02d",(this.postalCode.length()));
             return tagCurrencyCode + tagLengthCurrencyCode + this.postalCode;
         }).orElse("");
     }
@@ -196,14 +202,101 @@ public class Qris {
 
     }
 
-    private String getCrcAsString(){
-      return Optional.ofNullable(this.crc).map(data-> {
-          String tagCrc = "63";
-          String tagCrcLength = String.format("%02d",(this.crc.length()));
-          return tagCrc + tagCrcLength + this.crc;
-      }).orElse("");
+    /**
+     * Generate Additional Data Field Transfer (ID 62) string for Transfer.
+     * Uses the structured AdditionalDataFieldTransfer object.
+     */
+    private String getAdditionalDataFieldTransferAsString(){
+        return Optional.ofNullable(this.additionalDataFieldTransfer)
+                .map(AdditionalDataFieldTransfer::toString)
+                .orElse("");
     }
 
+    private String getCrcAsString(){
+        return Optional.ofNullable(this.crc).map(data-> {
+            String tagCrc = "63";
+            String tagCrcLength = String.format("%02d",(this.crc.length()));
+            return tagCrc + tagCrcLength + this.crc;
+        }).orElse("");
+    }
+
+    // Transfer-specific helper methods
+
+    /**
+     * Generate Transfer Account Information (ID 40) string.
+     * Structure: 40 + length + (00+len+reverseDomain + 01+len+customerPan + 02+len+beneficiaryId + [04+len+bic])
+     */
+    private String getTransferAccountInformationAsString() {
+        return Optional.ofNullable(this.transferAccountInformation).map(transfer -> {
+            StringBuilder content = new StringBuilder();
+
+            // Sub-tag 00: Reverse Domain (Mandatory)
+            if (Objects.nonNull(transfer.getReverseDomain())) {
+                String tagReverseDomain = "00";
+                String lengthReverseDomain = String.format("%02d", transfer.getReverseDomain().length());
+                content.append(tagReverseDomain).append(lengthReverseDomain).append(transfer.getReverseDomain());
+            }
+
+            // Sub-tag 01: Customer PAN (Mandatory)
+            if (Objects.nonNull(transfer.getCustomerPan())) {
+                String tagPan = "01";
+                String lengthPan = String.format("%02d", transfer.getCustomerPan().length());
+                content.append(tagPan).append(lengthPan).append(transfer.getCustomerPan());
+            }
+
+            // Sub-tag 02: Beneficiary ID (Mandatory)
+            if (Objects.nonNull(transfer.getBeneficiaryId())) {
+                String tagBeneficiaryId = "02";
+                String lengthBeneficiaryId = String.format("%02d", transfer.getBeneficiaryId().length());
+                content.append(tagBeneficiaryId).append(lengthBeneficiaryId).append(transfer.getBeneficiaryId());
+            }
+
+            // Sub-tag 04: Bank Identifier Code (Optional)
+            if (Objects.nonNull(transfer.getBankIdentifierCode())) {
+                String tagBic = "04";
+                String lengthBic = String.format("%02d", transfer.getBankIdentifierCode().length());
+                content.append(tagBic).append(lengthBic).append(transfer.getBankIdentifierCode());
+            }
+
+            String contentStr = content.toString();
+            if (contentStr.isEmpty()) {
+                return "";
+            }
+
+            String tag = "40";
+            String length = String.format("%02d", contentStr.length());
+            return tag + length + contentStr;
+        }).orElse("");
+    }
+
+    /**
+     * Generate Beneficiary Name (ID 59) string for Transfer.
+     */
+    private String getBeneficiaryNameAsString() {
+        return Optional.ofNullable(this.beneficiaryName).map(data -> {
+            String tagBeneficiaryName = "59";
+            String tagBeneficiaryNameLength = String.format("%02d", data.length());
+            return tagBeneficiaryName + tagBeneficiaryNameLength + data;
+        }).orElse("");
+    }
+
+    /**
+     * Generate Beneficiary City (ID 60) string for Transfer.
+     */
+    private String getBeneficiaryCityAsString() {
+        return Optional.ofNullable(this.beneficiaryCity).map(data -> {
+            String tagBeneficiaryCity = "60";
+            String tagBeneficiaryCityLength = String.format("%02d", data.length());
+            return tagBeneficiaryCity + tagBeneficiaryCityLength + data;
+        }).orElse("");
+    }
+
+    /**
+     * Generate QRIS string for MPM Payment (original behavior).
+     * Uses Merchant Account Information (ID 26, 51) and merchant name/city.
+     *
+     * @return QRIS MPM Payment string
+     */
     @Override
     public String toString() {
         return this.getPayloadFormatIndicatorAsString() +
@@ -219,6 +312,39 @@ public class Qris {
                 this.getMerchantCityAsString() +
                 this.getPostalCodeAsString() +
                 this.getAdditionalDataAsString() +
+                this.getCrcAsString();
+    }
+
+    /**
+     * Generate QRIS string for MPM Transfer.
+     * Uses Transfer Account Information (ID 40) and beneficiary name/city.
+     *
+     * <p><b>Differences from Payment:</b></p>
+     * <ul>
+     *   <li>Uses Transfer Account Information (ID 40) instead of Merchant Account Information (ID 26, 51)</li>
+     *   <li>Uses beneficiaryName/beneficiaryCity instead of merchantName/merchantCity</li>
+     *   <li>Additional Data (ID 62) uses AdditionalDataFieldTransfer with Purpose of Transaction (sub-tag 08)</li>
+     * </ul>
+     *
+     * @return QRIS MPM Transfer string
+     */
+    public String toStringTransfer() {
+        // Prioritize additionalDataFieldTransfer over additionalData for Transfer
+        String additionalDataStr = this.additionalDataFieldTransfer != null
+                ? this.getAdditionalDataFieldTransferAsString()
+                : this.getAdditionalDataAsString();
+
+        return this.getPayloadFormatIndicatorAsString() +
+                this.getPointOfInitiationMethodAsString() +
+                this.getTransferAccountInformationAsString() +
+                this.getMerchantCategoryCodeAsString() +
+                this.getCurrencyCodeAsString() +
+                this.getTransactionAmountAsString() +
+                this.getCountryCodeAsString() +
+                this.getBeneficiaryNameAsString() +
+                this.getBeneficiaryCityAsString() +
+                this.getPostalCodeAsString() +
+                additionalDataStr +
                 this.getCrcAsString();
     }
 

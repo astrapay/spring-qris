@@ -46,7 +46,7 @@ public class TransferAccountInformationValidator implements ConstraintValidator<
     private static final int PAN_MAX_LENGTH = 19;
     private static final int NNS_START_LENGTH = 0;
     private static final int NNS_END_LENGTH = 8;  // National Numbering System code is 8 digits
-    
+
     private static final String NUMERIC_PATTERN = "\\d+";
 
     @Override
@@ -69,9 +69,9 @@ public class TransferAccountInformationValidator implements ConstraintValidator<
 
         // Validate semua mandatory fields
         return isReverseDomainValid(accountInfo) &&
-               isCustomerPanValid(accountInfo) &&
-               isBeneficiaryIdValid(accountInfo) &&
-               isBicValid(accountInfo);
+                isCustomerPanValid(accountInfo) &&
+                isBeneficiaryIdValid(accountInfo) &&
+                isBicValid(accountInfo);
     }
 
     private boolean isNullPayload(QrisPayload payload) {
@@ -80,13 +80,13 @@ public class TransferAccountInformationValidator implements ConstraintValidator<
 
     private Map<Integer, QrisDataObject> extractTransferAccountInfo(Map<Integer, QrisDataObject> qrisRoot) {
         QrisDataObject transferAccount = qrisRoot.get(TRANSFER_ACCOUNT_INFO_ID);
-        
+
         if (Objects.isNull(transferAccount)) {
             return null;
         }
 
         Map<Integer, QrisDataObject> templateMap = transferAccount.getTemplateMap();
-        
+
         if (Objects.isNull(templateMap) || templateMap.isEmpty()) {
             return null;
         }
@@ -95,10 +95,10 @@ public class TransferAccountInformationValidator implements ConstraintValidator<
     }
 
     // ===== Reverse Domain Validation =====
-    
+
     private boolean isReverseDomainValid(Map<Integer, QrisDataObject> accountInfo) {
         String reverseDomain = getFieldValue(accountInfo, REVERSE_DOMAIN_TAG);
-        
+
         if (reverseDomain == null) {
             return false;
         }
@@ -107,10 +107,10 @@ public class TransferAccountInformationValidator implements ConstraintValidator<
     }
 
     // ===== Customer PAN Validation =====
-    
+
     private boolean isCustomerPanValid(Map<Integer, QrisDataObject> accountInfo) {
         String pan = getFieldValue(accountInfo, CUSTOMER_PAN_TAG);
-        
+
         if (Objects.isNull(pan)) {
             return false;
         }
@@ -139,10 +139,10 @@ public class TransferAccountInformationValidator implements ConstraintValidator<
     }
 
     // ===== Beneficiary ID Validation =====
-    
+
     private boolean isBeneficiaryIdValid(Map<Integer, QrisDataObject> accountInfo) {
         String beneficiaryId = getFieldValue(accountInfo, BENEFICIARY_ID_TAG);
-        
+
         if (beneficiaryId == null) {
             return false;
         }
@@ -151,10 +151,10 @@ public class TransferAccountInformationValidator implements ConstraintValidator<
     }
 
     // ===== BIC Validation (Optional) =====
-    
+
     private boolean isBicValid(Map<Integer, QrisDataObject> accountInfo) {
         String bic = getFieldValue(accountInfo, BIC_TAG);
-        
+
         // BIC optional, jika tidak ada return true
         if (bic == null) {
             return true;
@@ -165,10 +165,10 @@ public class TransferAccountInformationValidator implements ConstraintValidator<
     }
 
     // ===== Helper Methods =====
-    
+
     private String getFieldValue(Map<Integer, QrisDataObject> accountInfo, int tag) {
         QrisDataObject field = accountInfo.get(tag);
-        
+
         if (Objects.isNull(field) || Objects.isNull(field.getValue())) {
             return null;
         }

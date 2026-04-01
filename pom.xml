@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-   
+
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -15,9 +15,9 @@
     <description>QRIS Parser for Spring by AstraPay</description>
     <properties>
         <java.version>11</java.version>
-<!--        <sonar.projectKey>astrapay_spring-qris</sonar.projectKey>-->
-<!--        <sonar.organization>astrapay</sonar.organization>-->
-<!--        <sonar.host.url>https://sonarcloud.io</sonar.host.url>-->
+        <!--        <sonar.projectKey>astrapay_spring-qris</sonar.projectKey>-->
+        <!--        <sonar.organization>astrapay</sonar.organization>-->
+        <!--        <sonar.host.url>https://sonarcloud.io</sonar.host.url>-->
     </properties>
     <url>https://github.com/astrapay/spring-qris</url>
 
@@ -63,16 +63,16 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-<!--    <distributionManagement>-->
-<!--        <snapshotRepository>-->
-<!--            <id>ossrh</id>-->
-<!--            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>-->
-<!--        </snapshotRepository>-->
-<!--        <repository>-->
-<!--            <id>ossrh</id>-->
-<!--            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
-<!--        </repository>-->
-<!--    </distributionManagement>-->
+    <!--    <distributionManagement>-->
+    <!--        <snapshotRepository>-->
+    <!--            <id>ossrh</id>-->
+    <!--            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>-->
+    <!--        </snapshotRepository>-->
+    <!--        <repository>-->
+    <!--            <id>ossrh</id>-->
+    <!--            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+    <!--        </repository>-->
+    <!--    </distributionManagement>-->
 
     <dependencies>
         <dependency>
@@ -99,7 +99,7 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
-            <version>11.0.12</version>
+            <version>11.0.18</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.tomcat</groupId>
@@ -114,7 +114,7 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-el</artifactId>
-            <version>10.0.20</version>
+            <version>11.0.18</version>
         </dependency>
 
 
@@ -131,7 +131,7 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-websocket</artifactId>
-            <version>11.0.12</version>
+            <version>11.0.18</version>
         </dependency>
 
         <dependency>
@@ -420,17 +420,17 @@
                     </execution>
                 </executions>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.sonatype.plugins</groupId>-->
-<!--                <artifactId>nexus-staging-maven-plugin</artifactId>-->
-<!--                <version>1.6.7</version>-->
-<!--                <extensions>true</extensions>-->
-<!--                <configuration>-->
-<!--                    <serverId>ossrh</serverId>-->
-<!--                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>-->
-<!--                    <autoReleaseAfterClose>true</autoReleaseAfterClose>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.sonatype.plugins</groupId>-->
+            <!--                <artifactId>nexus-staging-maven-plugin</artifactId>-->
+            <!--                <version>1.6.7</version>-->
+            <!--                <extensions>true</extensions>-->
+            <!--                <configuration>-->
+            <!--                    <serverId>ossrh</serverId>-->
+            <!--                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>-->
+            <!--                    <autoReleaseAfterClose>true</autoReleaseAfterClose>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -460,13 +460,13 @@
                     </execution>
                 </executions>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-release-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <scmCommentPrefix>[ci skip]</scmCommentPrefix>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-release-plugin</artifactId>-->
+            <!--                <configuration>-->
+            <!--                    <scmCommentPrefix>[ci skip]</scmCommentPrefix>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
 
@@ -493,9 +493,9 @@
                             </gpgArguments>
                         </configuration>
 
-<!--                        <configuration>-->
-<!--                            <skip>true</skip>-->
-<!--                        </configuration>-->
+                        <!--                        <configuration>-->
+                        <!--                            <skip>true</skip>-->
+                        <!--                        </configuration>-->
 
                         <executions>
                             <execution>
@@ -512,12 +512,12 @@
         </profile>
     </profiles>
 
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>astrapay-nexus</id>-->
-<!--            <url>https://nexus.astrapay.com/repository/astrapay-nexus/</url>-->
-<!--        </repository>-->
-<!--    </repositories>-->
+    <!--    <repositories>-->
+    <!--        <repository>-->
+    <!--            <id>astrapay-nexus</id>-->
+    <!--            <url>https://nexus.astrapay.com/repository/astrapay-nexus/</url>-->
+    <!--        </repository>-->
+    <!--    </repositories>-->
 
     <scm>
         <connection>scm:git:git@github.com:astrapay/spring-qris.git</connection>
