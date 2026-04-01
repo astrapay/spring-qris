@@ -29,8 +29,7 @@ import lombok.Builder;
  *     .bankIdentifierCode("CENAIDJA")  // Optional
  *     .build();
  * </pre>
- * 
- * @author Arthur Purnama
+ *
  * @see MerchantAccountInformation
  * @see Qris#toStringTransfer()
  */
