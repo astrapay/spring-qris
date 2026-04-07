@@ -101,22 +101,32 @@ public class QrisParser {
      * <p>
      * Detection logic:
      * <ul>
-     *     <li>Parse tag 62 (Additional Data) untuk mencari tag 08 (Purpose of Transaction)</li>
-     *     <li>Jika tag 08 berisi "BOOK", "DMCT", atau "XBCT" → TRANSFER</li>
-     *     <li>Jika tag 08 ada tapi nilai tidak sesuai → UNKNOWN</li>
-     *     <li>Jika tidak ditemukan tag 08 → MPM_PAYMENT (default)</li>
+     *     <li>Jika tag 40 (Transfer Account Information) TIDAK ada → MPM_PAYMENT</li>
+     *     <li>Jika tag 40 ada, periksa tag 62 → tag 08 (Purpose of Transaction):
+     *         <ul>
+     *             <li>BOOK, DMCT, XBCT → MPM_TRANSFER</li>
+     *             <li>CDPT → MPM_CASH_IN (Tuntas setor tunai)</li>
+     *             <li>CWDL → MPM_CASH_OUT (Tuntas tarik tunai)</li>
+     *             <li>Purpose tidak dikenali / tag 62 tidak ada → MPM_PAYMENT (default)</li>
+     *         </ul>
+     *     </li>
      * </ul>
      * </p>
      *
      * @param qris QR text string
-     * @return QrisType (TRANSFER, UNKNOWN, atau MPM_PAYMENT)
+     * @return QrisType yang terdeteksi
      */
     private QrisType detectQrisType(String qris) {
         try {
-            // check parse tag for Transfer detection
-            // Parse root to get tag 62
             Map<Integer, QrisDataObject> tempMap = new LinkedHashMap<>();
             parseRoot(qris, tempMap);
+
+            // Tag 40 (Transfer Account Information) harus ada untuk Transfer / Tuntas
+            if (!tempMap.containsKey(TAG_ID_TRANSFER_ACCOUNT_INFO)) {
+                return QrisType.MPM_PAYMENT;
+            }
+
+            // Jika tag 40 ada, periksa tag 62 → tag 08 (Purpose of Transaction)
             String purposeValue = parsePurposeValue(tempMap);
             if (purposeValue != null) {
                 return purposeToQrisType(purposeValue);

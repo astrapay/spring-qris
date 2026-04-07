@@ -21,7 +21,7 @@ public class QrisMapper {
         object.setPayloadFormatIndicator(payload.get(0).getValue());
         object.setPointOfInitiationMethod(Integer.valueOf(payload.get(1).getValue()));
 
-        boolean isTransfer = payload.containsKey(40);
+        boolean isTransfer = isTransferQr(payload);
 
         if (isTransfer) {
             mapTransferAccountInformation(payload, object);
@@ -68,6 +68,34 @@ public class QrisMapper {
         return object;
     }
 
+
+    /**
+     * Menentukan apakah payload adalah QRIS Transfer.
+     * <p>
+     * Sesuai dengan logika {@link com.astrapay.qris.mpm.QrisParser#detectQrisType}:
+     * <ol>
+     *     <li>Tag 40 (Transfer Account Information) harus ada</li>
+     *     <li>Tag 62 (Additional Data) harus ada</li>
+     *     <li>Sub-tag 08 (Purpose of Transaction) harus berisi BOOK, DMCT, atau XBCT</li>
+     * </ol>
+     * </p>
+     */
+    private boolean isTransferQr(Map<Integer, QrisDataObject> payload) {
+        if (!payload.containsKey(40)) {
+            return false;
+        }
+        if (!payload.containsKey(62)) {
+            return false;
+        }
+        Map<Integer, QrisDataObject> tag62Map = payload.get(62).getTemplateMap();
+        if (tag62Map == null || !tag62Map.containsKey(8)) {
+            return false;
+        }
+        PurposeOfTransaction purpose = PurposeOfTransaction.fromCode(tag62Map.get(8).getValue());
+        return purpose == PurposeOfTransaction.BOOK
+                || purpose == PurposeOfTransaction.DMCT
+                || purpose == PurposeOfTransaction.XBCT;
+    }
 
     private void mapTransferAccountInformation(Map<Integer, QrisDataObject> payload, Qris object) {
         Map<Integer, QrisDataObject> transferInfoMap = payload.get(40).getTemplateMap();
