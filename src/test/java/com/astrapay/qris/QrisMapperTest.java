@@ -203,4 +203,65 @@ class QrisMapperTest {
     assertEquals(0.0, qris.getTransactionAmount());
   }
 
+  // ─── AstraPay Transfer QR Tests ───────────────────────────────────────────
+  // QR: 00020101021240550018ID.CO.ASTRAPAY.WWW0119936008223000200135502062001355204482953033605802ID5923Test rename http header6013Jakarta Pusat61051022062460804DMCT99340002000124TG0H0C8UCRIWF0NZAC12QWXC63047EE1
+
+  @Test
+  void mapAstraPayTransferQrCommonFieldsTest() {
+    String transferQr = "00020101021240550018ID.CO.ASTRAPAY.WWW0119936008223000200135502062001355204482953033605802ID5923Test rename http header6013Jakarta Pusat61051022062460804DMCT99340002000124TG0H0C8UCRIWF0NZAC12QWXC63047EE1";
+    QrisParser qrisParser = new QrisParser();
+    QrisPayload qrisPayload = qrisParser.parse(transferQr);
+    Qris qris = qrisMapper.map(qrisPayload.getQrisRoot());
+
+    assertNotNull(qris);
+    assertEquals("01", qris.getPayloadFormatIndicator());
+    assertEquals(12, qris.getPointOfInitiationMethod());
+    assertEquals(4829, qris.getMerchantCategoryCode());
+    assertNotNull(qris.getTransactionCurrency());
+    assertEquals("360", qris.getTransactionCurrency().getNumericCodeAsString());
+    // Tag 54 not present → amount defaults to 0.0
+    assertEquals(0.0, qris.getTransactionAmount());
+    assertEquals("Test rename http header", qris.getBeneficiaryName());
+    assertEquals("Jakarta Pusat", qris.getBeneficiaryCity());
+    assertEquals("10220", qris.getPostalCode());
+    assertEquals("7EE1", qris.getCrc());
+
+    // Merchant Payment fields must NOT be set
+    assertNull(qris.getMerchantName());
+    assertNull(qris.getMerchantCity());
+    assertNull(qris.getMerchantAccountInformationDomestics());
+    assertNull(qris.getDomesticCentralRepository());
+  }
+
+  @Test
+  void mapAstraPayTransferQrTransferAccountInformationTest() {
+    String transferQr = "00020101021240550018ID.CO.ASTRAPAY.WWW0119936008223000200135502062001355204482953033605802ID5923Test rename http header6013Jakarta Pusat61051022062460804DMCT99340002000124TG0H0C8UCRIWF0NZAC12QWXC63047EE1";
+    QrisParser qrisParser = new QrisParser();
+    QrisPayload qrisPayload = qrisParser.parse(transferQr);
+    Qris qris = qrisMapper.map(qrisPayload.getQrisRoot());
+
+    assertNotNull(qris.getTransferAccountInformation());
+    assertEquals("ID.CO.ASTRAPAY.WWW", qris.getTransferAccountInformation().getReverseDomain());
+    assertEquals("9360082230002001355", qris.getTransferAccountInformation().getCustomerPan());
+    assertEquals("200135", qris.getTransferAccountInformation().getBeneficiaryId());
+    assertNull(qris.getTransferAccountInformation().getBankIdentifierCode());
+  }
+
+  @Test
+  void mapAstraPayTransferQrAdditionalDataFieldTransferTest() {
+    String transferQr = "00020101021240550018ID.CO.ASTRAPAY.WWW0119936008223000200135502062001355204482953033605802ID5923Test rename http header6013Jakarta Pusat61051022062460804DMCT99340002000124TG0H0C8UCRIWF0NZAC12QWXC63047EE1";
+    QrisParser qrisParser = new QrisParser();
+    QrisPayload qrisPayload = qrisParser.parse(transferQr);
+    Qris qris = qrisMapper.map(qrisPayload.getQrisRoot());
+
+    assertNotNull(qris.getAdditionalDataFieldTransfer());
+    assertEquals(com.astrapay.qris.mpm.object.PurposeOfTransaction.DMCT,
+        qris.getAdditionalDataFieldTransfer().getPurposeOfTransaction());
+    assertEquals("00", qris.getAdditionalDataFieldTransfer().getDefaultValue());
+    assertEquals("TG0H0C8UCRIWF0NZAC12QWXC", qris.getAdditionalDataFieldTransfer().getUniqueData());
+    // Payment's additionalData must NOT be set for a transfer QR
+    assertNull(qris.getAdditionalData());
+  }
+
 }
+
