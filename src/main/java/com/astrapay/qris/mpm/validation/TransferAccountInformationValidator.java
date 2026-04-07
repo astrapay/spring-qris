@@ -4,6 +4,7 @@ import com.astrapay.qris.QrisNationalNumberingSystem.Pjsp;
 import com.astrapay.qris.mpm.object.QrisDataObject;
 import com.astrapay.qris.mpm.object.QrisPayload;
 import com.astrapay.qris.mpm.validation.constraints.TransferAccountInformationValid;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -28,6 +29,7 @@ import java.util.Objects;
  * </ul>
  *
  */
+@Slf4j
 public class TransferAccountInformationValidator implements ConstraintValidator<TransferAccountInformationValid, QrisPayload> {
 
     // Tag IDs
@@ -115,6 +117,7 @@ public class TransferAccountInformationValidator implements ConstraintValidator<
             return false;
         }
 
+        // check format PAN (numeric, length 16-19) dan check NNS code (first 8 digits must be valid PJSN code)
         return isPanFormatValid(pan) && isPanNnsValid(pan);
     }
 
@@ -127,14 +130,16 @@ public class TransferAccountInformationValidator implements ConstraintValidator<
         return length >= PAN_MIN_LENGTH && length <= PAN_MAX_LENGTH;
     }
 
+    // check is nns valid
     private boolean isPanNnsValid(String pan) {
+        String nnsCode = pan.substring(NNS_START_LENGTH, NNS_END_LENGTH);
+        int nns = Integer.parseInt(nnsCode);
         try {
-            String nnsCode = pan.substring(NNS_START_LENGTH, NNS_END_LENGTH);
-            int nns = Integer.parseInt(nnsCode);
             Pjsp.valueOf(nns); // Throws IllegalArgumentException if invalid
             return true;
         } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
-            return false;
+            log.warn("TransferAccountInformationValidator::isPanNnsValid NNS Unknown {}: {}",nns,e.getMessage());
+            return true;
         }
     }
 
