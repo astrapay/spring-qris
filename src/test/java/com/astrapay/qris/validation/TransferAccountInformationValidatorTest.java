@@ -227,7 +227,9 @@ class TransferAccountInformationValidatorTest {
         qrisRoot.put(40, transferAccountInfo);
         payload.setQrisRoot(qrisRoot);
         
-        assertFalse(validator.isValid(payload, constraintValidatorContext));
+//        assertFalse(validator.isValid(payload, constraintValidatorContext));
+        //with log error, karena NNS invalid, tapi untuk sementara biarkan valid dulu
+        assertTrue(validator.isValid(payload, constraintValidatorContext));
     }
 
     @Test

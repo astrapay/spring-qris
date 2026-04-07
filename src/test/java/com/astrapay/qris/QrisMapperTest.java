@@ -130,4 +130,77 @@ class QrisMapperTest {
 
   }
 
+  @Test
+  void mapTransferQrWithDmctTest() {
+    String transferQr = "00020101021240530013ID.CO.BCA.WWW011893600014151703139202105170313927520448295303360540410005802ID5916TEST BENEFICIARY6013Jakarta Pusat61051031062470804DMCT99350002000125517031392700177070866830263041376";
+    QrisParser qrisParser = new QrisParser();
+    QrisPayload qrisPayload = qrisParser.parse(transferQr);
+    Qris qris = qrisMapper.map(qrisPayload.getQrisRoot());
+
+    assertNotNull(qris);
+    assertEquals("01", qris.getPayloadFormatIndicator());
+    assertEquals(12, qris.getPointOfInitiationMethod());
+    assertEquals(4829, qris.getMerchantCategoryCode());
+    assertNotNull(qris.getTransactionCurrency());
+    assertEquals("360", qris.getTransactionCurrency().getNumericCodeAsString());
+    assertEquals(1000.0, qris.getTransactionAmount());
+    assertEquals("TEST BENEFICIARY", qris.getBeneficiaryName());
+    assertEquals("Jakarta Pusat", qris.getBeneficiaryCity());
+    assertEquals("10310", qris.getPostalCode());
+    assertEquals("1376", qris.getCrc());
+
+    // Verify merchant payment fields are NOT set
+    assertNull(qris.getMerchantName());
+    assertNull(qris.getMerchantCity());
+    assertNull(qris.getMerchantAccountInformationDomestics());
+    assertNull(qris.getDomesticCentralRepository());
+  }
+
+  @Test
+  void mapTransferQrTransferAccountInformationTest() {
+    String transferQr = "00020101021240530013ID.CO.BCA.WWW011893600014151703139202105170313927520448295303360540410005802ID5916TEST BENEFICIARY6013Jakarta Pusat61051031062470804DMCT99350002000125517031392700177070866830263041376";
+    QrisParser qrisParser = new QrisParser();
+    QrisPayload qrisPayload = qrisParser.parse(transferQr);
+    Qris qris = qrisMapper.map(qrisPayload.getQrisRoot());
+
+    assertNotNull(qris.getTransferAccountInformation());
+    assertEquals("ID.CO.BCA.WWW", qris.getTransferAccountInformation().getReverseDomain());
+    assertEquals("936000141517031392", qris.getTransferAccountInformation().getCustomerPan());
+    assertEquals("5170313927", qris.getTransferAccountInformation().getBeneficiaryId());
+    assertNull(qris.getTransferAccountInformation().getBankIdentifierCode());
+  }
+
+  @Test
+  void mapTransferQrAdditionalDataFieldTransferTest() {
+    String transferQr = "00020101021240530013ID.CO.BCA.WWW011893600014151703139202105170313927520448295303360540410005802ID5916TEST BENEFICIARY6013Jakarta Pusat61051031062470804DMCT99350002000125517031392700177070866830263041376";
+    QrisParser qrisParser = new QrisParser();
+    QrisPayload qrisPayload = qrisParser.parse(transferQr);
+    Qris qris = qrisMapper.map(qrisPayload.getQrisRoot());
+
+    assertNotNull(qris.getAdditionalDataFieldTransfer());
+    assertEquals(com.astrapay.qris.mpm.object.PurposeOfTransaction.DMCT,
+        qris.getAdditionalDataFieldTransfer().getPurposeOfTransaction());
+    assertEquals("00", qris.getAdditionalDataFieldTransfer().getDefaultValue());
+    assertEquals("5170313927001770708668302", qris.getAdditionalDataFieldTransfer().getUniqueData());
+    assertNull(qris.getAdditionalData());
+  }
+
+  @Test
+  void mapTransferQrWithoutAmountTest() {
+    String transferQr = "00020101021240530013ID.CO.BCA.WWW011893600014151703139202105170313927520448295303365802ID5916TEST BENEFICIARY6013Jakarta Pusat62470804DMCT99350002000125517031392700177070866830263041376";
+    // Build payload manually for a Transfer QR without amount (ID 54 absent)
+    QrisParser qrisParser = new QrisParser();
+    // Use the parser to build the QrisRoot, then call map
+    // Instead rebuild route: parse any valid transfer QR without amount
+    // Parse using the no-amount QR (manually ensure valid CRC omitted for unit testing)
+    // We test using the full QR with amount but verify correct amount mapping
+    String withAmountQr = "00020101021240530013ID.CO.BCA.WWW011893600014151703139202105170313927520448295303360540410005802ID5916TEST BENEFICIARY6013Jakarta Pusat61051031062470804DMCT99350002000125517031392700177070866830263041376";
+    QrisPayload qrisPayload = qrisParser.parse(withAmountQr);
+    // Remove ID 54 to simulate no amount
+    qrisPayload.getQrisRoot().remove(54);
+    Qris qris = qrisMapper.map(qrisPayload.getQrisRoot());
+
+    assertEquals(0.0, qris.getTransactionAmount());
+  }
+
 }
