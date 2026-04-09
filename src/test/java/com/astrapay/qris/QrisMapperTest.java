@@ -3,6 +3,7 @@ package com.astrapay.qris;
 import com.astrapay.qris.mpm.QrisMapper;
 import com.astrapay.qris.mpm.QrisParser;
 import com.astrapay.qris.mpm.object.*;
+import com.astrapay.qris.mpm.object.PurposeOfTransaction;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -262,6 +263,96 @@ class QrisMapperTest {
     // Payment's additionalData must NOT be set for a transfer QR
     assertNull(qris.getAdditionalData());
   }
+
+  // ─── isTransferQr() branch coverage ──────────────────────────────────────
+
+  @Test
+  void mapTransferWithBookPurposeTest() {
+    // Purpose = BOOK → isTransferQr = true → mapped as transfer
+    String transferQr = "00020101021240550018ID.CO.ASTRAPAY.WWW0119936008223000200135502062001355204482953033605802ID5923Test rename http header6013Jakarta Pusat61051022062460804DMCT99340002000124TG0H0C8UCRIWF0NZAC12QWXC63047EE1";
+    QrisParser qrisParser = new QrisParser();
+    QrisPayload qrisPayload = qrisParser.parse(transferQr);
+    qrisPayload.getQrisRoot().get(62).getTemplateMap()
+        .put(8, new QrisDataObject("08", "04", "BOOK"));
+
+    Qris qris = qrisMapper.map(qrisPayload.getQrisRoot());
+
+    assertNotNull(qris.getTransferAccountInformation());
+    assertNotNull(qris.getAdditionalDataFieldTransfer());
+    assertEquals(PurposeOfTransaction.BOOK, qris.getAdditionalDataFieldTransfer().getPurposeOfTransaction());
+  }
+
+  // ─── mapTransferAccountInformation() branch coverage ─────────────────────
+
+  @Test
+  void mapTransferAccountInformationWithBicTest() {
+    // BIC (sub-tag 04) present in tag 40
+    String transferQr = "00020101021240550018ID.CO.ASTRAPAY.WWW0119936008223000200135502062001355204482953033605802ID5923Test rename http header6013Jakarta Pusat61051022062460804DMCT99340002000124TG0H0C8UCRIWF0NZAC12QWXC63047EE1";
+    QrisParser qrisParser = new QrisParser();
+    QrisPayload qrisPayload = qrisParser.parse(transferQr);
+    qrisPayload.getQrisRoot().get(40).getTemplateMap()
+        .put(4, new QrisDataObject("04", "08", "CENAIDJA"));
+
+    Qris qris = qrisMapper.map(qrisPayload.getQrisRoot());
+
+    assertNotNull(qris.getTransferAccountInformation());
+    assertEquals("CENAIDJA", qris.getTransferAccountInformation().getBankIdentifierCode());
+  }
+
+  // ─── mapAdditionalDataFieldTransfer() branch coverage ────────────────────
+
+  @Test
+  void mapAdditionalDataFieldTransferWithoutTag99Test() {
+    // tag 99 absent in tag 62 → uniqueData and defaultValue not set from tag 99
+    String transferQr = "00020101021240550018ID.CO.ASTRAPAY.WWW0119936008223000200135502062001355204482953033605802ID5923Test rename http header6013Jakarta Pusat61051022062460804DMCT99340002000124TG0H0C8UCRIWF0NZAC12QWXC63047EE1";
+    QrisParser qrisParser = new QrisParser();
+    QrisPayload qrisPayload = qrisParser.parse(transferQr);
+    qrisPayload.getQrisRoot().get(62).getTemplateMap().remove(99);
+
+    Qris qris = qrisMapper.map(qrisPayload.getQrisRoot());
+
+    assertNotNull(qris.getAdditionalDataFieldTransfer());
+    assertEquals(PurposeOfTransaction.DMCT, qris.getAdditionalDataFieldTransfer().getPurposeOfTransaction());
+    assertNull(qris.getAdditionalDataFieldTransfer().getUniqueData());
+  }
+
+    @Test
+    void mapQRTransferWithoutAddionalDataTag62_NullPointer() {
+
+        String transferQr = "00020101021240550018ID.CO.ASTRAPAY.WWW0119936008223000200135502062001355204482953033605802ID5923Test rename http header6013Jakarta Pusat61051022062460804DMCT99340002000124TG0H0C8UCRIWF0NZAC12QWXC63047EE1";
+        QrisParser qrisParser = new QrisParser();
+        QrisPayload qrisPayload = qrisParser.parse(transferQr);
+        qrisPayload.getQrisRoot().remove(62);
+
+        assertThrows(NullPointerException.class, () -> qrisMapper.map(qrisPayload.getQrisRoot()), "Name is null");
+
+    }
+
+    @Test
+    void mapQRTransferWithoutAddionalData_NullPointer() {
+
+        String transferQr = "00020101021240550018ID.CO.ASTRAPAY.WWW0119936008223000200135502062001355204482953033605802ID5923Test rename http header6013Jakarta Pusat61051022062460804DMCT99340002000124TG0H0C8UCRIWF0NZAC12QWXC63047EE1";
+        QrisParser qrisParser = new QrisParser();
+        QrisPayload qrisPayload = qrisParser.parse(transferQr);
+        qrisPayload.getQrisRoot().get(62).getTemplateMap().remove(8);
+
+        assertThrows(NullPointerException.class, () -> qrisMapper.map(qrisPayload.getQrisRoot()), "Name is null");
+
+    }
+    @Test
+    void mapQRTransferWithoutAddionalDataTag99n8_NullPointer() {
+        // wrong enum PoT
+        String transferQr = "00020101021240550018ID.CO.ASTRAPAY.WWW0119936008223000200135502062001355204482953033605802ID5923Test rename http header6013Jakarta Pusat61051022062460804DMCT99340002000124TG0H0C8UCRIWF0NZAC12QWXC63047EE1";
+        QrisParser qrisParser = new QrisParser();
+        QrisPayload qrisPayload = qrisParser.parse(transferQr);
+        qrisPayload.getQrisRoot().get(62).getTemplateMap()
+                .put(8, new QrisDataObject("08", "04", "BUUK"));
+
+//        Qris qris = qrisMapper.map(qrisPayload.getQrisRoot());
+
+        assertThrows(NullPointerException.class, () -> qrisMapper.map(qrisPayload.getQrisRoot()), "Name is null");
+
+    }
 
 }
 

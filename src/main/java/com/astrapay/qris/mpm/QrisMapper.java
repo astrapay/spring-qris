@@ -212,10 +212,10 @@ public class QrisMapper {
             if (payload.containsKey(i)) {
                 Map<Integer, QrisDataObject> merchantAccountInformationMap = payload.get(i).getTemplateMap();
                 MerchantAccountInformation merchantAccountInformation = new MerchantAccountInformation();
-                merchantAccountInformation.setGloballyUniqueIdentifier(merchantAccountInformationMap.get(0).getValue());
-                merchantAccountInformation.setPersonalAccountNumber(merchantAccountInformationMap.get(1).getValue());
-                merchantAccountInformation.setMerchantId(merchantAccountInformationMap.get(2).getValue());
-                merchantAccountInformation.setCriteria(MerchantCriteria.valueOf(merchantAccountInformationMap.get(3).getValue()));
+                merchantAccountInformation.setGloballyUniqueIdentifier(Objects.nonNull(merchantAccountInformationMap.get(0))?merchantAccountInformationMap.get(0).getValue():null);
+                merchantAccountInformation.setPersonalAccountNumber(Objects.nonNull(merchantAccountInformationMap.get(1))?merchantAccountInformationMap.get(1).getValue():null);
+                merchantAccountInformation.setMerchantId(Objects.nonNull(merchantAccountInformationMap.get(2))?merchantAccountInformationMap.get(2).getValue():null);
+                merchantAccountInformation.setCriteria(MerchantCriteria.valueOf(Objects.nonNull(merchantAccountInformationMap.get(3))? merchantAccountInformationMap.get(3).getValue() :null));
                 if (object.getMerchantAccountInformationDomestics() == null) {
                     object.setMerchantAccountInformationDomestics(new LinkedHashMap<>());
                 }
